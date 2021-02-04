@@ -44,11 +44,12 @@ bool loadMap(std::string map_streets_database_filename) {
     //
     // Load your map related data structures here.
     //
-
+    
     
 
     load_successful = true; //Make sure this is updated to reflect whether
                             //loading the map succeeded or failed
+    load_successful = loadStreetsDatabaseBIN(map_streets_database_filename);
 
     return load_successful;
 }
@@ -56,4 +57,25 @@ bool loadMap(std::string map_streets_database_filename) {
 void closeMap() {
     //Clean-up your map related data structures here
     
+}
+
+// Returns the nearest point of interest of the given name to the given position
+// Speed Requirement --> none 
+POIIdx findClosestPOI(LatLon my_position, std::string POIname){
+    double smallestDistance = 99999999999;
+    double tempDistance = 0;
+    int totalNumOfPOI = getNumPointsOfInterest();
+    POIIdx closestPOI = -1;
+    std::pair <LatLon,LatLon> positions; //pair to hold values of present location, and the poi's location
+    for(int i = 0; i < totalNumOfPOI; i++){
+        if(getPOIName(i) == POIname){
+            positions = std::make_pair(my_position,getPOIPosition(i));
+            tempDistance = findDistanceBetweenTwoPoints(positions);
+            if(tempDistance < smallestDistance){ //stores value of smallest distance and the POI index for it
+                smallestDistance = tempDistance;
+                closestPOI = i;
+            }
+        }
+    }
+    return closestPOI;
 }
