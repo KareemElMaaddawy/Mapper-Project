@@ -79,3 +79,29 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname){
     }
     return closestPOI;
 }
+
+// Returns the area of the given closed feature in square meters
+// Assume a non self-intersecting polygon (i.e. no holes)
+// Return 0 if this feature is not a closed polygon.
+// Speed Requirement --> moderate
+double findFeatureArea(FeatureIdx feature_id){
+    int numOfPoints = getNumFeaturePoints(feature_id);//finds number of points on the feature
+    LatLon featurePoints[numOfPoints];
+    double area = 0;
+    for(int i = 0; i < numOfPoints; i++){
+        featurePoints[i] = getFeaturePoint(feature_id, i);//creates array of featurePoints
+    }
+    if(featurePoints[0] == featurePoints[numOfPoints-1]){ //returns area of polygon if closed polygon
+        double sum = 0;
+        for(int i = 0; i < numOfPoints; i++){
+            if(i == numOfPoints - 1){
+                sum += featurePoints[i].latitude()*featurePoints[0].longitude() - featurePoints[i].longitude()*featurePoints[0].latitude();
+            }else{
+                sum += featurePoints[i].latitude()*featurePoints[i+1].longitude() - featurePoints[i].longitude()*featurePoints[i+1].latitude();
+            }
+        }
+        return abs(sum / 2);
+    }else{
+        return area; //returns 0 if not a closed area
+    }
+}
