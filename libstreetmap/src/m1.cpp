@@ -96,6 +96,7 @@ double findFeatureArea(FeatureIdx feature_id){
         for(int i = 0; i < numOfPoints; i++){
             if(i == numOfPoints - 1){
                 sum += featurePoints[i].latitude()*featurePoints[0].longitude() - featurePoints[i].longitude()*featurePoints[0].latitude();
+                delete[] featurePoints;
             }else{
                 sum += featurePoints[i].latitude()*featurePoints[i+1].longitude() - featurePoints[i].longitude()*featurePoints[i+1].latitude();
             }
@@ -104,4 +105,20 @@ double findFeatureArea(FeatureIdx feature_id){
     }else{
         return area; //returns 0 if not a closed area
     }
+}
+
+// Returns all street ids corresponding to street names that start with the 
+// given prefix 
+// The function should be case-insensitive to the street prefix. 
+// The function should ignore spaces.
+//  For example, both "bloor " and "BloOrst" are prefixes to 
+// "Bloor Street East".
+// If no street names match the given prefix, this routine returns an empty 
+// (length 0) vector.
+// You can choose what to return if the street prefix passed in is an empty 
+// (length 0) string, but your program must not crash if street_prefix is a 
+// length 0 string.
+// Speed Requirement --> high 
+std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
+    
 }
