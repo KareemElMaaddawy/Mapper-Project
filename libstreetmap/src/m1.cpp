@@ -86,7 +86,7 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname){
 // Speed Requirement --> moderate
 double findFeatureArea(FeatureIdx feature_id){
     int numOfPoints = getNumFeaturePoints(feature_id);//finds number of points on the feature
-    LatLon featurePoints[numOfPoints];
+    LatLon *featurePoints = new LatLon[numOfPoints];
     double area = 0;
     for(int i = 0; i < numOfPoints; i++){
         featurePoints[i] = getFeaturePoint(feature_id, i);//creates array of featurePoints
