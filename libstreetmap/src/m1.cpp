@@ -19,8 +19,11 @@
  * SOFTWARE.
  */
 #include <iostream>
+#include <cmath> // gain access to math constants and functions such as M_PI
 #include "m1.h"
 #include "StreetsDatabaseAPI.h"
+#include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
+#define rOfEarth 6371000
 
 
 // loadMap will be called with the name of the file that stores the "layer-2"
@@ -107,6 +110,31 @@ double findFeatureArea(FeatureIdx feature_id){
     }
 }
 
+// Helper function to convert degrees to radians
+double degToRad(double degree);
+double degToRad(double degree){
+    double deg = (M_PI)/180;
+    return (deg * degree);
+}
+
+double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
+    // Converting latitude and longitudes from degrees to radians
+   double lat1 = degToRad(points.first.latitude());
+   double long1 = degToRad(points.first.longitude());
+   double lat2 = degToRad(points.second.latitude());
+   double long2 = degToRad(points.second.longitude());
+   
+   double latDistance = lat2 - lat1;
+   double longDistance = long2 - long1;
+   
+   double ans = pow(sin(latDistance/2),2) + cos(lat1)*cos(lat2)*pow(sin(longDistance/2),2);
+   ans = 2 * asin(sqrt(ans));
+   
+   ans = ans * rOfEarth;
+   
+   return ans;
+   
+}
 // Returns all street ids corresponding to street names that start with the 
 // given prefix 
 // The function should be case-insensitive to the street prefix. 
