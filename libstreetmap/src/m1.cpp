@@ -38,15 +38,35 @@
 // name of the ".osm.bin" file that matches your map -- just change 
 // ".streets" to ".osm" in the map_streets_database_filename to get the proper
 // name.
+
+
+//Additional functions//
+
+
+
+//end of additional functions//
+std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
+    
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = false; //Indicates whether the map has loaded 
                                   //successfully
+    segments_of_an_intersection.resize(getNumIntersections());
+    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
+        for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
+            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
+            segments_of_an_intersection[intersection].push_back(streetSeg_id);
+        }
+    }
 
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
     //
     // Load your map related data structures here.
     //
+    
+    
+    
+    
     
     
 
@@ -202,8 +222,10 @@ IntersectionIdx findClosestIntersection(LatLon my_position){
     return stub;
 }
 
+// Returns the street segments that connect to the given intersection 
+// Speed Requirement --> high
 std::vector<StreetSegmentIdx> findStreetSegmentsOfIntersection(IntersectionIdx intersection_id){
-    std::vector<StreetSegmentIdx> stub;
-    return stub;
+   
+    return segments_of_an_intersection[intersection_id];
 }
 
