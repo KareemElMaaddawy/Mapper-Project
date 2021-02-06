@@ -24,7 +24,7 @@
 #include "StreetsDatabaseAPI.h"
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
 #define rOfEarth 6371000
-
+#include "algorithm"
 
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
@@ -43,11 +43,20 @@
 
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
-    
+                                                                    //Includes repetition!!
+
+
+std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;     
+
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = false; //Indicates whether the map has loaded 
                                   //successfully
     segments_of_an_intersection.resize(getNumIntersections());
+    
+    street_names_of_intersection.resize(getNumIntersections());
+    intersections_of_a_street.resize(getNumStreets());
+    
+    
     for (int intersection = 0; intersection < getNumIntersections(); intersection++){
         for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
             int streetSeg_id = getIntersectionStreetSegment(intersection, i);
@@ -56,6 +65,12 @@ bool loadMap(std::string map_streets_database_filename) {
             
             StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;//gets the street id of a specific segment
             street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));//stores the name at specified street id in th street names function
+            
+            
+            ///if the intersection does not exists on the list of intersections of a street, then add it
+            if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
+                intersections_of_a_street[street_ID_of_segment].push_back(intersection);
+            }
         }
     }
 
@@ -209,12 +224,7 @@ double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id){
 
 //GHAMR'S FUNCTIONS////////////////////////////////////////////////////////////////////
 
-// Returns the street segments that connect to the given intersection 
-// Speed Requirement --> high
-std::vector<StreetSegmentIdx> findStreetSegmentsOfIntersection(IntersectionIdx intersection_id){
-   
-    return segments_of_an_intersection[intersection_id];
-}
+
 
 // Returns the nearest intersection to the given position
 // Speed Requirement --> none
@@ -224,13 +234,6 @@ IntersectionIdx findClosestIntersection(LatLon my_position){
 }
 
 
-// Returns the street names at the given intersection (includes duplicate 
-// street names in the returned vector)
-// Speed Requirement --> high 
-std::vector<std::string> findStreetNamesOfIntersection(IntersectionIdx intersection_id){
-    std::vector<std::string> stub;
-    return stub;
-}
 
 // Returns all intersections reachable by traveling down one street segment 
 // from the given intersection (hint: you can't travel the wrong way on a 
@@ -255,12 +258,36 @@ std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, 
     return stub;
 }
 
+
+
+    
+
+
+
+
+//GHAMR: DONE////////////////////////////////////////////////////////////////////////
+
+// Returns the street names at the given intersection (includes duplicate 
+// street names in the returned vector)
+// Speed Requirement --> high 
+std::vector<std::string> findStreetNamesOfIntersection(IntersectionIdx intersection_id){
+    
+    return street_names_of_intersection[intersection_id];
+}
+
+// Returns the street segments that connect to the given intersection 
+// Speed Requirement --> high
+std::vector<StreetSegmentIdx> findStreetSegmentsOfIntersection(IntersectionIdx intersection_id){
+   
+    return segments_of_an_intersection[intersection_id];
+}
+
 // Returns all intersections along the a given street.
 // There should be no duplicate intersections in the returned vector.
 // Speed Requirement --> high
 std::vector<IntersectionIdx> findIntersectionsOfStreet(StreetIdx street_id){
     
-    std::vector<IntersectionIdx> stub;
-    return stub;
+   
+    return intersections_of_a_street[street_id];
     
 }
