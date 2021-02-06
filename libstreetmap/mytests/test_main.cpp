@@ -36,6 +36,11 @@ int main() {
     return 0;
 }
 
+int testFindStreetNamesOfIntersection(){
+    
+}
+
+
 int testClosestPOI(){
 //    LatLon *testPositions = new LatLon[3];
 //    std::string *testNames = new std::string[3];
