@@ -87,13 +87,6 @@ bool loadMap(std::string map_streets_database_filename) {
         }
     }
 
-    
-    
-
-    load_successful = true; //Make sure this is updated to reflect whether
-                            //loading the map succeeded or failed
-    load_successful = loadStreetsDatabaseBIN(map_streets_database_filename);
-
     return load_successful;
 }
 
