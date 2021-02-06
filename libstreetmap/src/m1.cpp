@@ -40,12 +40,9 @@
 // name.
 
 
-//Additional functions//
 
-
-
-//end of additional functions//
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
+std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
     
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = false; //Indicates whether the map has loaded 
@@ -55,6 +52,10 @@ bool loadMap(std::string map_streets_database_filename) {
         for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
             int streetSeg_id = getIntersectionStreetSegment(intersection, i);
             segments_of_an_intersection[intersection].push_back(streetSeg_id);
+            
+            
+            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;//gets the street id of a specific segment
+            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));//stores the name at specified street id in th street names function
         }
     }
 
@@ -185,27 +186,13 @@ double findStreetLength(StreetIdx street_id){
     return stub;
 }
 
-std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, StreetIdx> street_ids){
-    std::vector<IntersectionIdx> stub;
-    return stub;
-}
 
-std::vector<IntersectionIdx> findIntersectionsOfStreet(StreetIdx street_id){
-    
-    std::vector<IntersectionIdx> stub;
-    return stub;
-    
-}
 
-std::vector<IntersectionIdx> findAdjacentIntersections(IntersectionIdx intersection_id){
-    std::vector<IntersectionIdx> stub;
-    return stub;
-}
 
-std::vector<std::string> findStreetNamesOfIntersection(IntersectionIdx intersection_id){
-    std::vector<std::string> stub;
-    return stub;
-}
+
+
+
+
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
     double stub;
@@ -217,10 +204,10 @@ double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id){
     return stub;
 }
 
-IntersectionIdx findClosestIntersection(LatLon my_position){
-    IntersectionIdx stub;
-    return stub;
-}
+
+
+
+//GHAMR'S FUNCTIONS////////////////////////////////////////////////////////////////////
 
 // Returns the street segments that connect to the given intersection 
 // Speed Requirement --> high
@@ -229,3 +216,51 @@ std::vector<StreetSegmentIdx> findStreetSegmentsOfIntersection(IntersectionIdx i
     return segments_of_an_intersection[intersection_id];
 }
 
+// Returns the nearest intersection to the given position
+// Speed Requirement --> none
+IntersectionIdx findClosestIntersection(LatLon my_position){
+    IntersectionIdx stub;
+    return stub;
+}
+
+
+// Returns the street names at the given intersection (includes duplicate 
+// street names in the returned vector)
+// Speed Requirement --> high 
+std::vector<std::string> findStreetNamesOfIntersection(IntersectionIdx intersection_id){
+    std::vector<std::string> stub;
+    return stub;
+}
+
+// Returns all intersections reachable by traveling down one street segment 
+// from the given intersection (hint: you can't travel the wrong way on a 
+// 1-way street)
+// the returned vector should NOT contain duplicate intersections
+// Speed Requirement --> high 
+std::vector<IntersectionIdx> findAdjacentIntersections(IntersectionIdx intersection_id){
+    std::vector<IntersectionIdx> stub;
+    return stub;
+}
+
+
+// Return all intersection ids at which the two given streets intersect
+// This function will typically return one intersection id for streets
+// that intersect and a length 0 vector for streets that do not. For unusual 
+// curved streets it is possible to have more than one intersection at which 
+// two streets cross.
+// There should be no duplicate intersections in the returned vector.
+// Speed Requirement --> high
+std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, StreetIdx> street_ids){
+    std::vector<IntersectionIdx> stub;
+    return stub;
+}
+
+// Returns all intersections along the a given street.
+// There should be no duplicate intersections in the returned vector.
+// Speed Requirement --> high
+std::vector<IntersectionIdx> findIntersectionsOfStreet(StreetIdx street_id){
+    
+    std::vector<IntersectionIdx> stub;
+    return stub;
+    
+}
