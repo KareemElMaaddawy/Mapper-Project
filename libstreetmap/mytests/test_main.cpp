@@ -36,6 +36,11 @@ int main() {
     return 0;
 }
 
+int testFindStreetNamesOfIntersection(){
+    
+}
+
+
 int testClosestPOI(){
     
 }
