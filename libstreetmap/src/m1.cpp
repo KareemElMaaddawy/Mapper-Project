@@ -52,7 +52,7 @@ std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;
 
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 bool loadMap(std::string map_streets_database_filename) {
-    bool load_successful = loadStreetsDatabaseBIN("/cad2/ece297s/public/maps/toronto_canada.streets.bin"); //Indicates whether the map has loaded 
+    bool load_successful = loadStreetsDatabaseBIN(map_streets_database_filename); //Indicates whether the map has loaded 
                                   //successfully
    
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
