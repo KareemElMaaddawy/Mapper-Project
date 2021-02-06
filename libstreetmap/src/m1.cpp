@@ -188,9 +188,6 @@ std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_pre
     return stub;
 }
 
-
-
-
 LatLonBounds findStreetBoundingBox(StreetIdx street_id){
     LatLonBounds stub;
     return stub;
@@ -200,14 +197,6 @@ double findStreetLength(StreetIdx street_id){
     double stub;
     return stub;
 }
-
-
-
-
-
-
-
-
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
     double stub;
