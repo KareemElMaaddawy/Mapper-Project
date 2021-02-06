@@ -148,5 +148,62 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
 // length 0 string.
 // Speed Requirement --> high 
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
+    std::vector<StreetIdx> stub;
+    return stub;
+}
+
+
+
+
+LatLonBounds findStreetBoundingBox(StreetIdx street_id){
+    LatLonBounds stub;
+    return stub;
+}
+
+double findStreetLength(StreetIdx street_id){
+    double stub;
+    return stub;
+}
+
+std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, StreetIdx> street_ids){
+    std::vector<IntersectionIdx> stub;
+    return stub;
+}
+
+std::vector<IntersectionIdx> findIntersectionsOfStreet(StreetIdx street_id){
+    
+    std::vector<IntersectionIdx> stub;
+    return stub;
     
 }
+
+std::vector<IntersectionIdx> findAdjacentIntersections(IntersectionIdx intersection_id){
+    std::vector<IntersectionIdx> stub;
+    return stub;
+}
+
+std::vector<std::string> findStreetNamesOfIntersection(IntersectionIdx intersection_id){
+    std::vector<std::string> stub;
+    return stub;
+}
+
+double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
+    double stub;
+    return stub;
+}
+
+double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id){
+    double stub;
+    return stub;
+}
+
+IntersectionIdx findClosestIntersection(LatLon my_position){
+    IntersectionIdx stub;
+    return stub;
+}
+
+std::vector<StreetSegmentIdx> findStreetSegmentsOfIntersection(IntersectionIdx intersection_id){
+    std::vector<StreetSegmentIdx> stub;
+    return stub;
+}
+
