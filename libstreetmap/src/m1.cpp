@@ -41,17 +41,29 @@
 
 
 
-std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
+
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
                                                                     //Includes repetition!!
 
 
-std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;     
+std::vector<std::vector<IntersectionIdx>> intersections_of_a_street; 
 
+ 
+
+std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 bool loadMap(std::string map_streets_database_filename) {
-    bool load_successful = false; //Indicates whether the map has loaded 
+    bool load_successful = loadStreetsDatabaseBIN("/cad2/ece297s/public/maps/toronto_canada.streets.bin"); //Indicates whether the map has loaded 
                                   //successfully
-    segments_of_an_intersection.resize(getNumIntersections());
+   
+    std::cout << "loadMap: " << map_streets_database_filename << std::endl;
+
+    //
+    // Load your map related data structures here.
+    //
+    
+    
+    
+     segments_of_an_intersection.resize(getNumIntersections());
     
     street_names_of_intersection.resize(getNumIntersections());
     intersections_of_a_street.resize(getNumStreets());
@@ -62,9 +74,10 @@ bool loadMap(std::string map_streets_database_filename) {
             int streetSeg_id = getIntersectionStreetSegment(intersection, i);
             segments_of_an_intersection[intersection].push_back(streetSeg_id);
             
-            
-            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;//gets the street id of a specific segment
-            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));//stores the name at specified street id in th street names function
+            //gets the street id of a specific segment
+            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
+            //stores the name at specified street id in th street names function
+            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
             
             
             ///if the intersection does not exists on the list of intersections of a street, then add it
@@ -74,15 +87,6 @@ bool loadMap(std::string map_streets_database_filename) {
         }
     }
 
-    std::cout << "loadMap: " << map_streets_database_filename << std::endl;
-
-    //
-    // Load your map related data structures here.
-    //
-    
-    
-    
-    
     
     
 
