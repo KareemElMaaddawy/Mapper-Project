@@ -55,12 +55,7 @@ bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(map_streets_database_filename); //Indicates whether the map has loaded 
                                   //successfully
    
-    std::cout << "loadMap: " << map_streets_database_filename << std::endl;
-
-    //
-    // Load your map related data structures here.
-    //
-    
+    std::cout << "loadMap: " << map_streets_database_filename << std::endl;  
     
     
      segments_of_an_intersection.resize(getNumIntersections());
@@ -86,8 +81,6 @@ bool loadMap(std::string map_streets_database_filename) {
             }
         }
     }
-
-    return load_successful;
 }
 
 void closeMap() {
