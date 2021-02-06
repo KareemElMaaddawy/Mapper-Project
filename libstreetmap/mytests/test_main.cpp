@@ -37,5 +37,11 @@ int main() {
 }
 
 int testClosestPOI(){
+//    LatLon *testPositions = new LatLon[3];
+//    std::string *testNames = new std::string[3];
     
+    LatLon position = std::make_pair(-15.9498389,-5.6811358);
+    std::string name = "St.Helena Golf Club";
+    POIIdx found = findClosestPOI(position, name);
+    std::cout << found << endl;
 }
