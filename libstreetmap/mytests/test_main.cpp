@@ -19,6 +19,16 @@ int testClosestPOI();
 
 int main() {
     
+    std::string map_path = "/cad2/ece297s/public/maps/saint-helena.streets.bin";
+    
+    bool load_success = loadMap(map_path);
+    if(!load_success) {
+        std::cerr << "Failed to load map '" << map_path << "'\n";
+        return ERROR_EXIT_CODE;
+    }
+
+    std::cout << "Successfully loaded map '" << map_path << "'\n";
+    
     int error = 0;
     
     error += testClosestPOI();
