@@ -25,6 +25,7 @@
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
 #define rOfEarth 6371000
 #include "algorithm"
+#include <utility>
 
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
@@ -189,8 +190,16 @@ double findStreetLength(StreetIdx street_id){
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
-    double stub;
-    return stub;
+    // Fetch the two end points of a street segment
+    int intersec1 = getStreetSegmentInfo(street_segment_id).from;
+    int intersec2 = getStreetSegmentInfo(street_segment_id).to;
+    
+    std::pair <LatLon , LatLon> point;
+    point = std::make_pair(getIntersectionPosition(intersec1), getIntersectionPosition(intersec2));
+    
+    double length = findDistanceBetweenTwoPoints(point);
+    return length;
+    
 }
 
 double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id){
