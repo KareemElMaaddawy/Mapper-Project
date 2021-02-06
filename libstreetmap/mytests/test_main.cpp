@@ -26,13 +26,13 @@ int main() {
         std::cerr << "Failed to load map '" << map_path << "'\n";
         return ERROR_EXIT_CODE;
     }
-
     std::cout << "Successfully loaded map '" << map_path << "'\n";
     
-    int error = 0;
+    int numOfError = 0;
     
-    error += testClosestPOI();
+    numOfError += testClosestPOI();
     
+    std::cout << "number of errors: " << numOfError << std::endl;
     return 0;
 }
 
