@@ -71,10 +71,6 @@ bool loadMap(std::string map_streets_database_filename) {
         std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
     }
     
-    for(int i = 0; i < numOfStreets; i++){
-        std::cout << streetNames[i] << std::endl;
-    }
-    
 //    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
 //        for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
 //            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
@@ -188,8 +184,9 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
 // length 0 string.
 // Speed Requirement --> high 
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
-    std::vector<StreetIdx> stub;
-    return stub;
+    street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
+    std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
+    return 0;
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id){
