@@ -99,8 +99,7 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname){
     POIIdx closestPOI = -1;
     std::pair <LatLon,LatLon> positions; //pair to hold values of present location, and the poi's location
     for(int i = 0; i < totalNumOfPOI; i++){
-        std::string temp = getPOIName(i);
-        if(temp == POIname){
+        if(getPOIName(i) == POIname){
             positions = std::make_pair(my_position,getPOIPosition(i));
             tempDistance = findDistanceBetweenTwoPoints(positions);
             if(tempDistance < smallestDistance){ //stores value of smallest distance and the POI index for it
