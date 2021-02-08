@@ -14,7 +14,7 @@
 #include "StreetsDatabaseAPI.h"
 #include <iostream>
 #include <vector>
-#define SIZE 26 //alphabet size
+#define SIZE 128 //ascii size
  
 struct TrieNode{
     struct TrieNode *children[SIZE]; //creates child for every letter of alphabet
@@ -44,28 +44,37 @@ struct TrieNode *makeNode(){ //makes root node
     return ptr;
 }
 
-int charToIndex(char c){ //converts from char to index value, a = 1, b = 2, .....
-    return int(c) % 32;
-} 
+//void destroyTrie(TrieNode *root){
+//    if(root != nullptr){
+//        for(int i = 0; i < SIZE; i++){
+//            destroyTrie(root->children[i]);
+//            delete root;
+//        }
+//    }
+//    return;
+//} 
 
 void insertToTrie(struct TrieNode *root, std::string key, StreetIdx idx){ //inserts streetname into trie
     for(int i = 0; i < key.length(); i++){
-        if(root->children[charToIndex(key[i])] == nullptr){//if char not already included in trie makes new node for it
-            root->children[charToIndex(key[i])] = makeNode(idx);
+        if(int(key[i]) - 1  == -30){
+            std::cout << "error: char " << key[i] << " index: " << int(key[i]) - 1 << " shit prefix: " << key << std::endl;
+        }
+        if(root->children[abs(int(key[i]))] == nullptr){//if char not already included in trie makes new node for it
+            root->children[abs(int(key[i]))] = makeNode(idx);
         }else{
-            root->children[charToIndex(key[i])]->streetIndices.push_back(idx);//if already included adds streetidx to node
+            root->children[abs(int(key[i]))]->streetIndices.push_back(idx);//if already included adds streetidx to node
         } 
         
-        root = root->children[charToIndex(key[i])]; //travels to next node
+        root = root->children[abs(int(key[i]))]; //travels to next node
     }
 }
 
 std::vector<StreetIdx> findStreetName(struct TrieNode *root, std::string prefix){ //finds which streetnames include the prefix
     for(int i = 0; i < prefix.length(); i++){
-        if(root->children[charToIndex(prefix[i])] == nullptr){ //reached point where prefix is not included in trie
+        if(root->children[abs(int(prefix[i]))] == nullptr){ //reached point where prefix is not included in trie
             return {}; //returns empty vector
         }else{
-            root = root->children[charToIndex(prefix[i])]; //if char found travels to next node
+            root = root->children[abs(int(prefix[i]))]; //if char found travels to next node
         }
     }
     
