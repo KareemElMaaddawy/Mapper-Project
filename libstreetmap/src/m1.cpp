@@ -236,8 +236,11 @@ double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
 }
 
 double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id){
-    double stub;
-    return stub;
+    // fetch the speed limit of the segment in question
+    float speedLimit = getStreetSegmentInfo(street_segment_id).speedLimit;
+    // return the speed which is length/time
+    return findStreetSegmentLength(street_segment_id)/speedLimit;
+    
 }
 
 
