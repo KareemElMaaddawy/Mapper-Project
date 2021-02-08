@@ -57,45 +57,47 @@ std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 bool loadMap(std::string map_streets_database_filename) {
     
     bool load_successful = loadStreetsDatabaseBIN(map_streets_database_filename); //Indicates whether the map has loaded successfully
-   
-    std::cout << "loadMap: " << map_streets_database_filename << std::endl;  
+    std::cout << "loadMap: " << map_streets_database_filename << std::endl; 
     
-    segments_of_an_intersection.resize(getNumIntersections());
-    
-    street_names_of_intersection.resize(getNumIntersections());
-    intersections_of_a_street.resize(getNumStreets());
-    
-    numOfStreets = getNumStreets();
-    streetNames = new std::string[numOfStreets]; //container to store streetnames
-    
-    for(int i = 0; i < numOfStreets; i++){ //formatting and storing street names w/o spaces and all lowercase
-        streetNames[i] = getStreetName(i);
-        streetNames[i].erase(std::remove(streetNames[i].begin(), streetNames[i].end(), ' '), streetNames[i].end());
-        std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
+    if(load_successful){
+        segments_of_an_intersection.resize(getNumIntersections());
+
+        street_names_of_intersection.resize(getNumIntersections());
+        intersections_of_a_street.resize(getNumStreets());
+
+        numOfStreets = getNumStreets();
+        streetNames = new std::string[numOfStreets]; //container to store streetnames
+
+        for(int i = 0; i < numOfStreets; i++){ //formatting and storing street names w/o spaces and all lowercase
+            streetNames[i] = getStreetName(i);
+            streetNames[i].erase(std::remove(streetNames[i].begin(), streetNames[i].end(), ' '), streetNames[i].end());
+            std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
+        }
+
+        root = makeNode(); //creating root for trie
+        for(int i = 0; i < numOfStreets; i++){ //inputs all streetnames and indexs into the trie
+            insertToTrie(root, streetNames[i], i);
+        }
+
+    //    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
+    //        for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
+    //            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
+    //            segments_of_an_intersection[intersection].push_back(streetSeg_id);
+    //            
+    //            //gets the street id of a specific segment
+    //            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
+    //            //stores the name at specified street id in th street names function
+    //            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
+    //            
+    //            
+    //            ///if the intersection does not exists on the list of intersections of a street, then add it
+    //            if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
+    //                intersections_of_a_street[street_ID_of_segment].push_back(intersection);
+    //            }
+    //          
+    //    }
     }
     
-    root = makeNode(); //creating root for trie
-    for(int i = 0; i < numOfStreets; i++){ //inputs all streetnames and indexs into the trie
-        insertToTrie(root, streetNames[i], i);
-    }
-    
-//    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
-//        for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
-//            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
-//            segments_of_an_intersection[intersection].push_back(streetSeg_id);
-//            
-//            //gets the street id of a specific segment
-//            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
-//            //stores the name at specified street id in th street names function
-//            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
-//            
-//            
-//            ///if the intersection does not exists on the list of intersections of a street, then add it
-//            if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
-//                intersections_of_a_street[street_ID_of_segment].push_back(intersection);
-//            }
-//        }
-//    }
     
     
     return load_successful;
