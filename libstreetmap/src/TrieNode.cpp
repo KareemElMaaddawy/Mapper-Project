@@ -54,3 +54,14 @@ void insertToTrie(struct TrieNode *root, std::string key, StreetIdx idx){
         root = root->children[charToIndex(key[i])];
     }
 }
+
+std::vector<StreetIdx> findStreetName(struct TrieNode *root, std::string prefix){
+    for(int i = 0; i < prefix.length(); i++){
+        if(root->children[charToIndex(prefix[i])] == nullptr){
+            return {};
+        }else{
+            root = root->children[charToIndex(prefix[i])];
+        }
+    }
+    return root->streetIndices;
+}
