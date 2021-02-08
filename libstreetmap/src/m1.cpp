@@ -26,6 +26,7 @@
 #define rOfEarth 6371000
 #include <algorithm>
 #include <utility>
+#include "TrieNode.cpp"
 
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
@@ -69,6 +70,13 @@ bool loadMap(std::string map_streets_database_filename) {
         streetNames[i] = getStreetName(i);
         streetNames[i].erase(std::remove(streetNames[i].begin(), streetNames[i].end(), ' '), streetNames[i].end());
         std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
+    }
+    
+    std::cout << charToIndex('e')<<std::endl;
+    
+    struct TrieNode *root = makeNode();
+    for(int i = 0; i < numOfStreets; i++){
+        insertToTrie(root, streetNames[i], i);
     }
     
 //    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
@@ -171,22 +179,14 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
    return ans;
    
 }
-// Returns all street ids corresponding to street names that start with the 
-// given prefix 
-// The function should be case-insensitive to the street prefix. 
-// The function should ignore spaces.
-//  For example, both "bloor " and "BloOrst" are prefixes to 
-// "Bloor Street East".
-// If no street names match the given prefix, this routine returns an empty 
-// (length 0) vector.
-// You can choose what to return if the street prefix passed in is an empty 
-// (length 0) string, but your program must not crash if street_prefix is a 
-// length 0 string.
-// Speed Requirement --> high 
+
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
     street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
     std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
-    return 0;
+    std::vector<StreetIdx> streetIdResults;
+    for(int i = 0; i < numOfStreets; i++){
+    }
+    return streetIdResults;
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id){
