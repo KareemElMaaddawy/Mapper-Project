@@ -20,6 +20,7 @@
  */
 #include <iostream>
 #include <cmath> // gain access to math constants and functions such as M_PI
+#include <math.h>
 #include "m1.h"
 #include "StreetsDatabaseAPI.h"
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
@@ -43,7 +44,8 @@
 
 
 int numOfStreets;
-std::string *streetNames; 
+std::string *streetNames;
+struct TrieNode *root;
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
                                                                     //Includes repetition!!
@@ -72,9 +74,7 @@ bool loadMap(std::string map_streets_database_filename) {
         std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
     }
     
-    std::cout << charToIndex('e')<<std::endl;
-    
-    struct TrieNode *root = makeNode();
+    root = makeNode();
     for(int i = 0; i < numOfStreets; i++){
         insertToTrie(root, streetNames[i], i);
     }
@@ -127,6 +127,13 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname){
     return closestPOI;
 }
 
+// Helper function to convert degrees to radians
+double degToRad(double degree);
+double degToRad(double degree){
+    double deg = (M_PI)/180;
+    return (deg * degree);
+}
+
 // Returns the area of the given closed feature in square meters
 // Assume a non self-intersecting polygon (i.e. no holes)
 // Return 0 if this feature is not a closed polygon.
@@ -135,31 +142,48 @@ double findFeatureArea(FeatureIdx feature_id){
     int numOfPoints = getNumFeaturePoints(feature_id);//finds number of points on the feature
     LatLon *featurePoints = new LatLon[numOfPoints];
     double area = 0;
+    double yMax = -999999;
+    double avgLat = 0;
     for(int i = 0; i < numOfPoints; i++){
         featurePoints[i] = getFeaturePoint(feature_id, i);//creates array of featurePoints
+        avgLat += degToRad(featurePoints[i].latitude());
     }
-    if(featurePoints[0] == featurePoints[numOfPoints-1]){ //returns area of polygon if closed polygon
-        double sum = 0;
+    avgLat = avgLat/numOfPoints;
+    double *x = new double[numOfPoints];
+    double *y= new double[numOfPoints];
+    double radLat, radLong;
+    for(int i = 0; i < numOfPoints; i++){
+        radLat = degToRad(featurePoints[i].latitude());
+        radLong = degToRad(featurePoints[i].longitude());
+        x[i] = rOfEarth*radLong*cos(avgLat);
+        y[i] = rOfEarth*radLat;
+        if(y[i] > yMax) yMax = y[i];
+    }
+    if(x[0] == x[numOfPoints - 1] && y[0] == y[numOfPoints - 1]){
         for(int i = 0; i < numOfPoints; i++){
             if(i == numOfPoints - 1){
-                sum += featurePoints[i].latitude()*featurePoints[0].longitude() - featurePoints[i].longitude()*featurePoints[0].latitude();
-                delete[] featurePoints;
+                area += x[i]*y[0] - y[i]*x[0];
             }else{
-                sum += featurePoints[i].latitude()*featurePoints[i+1].longitude() - featurePoints[i].longitude()*featurePoints[i+1].latitude();
+                area+= x[i]*y[i+1] - y[i]*x[i+1];
             }
         }
-        return abs(sum / 2);
+        area = abs(area/2);
+        
+        delete[] x;
+        delete[] y;
+        delete[] featurePoints;
+        
+        return area;
     }else{
-        return area; //returns 0 if not a closed area
+        delete[] x;
+        delete[] y;
+        delete[] featurePoints;
+        
+        return 0;
     }
 }
 
-// Helper function to convert degrees to radians
-double degToRad(double degree);
-double degToRad(double degree){
-    double deg = (M_PI)/180;
-    return (deg * degree);
-}
+
 
 double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
     // Converting latitude and longitudes from degrees to radians
@@ -183,10 +207,7 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
     street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
     std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
-    std::vector<StreetIdx> streetIdResults;
-    for(int i = 0; i < numOfStreets; i++){
-    }
-    return streetIdResults;
+    return findStreetName(root, street_prefix);
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id){
