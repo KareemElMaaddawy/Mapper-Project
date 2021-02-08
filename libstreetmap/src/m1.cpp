@@ -24,7 +24,7 @@
 #include "StreetsDatabaseAPI.h"
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
 #define rOfEarth 6371000
-#include "algorithm"
+#include <algorithm>
 #include <utility>
 
 // loadMap will be called with the name of the file that stores the "layer-2"
@@ -41,47 +41,55 @@
 // name.
 
 
-
+int numOfStreets;
+std::string *streetNames; 
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
                                                                     //Includes repetition!!
-
-
 std::vector<std::vector<IntersectionIdx>> intersections_of_a_street; 
 
  
 
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 bool loadMap(std::string map_streets_database_filename) {
-    bool load_successful = loadStreetsDatabaseBIN(map_streets_database_filename); //Indicates whether the map has loaded 
-                                  //successfully
+    
+    bool load_successful = loadStreetsDatabaseBIN(map_streets_database_filename); //Indicates whether the map has loaded successfully
    
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;  
     
-    
-     segments_of_an_intersection.resize(getNumIntersections());
+    segments_of_an_intersection.resize(getNumIntersections());
     
     street_names_of_intersection.resize(getNumIntersections());
     intersections_of_a_street.resize(getNumStreets());
     
+    numOfStreets = getNumStreets();
+    streetNames = new std::string[numOfStreets];
     
-    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
-        for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
-            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
-            segments_of_an_intersection[intersection].push_back(streetSeg_id);
-            
-            //gets the street id of a specific segment
-            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
-            //stores the name at specified street id in th street names function
-            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
-            
-            
-            ///if the intersection does not exists on the list of intersections of a street, then add it
-            if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
-                intersections_of_a_street[street_ID_of_segment].push_back(intersection);
-            }
-        }
+    for(int i = 0; i < numOfStreets; i++){
+        streetNames[i] = getStreetName(i);
+        streetNames[i].erase(std::remove(streetNames[i].begin(), streetNames[i].end(), ' '), streetNames[i].end());
+        std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
     }
+    
+//    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
+//        for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
+//            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
+//            segments_of_an_intersection[intersection].push_back(streetSeg_id);
+//            
+//            //gets the street id of a specific segment
+//            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
+//            //stores the name at specified street id in th street names function
+//            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
+//            
+//            
+//            ///if the intersection does not exists on the list of intersections of a street, then add it
+//            if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
+//                intersections_of_a_street[street_ID_of_segment].push_back(intersection);
+//            }
+//        }
+//    }
+    
+    
     return load_successful;
 }
 
@@ -176,8 +184,9 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
 // length 0 string.
 // Speed Requirement --> high 
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
-    std::vector<StreetIdx> stub;
-    return stub;
+    street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
+    std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
+    return 0;
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id){
