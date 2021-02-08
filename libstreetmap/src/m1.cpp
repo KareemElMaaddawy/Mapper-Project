@@ -45,7 +45,7 @@
 
 int numOfStreets;
 std::string *streetNames;
-struct TrieNode *root;
+struct TrieNode *root; //root for streetnames trie
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
                                                                     //Includes repetition!!
@@ -66,16 +66,16 @@ bool loadMap(std::string map_streets_database_filename) {
     intersections_of_a_street.resize(getNumStreets());
     
     numOfStreets = getNumStreets();
-    streetNames = new std::string[numOfStreets];
+    streetNames = new std::string[numOfStreets]; //container to store streetnames
     
-    for(int i = 0; i < numOfStreets; i++){
+    for(int i = 0; i < numOfStreets; i++){ //formatting and storing street names w/o spaces and all lowercase
         streetNames[i] = getStreetName(i);
         streetNames[i].erase(std::remove(streetNames[i].begin(), streetNames[i].end(), ' '), streetNames[i].end());
         std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
     }
     
-    root = makeNode();
-    for(int i = 0; i < numOfStreets; i++){
+    root = makeNode(); //creating root for trie
+    for(int i = 0; i < numOfStreets; i++){ //inputs all streetnames and indexs into the trie
         insertToTrie(root, streetNames[i], i);
     }
     
@@ -103,7 +103,8 @@ bool loadMap(std::string map_streets_database_filename) {
 
 void closeMap() {
     //Clean-up your map related data structures here
-    
+    delete[] streetNames;
+    destroyTrie(root);
 }
 
 // Returns the nearest point of interest of the given name to the given position
