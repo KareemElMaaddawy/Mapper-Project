@@ -103,8 +103,7 @@ bool loadMap(std::string map_streets_database_filename) {
 
 void closeMap() {
     //Clean-up your map related data structures here
-    delete[] streetNames;
-    destroyTrie(root);
+    closeStreetDatabase();
 }
 
 // Returns the nearest point of interest of the given name to the given position
