@@ -192,6 +192,8 @@ double findStreetLength(StreetIdx street_id){
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
     // Fetch the two end points of a street segment
+    int numOfCurvePoints = getStreetSegmentInfo(street_segment_id).numCurvePoints;
+    
     int intersec1 = getStreetSegmentInfo(street_segment_id).from;
     int intersec2 = getStreetSegmentInfo(street_segment_id).to;
     
