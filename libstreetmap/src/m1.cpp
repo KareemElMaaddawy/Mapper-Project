@@ -18,6 +18,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 #include <iostream>
 #include <cmath> // gain access to math constants and functions such as M_PI
 #include <math.h>
@@ -42,7 +43,6 @@
 // ".streets" to ".osm" in the map_streets_database_filename to get the proper
 // name.
 
-
 int numOfStreets;
 std::string *streetNames;
 struct TrieNode *root; //root for streetnames trie
@@ -51,20 +51,14 @@ std::vector<std::vector<std::string>> street_names_of_intersection; //stores the
                                                                     //Includes repetition!!
 std::vector<std::vector<IntersectionIdx>> intersections_of_a_street; 
 
- 
-
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
+
 bool loadMap(std::string map_streets_database_filename) {
-    
     bool load_successful = loadStreetsDatabaseBIN(map_streets_database_filename); //Indicates whether the map has loaded successfully
+   
     std::cout << "loadMap: " << map_streets_database_filename << std::endl; 
     
     if(load_successful){
-        segments_of_an_intersection.resize(getNumIntersections());
-
-        street_names_of_intersection.resize(getNumIntersections());
-        intersections_of_a_street.resize(getNumStreets());
-
         numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
 
@@ -75,58 +69,44 @@ bool loadMap(std::string map_streets_database_filename) {
         }
 
         root = makeNode(); //creating root for trie
-        for(int i = 0; i < numOfStreets; i++){ //inputs all streetnames and indexs into the trie
+
+        for(int i = 0; i < numOfStreets; i++){ //inputs all streetnames and indices into the trie
             insertToTrie(root, streetNames[i], i);
         }
 
-    //    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
-    //        for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
-    //            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
-    //            segments_of_an_intersection[intersection].push_back(streetSeg_id);
-    //            
-    //            //gets the street id of a specific segment
-    //            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
-    //            //stores the name at specified street id in th street names function
-    //            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
-    //            
-    //            
-    //            ///if the intersection does not exists on the list of intersections of a street, then add it
-    //            if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
-    //                intersections_of_a_street[street_ID_of_segment].push_back(intersection);
-    //            }
-    //          
-    //    }
+        segments_of_an_intersection.resize(getNumIntersections());
+
+        street_names_of_intersection.resize(getNumIntersections());
+        intersections_of_a_street.resize(getNumStreets());
+
+        for (int intersection = 0; intersection < getNumIntersections(); intersection++){
+            for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
+            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
+            segments_of_an_intersection[intersection].push_back(streetSeg_id);
+
+            //gets the street id of a specific segment
+            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
+            //stores the name at specified street id in th street names function
+            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
+
+
+            ///if the intersection does not exists on the list of intersections of a street, then add it
+            if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
+                intersections_of_a_street[street_ID_of_segment].push_back(intersection);
+                }
+            }
+        }
     }
-    
-    
-    
     return load_successful;
+    
 }
 
 void closeMap() {
     //Clean-up your map related data structures here
     closeStreetDatabase();
-}
-
-// Returns the nearest point of interest of the given name to the given position
-// Speed Requirement --> none 
-POIIdx findClosestPOI(LatLon my_position, std::string POIname){
-    double smallestDistance = 99999999999;
-    double tempDistance = 0;
-    int totalNumOfPOI = getNumPointsOfInterest();
-    POIIdx closestPOI = -1;
-    std::pair <LatLon,LatLon> positions; //pair to hold values of present location, and the poi's location
-    for(int i = 0; i < totalNumOfPOI; i++){
-        if(getPOIName(i) == POIname){
-            positions = std::make_pair(my_position,getPOIPosition(i));
-            tempDistance = findDistanceBetweenTwoPoints(positions);
-            if(tempDistance < smallestDistance){ //stores value of smallest distance and the POI index for it
-                smallestDistance = tempDistance;
-                closestPOI = i;
-            }
-        }
-    }
-    return closestPOI;
+    
+    delete[] streetNames;
+    destroyTrie(root);//dealloc trie
 }
 
 // Helper function to convert degrees to radians
@@ -136,29 +116,61 @@ double degToRad(double degree){
     return (deg * degree);
 }
 
+// Returns the nearest point of interest of the given name to the given position
+// Speed Requirement --> none 
+POIIdx findClosestPOI(LatLon my_position, std::string POIname){
+    double smallestDistance = 99999999999;
+    double distanceToCurrentPOI = 0;
+    int totalNumOfPOI = getNumPointsOfInterest();
+    POIIdx closestPOIIdx = -1;
+    
+    std::pair <LatLon,LatLon> positions; //pair to hold values of present location, and the poi's location
+    
+    for(int i = 0; i < totalNumOfPOI; i++){
+        if(getPOIName(i) == POIname){
+            positions = std::make_pair(my_position,getPOIPosition(i));
+            distanceToCurrentPOI = findDistanceBetweenTwoPoints(positions);
+            
+            if(distanceToCurrentPOI < smallestDistance){ //stores value of smallest distance and the POI index for it
+                smallestDistance = distanceToCurrentPOI;
+                closestPOIIdx = i;
+            }
+        }
+    }
+    return closestPOIIdx;
+}
+
 // Returns the area of the given closed feature in square meters
 // Assume a non self-intersecting polygon (i.e. no holes)
 // Return 0 if this feature is not a closed polygon.
 // Speed Requirement --> moderate
 double findFeatureArea(FeatureIdx feature_id){
-    int numOfPoints = getNumFeaturePoints(feature_id);//finds number of points on the feature
-    LatLon *featurePoints = new LatLon[numOfPoints];
     double area = 0;
     double yMax = -999999;
     double avgLat = 0;
+    
+    int numOfPoints = getNumFeaturePoints(feature_id);//finds number of points on the feature
+    
+    LatLon *featurePoints = new LatLon[numOfPoints];
+    
     for(int i = 0; i < numOfPoints; i++){
         featurePoints[i] = getFeaturePoint(feature_id, i);//creates array of featurePoints
         avgLat += degToRad(featurePoints[i].latitude());
     }
+    
     avgLat = avgLat/numOfPoints;
+    
     double *x = new double[numOfPoints];
     double *y= new double[numOfPoints];
     double radLat, radLong;
+    
     for(int i = 0; i < numOfPoints; i++){
         radLat = degToRad(featurePoints[i].latitude());
         radLong = degToRad(featurePoints[i].longitude());
+        
         x[i] = rOfEarth*radLong*cos(avgLat);
         y[i] = rOfEarth*radLat;
+        
         if(y[i] > yMax) yMax = y[i];
     }
     if(x[0] == x[numOfPoints - 1] && y[0] == y[numOfPoints - 1]){
@@ -185,7 +197,12 @@ double findFeatureArea(FeatureIdx feature_id){
     }
 }
 
-
+std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
+    street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
+    std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
+    
+    return findStreetName(root, street_prefix);
+}
 
 double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
     // Converting latitude and longitudes from degrees to radians
@@ -204,12 +221,6 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
    
    return ans;
    
-}
-
-std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
-    street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
-    std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
-    return findStreetName(root, street_prefix);
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id){
