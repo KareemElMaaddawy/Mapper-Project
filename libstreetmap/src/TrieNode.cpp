@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   TrieNode.cpp
  * Author: ahmadda4
@@ -14,10 +8,10 @@
 #include "StreetsDatabaseAPI.h"
 #include <iostream>
 #include <vector>
-#define SIZE 128 //ascii size
+#define SIZE 128 //ascii table size
  
 struct TrieNode{
-    struct TrieNode *children[SIZE]; //creates child for every letter of alphabet
+    struct TrieNode *children[SIZE]; //creates child for every character in an ASCII table
     
     bool endOfName; //holds whether end of street name reached
     std::vector<StreetIdx> streetIndices; //holds idx of every street the current path covers
@@ -26,7 +20,6 @@ struct TrieNode{
 struct TrieNode *makeNode(StreetIdx strtIdx){ //add new node w value for streetidx
     struct TrieNode *ptr = new TrieNode;
     
-    ptr->endOfName = false;
     ptr->streetIndices.push_back(strtIdx); //adds to end of vector
     
     for(int i = 0; i < SIZE; i++) ptr->children[i] = nullptr;
@@ -37,22 +30,19 @@ struct TrieNode *makeNode(StreetIdx strtIdx){ //add new node w value for streeti
 struct TrieNode *makeNode(){ //makes root node
     struct TrieNode *ptr = new TrieNode;
     
-    ptr->endOfName = false;
-    
     for(int i = 0; i < SIZE; i++) ptr->children[i] = nullptr;
     
     return ptr;
 }
 
-//void destroyTrie(TrieNode *root){
-//    if(root != nullptr){
-//        for(int i = 0; i < SIZE; i++){
-//            destroyTrie(root->children[i]);
-//            delete root;
-//        }
-//    }
-//    return;
-//} 
+void destroyTrie(TrieNode *root){//dealloc trie
+    for(int i = 0; i < SIZE; i++){
+        if(root->children[i] != nullptr){//recursively calls children that arent nullptrs
+            destroyTrie(root->children[i]);
+        }
+    }
+    delete root;//deletes nodes
+} 
 
 void insertToTrie(struct TrieNode *root, std::string key, StreetIdx idx){ //inserts streetname into trie
     for(int i = 0; i < key.length(); i++){
