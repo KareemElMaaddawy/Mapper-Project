@@ -246,7 +246,7 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
    double lat2 =  kDegreeToRadian*(points.second.latitude());
    double long2 = kDegreeToRadian*(points.second.longitude());
    
-   double latAvg = (lat2 - lat1)/2;
+   double latAvg = (lat2 + lat1)/2;
    double x1 = long1*(cos(latAvg));
    double x2 = long2*(cos(latAvg));
    double y1 = lat1;
