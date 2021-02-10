@@ -25,7 +25,6 @@
 #include "m1.h"
 #include "StreetsDatabaseAPI.h"
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
-#define rOfEarth 6371000
 #include <algorithm>
 #include <utility>
 #include "TrieNode.h"
@@ -109,12 +108,7 @@ void closeMap() {
     destroyTrie(root);//dealloc trie
 }
 
-// Helper function to convert degrees to radians
-double degToRad(double degree);
-double degToRad(double degree){
-    double deg = (M_PI)/180;
-    return (deg * degree);
-}
+
 
 // Returns the nearest point of interest of the given name to the given position
 // Speed Requirement --> none 
@@ -226,8 +220,8 @@ LatLonBounds findStreetBoundingBox(StreetIdx street_id){
 }
 
 double findStreetLength(StreetIdx street_id){
-    double stub;
-    return stub;
+    double ;
+    return ;
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
