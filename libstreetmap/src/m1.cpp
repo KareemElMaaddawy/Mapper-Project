@@ -28,13 +28,8 @@
 #include <algorithm>
 #include <utility>
 #include "TrieNode.h"
-<<<<<<< HEAD
 #include <vector>
-
-#define rOfEarth 6372797.560856
-=======
 #define RADIUS_OF_EARTH 6371000
->>>>>>> bc0c2921345166ea949e16c0de95d86d536c24a9
 
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
@@ -137,19 +132,29 @@ void closeMap() {
     delete[] streetNames;
     destroyTrie(root);//dealloc trie
 }
-<<<<<<< HEAD
-double degToRad(double );
-double degToRad(double degree){
-    double pi = M_PI;
-    return(degree * (pi/180));
-}
-
-=======
 
 double degToRad(double degree){//convert degrees to radians
     return (((M_PI)/180)*degree);
 }
->>>>>>> bc0c2921345166ea949e16c0de95d86d536c24a9
+
+double distance(std::pair<LatLon, LatLon> points){
+    // Converting latitude and longitudes from degrees to radians
+   double lat1 = degToRad(points.first.latitude());
+   double long1 = degToRad(points.first.longitude());
+   double lat2 = degToRad(points.second.latitude());
+   double long2 = degToRad(points.second.longitude());
+   
+   double latDistance = lat2 - lat1;
+   double longDistance = long2 - long1;
+   
+   double ans = pow(sin(latDistance/2),2) + cos(lat1)*cos(lat2)*pow(sin(longDistance/2),2);
+   ans = 2 * asin(sqrt(ans));
+   
+   ans = ans * RADIUS_OF_EARTH;
+   
+   return ans;
+   
+}
 
 // Returns the nearest point of interest of the given name to the given position
 // Speed Requirement --> none 
@@ -161,7 +166,7 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname){
     
     for(int i = 0; i < totalNumOfPOI; i++){
         if(getPOIName(i) == POIname){
-            distanceToCurrentPOI = findDistanceBetweenTwoPoints(std::make_pair(my_position,getPOIPosition(i)));
+            distanceToCurrentPOI = distance(std::make_pair(my_position,getPOIPosition(i)));
             
             if(distanceToCurrentPOI < smallestDistance){ //stores value of smallest distance and the POI index for it
                 smallestDistance = distanceToCurrentPOI;
