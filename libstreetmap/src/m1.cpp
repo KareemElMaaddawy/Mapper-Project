@@ -28,13 +28,8 @@
 #include <algorithm>
 #include <utility>
 #include "TrieNode.h"
-<<<<<<< HEAD
 #include <vector>
-
-#define rOfEarth 6372797.560856
-=======
 #define RADIUS_OF_EARTH 6371000
->>>>>>> bc0c2921345166ea949e16c0de95d86d536c24a9
 
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
@@ -137,19 +132,10 @@ void closeMap() {
     delete[] streetNames;
     destroyTrie(root);//dealloc trie
 }
-<<<<<<< HEAD
-double degToRad(double );
-double degToRad(double degree){
-    double pi = M_PI;
-    return(degree * (pi/180));
-}
-
-=======
 
 double degToRad(double degree){//convert degrees to radians
     return (((M_PI)/180)*degree);
 }
->>>>>>> bc0c2921345166ea949e16c0de95d86d536c24a9
 
 double distance(std::pair<LatLon, LatLon> points){
     // Converting latitude and longitudes from degrees to radians
