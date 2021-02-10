@@ -28,6 +28,7 @@
 #include <algorithm>
 #include <utility>
 #include "TrieNode.h"
+#define RADIUS_OF_EARTH 6371000
 
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
@@ -45,6 +46,8 @@
 int numOfStreets;
 std::string *streetNames;
 struct TrieNode *root; //root for streetnames trie
+
+double degToRad(double degree);//helper to convert degrees to radians
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
                                                                     //Includes repetition!!
@@ -108,7 +111,9 @@ void closeMap() {
     destroyTrie(root);//dealloc trie
 }
 
-
+double degToRad(double degree){//convert degrees to radians
+    return (((M_PI)/180)*degree);
+}
 
 // Returns the nearest point of interest of the given name to the given position
 // Speed Requirement --> none 
@@ -159,8 +164,8 @@ double findFeatureArea(FeatureIdx feature_id){
         radLat = degToRad(featurePoints[i].latitude());
         radLong = degToRad(featurePoints[i].longitude());
         
-        x[i] = rOfEarth*radLong*cos(avgLat);
-        y[i] = rOfEarth*radLat;
+        x[i] = RADIUS_OF_EARTH*radLong*cos(avgLat);
+        y[i] = RADIUS_OF_EARTH*radLat;
         
         if(y[i] > yMax) yMax = y[i];
     }
