@@ -136,6 +136,25 @@ double degToRad(double degree){//convert degrees to radians
     return (((M_PI)/180)*degree);
 }
 
+double distance(std::pair<LatLon, LatLon> points){
+    // Converting latitude and longitudes from degrees to radians
+   double lat1 = degToRad(points.first.latitude());
+   double long1 = degToRad(points.first.longitude());
+   double lat2 = degToRad(points.second.latitude());
+   double long2 = degToRad(points.second.longitude());
+   
+   double latDistance = lat2 - lat1;
+   double longDistance = long2 - long1;
+   
+   double ans = pow(sin(latDistance/2),2) + cos(lat1)*cos(lat2)*pow(sin(longDistance/2),2);
+   ans = 2 * asin(sqrt(ans));
+   
+   ans = ans * RADIUS_OF_EARTH;
+   
+   return ans;
+   
+}
+
 // Returns the nearest point of interest of the given name to the given position
 // Speed Requirement --> none 
 POIIdx findClosestPOI(LatLon my_position, std::string POIname){
@@ -146,7 +165,7 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname){
     
     for(int i = 0; i < totalNumOfPOI; i++){
         if(getPOIName(i) == POIname){
-            distanceToCurrentPOI = findDistanceBetweenTwoPoints(std::make_pair(my_position,getPOIPosition(i)));
+            distanceToCurrentPOI = distance(std::make_pair(my_position,getPOIPosition(i)));
             
             if(distanceToCurrentPOI < smallestDistance){ //stores value of smallest distance and the POI index for it
                 smallestDistance = distanceToCurrentPOI;
