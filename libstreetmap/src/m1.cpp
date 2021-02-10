@@ -197,21 +197,21 @@ std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_pre
 
 double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
     // Converting latitude and longitudes from degrees to radians
-   double lat1 = degToRad(points.first.latitude());
-   double long1 = degToRad(points.first.longitude());
-   double lat2 = degToRad(points.second.latitude());
-   double long2 = degToRad(points.second.longitude());
+   double lat1 =  kDegreeToRadian*points.first.latitude();
+   double long1 = kDegreeToRadian*points.first.longitude();
+   double lat2 =  kDegreeToRadian*points.second.latitude();
+   double long2 = kDegreeToRadian*points.second.longitude();
    
-   double latDistance = lat2 - lat1;
-   double longDistance = long2 - long1;
+   double latAvg = (lat2 - lat1)/2;
+   double x1 = long1 * cos(latAvg);
+   double x2 = lat1;
+   double y1 = long2 * cos(latAvg);
+   double y2 = lat2;
+   double diffinY = y2 - y1;
+   double diffinX = x2-x1;
    
-   double ans = pow(sin(latDistance/2),2) + cos(lat1)*cos(lat2)*pow(sin(longDistance/2),2);
-   ans = 2 * asin(sqrt(ans));
-   
-   ans = ans * rOfEarth;
-   
-   return ans;
-   
+   double distance = kEarthRadiusInMeters * sqrt(pow(diffinY,2)+pow(diffinX,2));
+   return distance;
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id){
@@ -220,8 +220,8 @@ LatLonBounds findStreetBoundingBox(StreetIdx street_id){
 }
 
 double findStreetLength(StreetIdx street_id){
-    double ;
-    return ;
+    double stub;
+    return stub;
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
