@@ -28,7 +28,7 @@
 #define rOfEarth 6371000
 #include <algorithm>
 #include <utility>
-#include "TrieNode.cpp"
+#include "TrieNode.h"
 
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
@@ -124,12 +124,9 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname){
     int totalNumOfPOI = getNumPointsOfInterest();
     POIIdx closestPOIIdx = -1;
     
-    std::pair <LatLon,LatLon> positions; //pair to hold values of present location, and the poi's location
-    
     for(int i = 0; i < totalNumOfPOI; i++){
         if(getPOIName(i) == POIname){
-            positions = std::make_pair(my_position,getPOIPosition(i));
-            distanceToCurrentPOI = findDistanceBetweenTwoPoints(positions);
+            distanceToCurrentPOI = findDistanceBetweenTwoPoints(std::make_pair(my_position,getPOIPosition(i)));
             
             if(distanceToCurrentPOI < smallestDistance){ //stores value of smallest distance and the POI index for it
                 smallestDistance = distanceToCurrentPOI;

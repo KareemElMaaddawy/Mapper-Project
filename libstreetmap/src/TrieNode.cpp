@@ -6,6 +6,7 @@
  */
 
 #include "StreetsDatabaseAPI.h"
+#include "TrieNode.h"
 #include <iostream>
 #include <vector>
 #define SIZE 128 //ascii table size
