@@ -80,18 +80,18 @@ bool loadMap(std::string map_streets_database_filename) {
 
         for (int intersection = 0; intersection < getNumIntersections(); intersection++){
             for (int i = 0; i < getNumIntersectionStreetSegment(intersection); i++){
-            int streetSeg_id = getIntersectionStreetSegment(intersection, i);
-            segments_of_an_intersection[intersection].push_back(streetSeg_id);
+                int streetSeg_id = getIntersectionStreetSegment(intersection, i);
+                segments_of_an_intersection[intersection].push_back(streetSeg_id);
 
-            //gets the street id of a specific segment
-            StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
-            //stores the name at specified street id in th street names function
-            street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
+                //gets the street id of a specific segment
+                StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
+                //stores the name at specified street id in th street names function
+                street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
 
 
-            ///if the intersection does not exists on the list of intersections of a street, then add it
-            if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
-                intersections_of_a_street[street_ID_of_segment].push_back(intersection);
+                ///if the intersection does not exists on the list of intersections of a street, then add it
+                if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
+                    intersections_of_a_street[street_ID_of_segment].push_back(intersection);
                 }
             }
         }
