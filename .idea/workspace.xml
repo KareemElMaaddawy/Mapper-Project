@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="mapper" targetName="all CONF=debug" />
+      <config projectName="mapper" targetName="libstreetmap.a" />
+      <config projectName="mapper" targetName="test_libstreetmap" />
+      <config projectName="mapper" targetName="all CONF=release" />
+      <config projectName="mapper" targetName="echo_flags" />
+      <config projectName="mapper" targetName="all CONF=debug_check" />
+      <config projectName="mapper" targetName="mapper" />
+      <config projectName="mapper" targetName="help" />
+      <config projectName="mapper" targetName="test" />
+      <config projectName="mapper" targetName="all" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" ENABLED="true" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="merging ghamr's branch">
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="/nfs/ug/homes-0/a/ahmadda4/ece297/work/mapper/libstreetmap/src/m1.cpp" />
+  </component>
+  <component name="ProjectId" id="1niyxyuxheTUWwRmUyRGGj4pIhO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="settings.editor.selected.configurable" value="debugger.stepping" />
+  </component>
+  <component name="RunManager" selected="Makefile Application.Release">
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Debug" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mapper" TARGET_NAME="debug" CONFIG_NAME="debug" version="1" RUN_PATH="$PROJECT_DIR$/mapper">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Debug_check" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mapper" TARGET_NAME="debug_check" CONFIG_NAME="debug_check" version="1" RUN_PATH="$PROJECT_DIR$/mapper">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Release" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mapper" TARGET_NAME="release" CONFIG_NAME="release" version="1" RUN_PATH="$PROJECT_DIR$/mapper">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Makefile Application.Release" />
+      <item itemvalue="Makefile Application.Debug_check" />
+      <item itemvalue="Makefile Application.Debug" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="" />
+      <created>1611887456968</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1611887456968</updated>
+      <workItem from="1611887459446" duration="337000" />
+      <workItem from="1613105775027" duration="1005000" />
+      <workItem from="1613106801535" duration="297000" />
+      <workItem from="1613107243464" duration="3150000" />
+      <workItem from="1613134092839" duration="8153000" />
+      <workItem from="1613142713778" duration="3000" />
+      <workItem from="1613142726185" duration="3432000" />
+      <workItem from="1613146393047" duration="8331000" />
+      <workItem from="1613154984403" duration="5536000" />
+      <workItem from="1613160805098" duration="71000" />
+      <workItem from="1613160970794" duration="327000" />
+      <workItem from="1613161346045" duration="3234000" />
+    </task>
+    <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
+      <created>1613135102171</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1613135102171</updated>
+    </task>
+    <task id="LOCAL-00002" summary="rewrote streetsegment length, fixed indentation">
+      <created>1613142538301</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1613142538301</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fixed indentation">
+      <created>1613143215105</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1613143215105</updated>
+    </task>
+    <task id="LOCAL-00004" summary="rewrote strtseglen">
+      <created>1613143859038</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1613143859038</updated>
+    </task>
+    <task id="LOCAL-00005" summary="rewrote and debugged streetSegmentLength">
+      <created>1613151938929</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1613151938929</updated>
+    </task>
+    <task id="LOCAL-00006" summary="rewrote and debugged streetSegmentLength">
+      <created>1613152038400</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1613152038400</updated>
+    </task>
+    <task id="LOCAL-00007" summary="rewrote and debugged streetSegmentLength">
+      <created>1613152432302</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1613152432302</updated>
+    </task>
+    <task id="LOCAL-00008" summary="bug fixes from merge">
+      <created>1613152778629</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1613152778629</updated>
+    </task>
+    <task id="LOCAL-00009" summary="built data struc for segments">
+      <created>1613157115096</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1613157115097</updated>
+    </task>
+    <task id="LOCAL-00010" summary="finished travel time">
+      <created>1613159203826</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1613159203826</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed mem leaks">
+      <created>1613159575249</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1613159575249</updated>
+    </task>
+    <task id="LOCAL-00012" summary="making data structure for streetlength">
+      <created>1613162300648</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1613162300648</updated>
+    </task>
+    <task id="LOCAL-00013" summary="merging ghamr's branch">
+      <created>1613163506650</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1613163506650</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="build was broken, necessary functions were commented out and braces were not closed" />
+    <MESSAGE value="rewrote streetsegment length, fixed indentation" />
+    <MESSAGE value="fixed indentation" />
+    <MESSAGE value="rewrote strtseglen" />
+    <MESSAGE value="rewrote and debugged streetSegmentLength" />
+    <MESSAGE value="bug fixes from merge" />
+    <MESSAGE value="built data struc for segments" />
+    <MESSAGE value="finished travel time" />
+    <MESSAGE value="fixed mem leaks" />
+    <MESSAGE value="making data structure for streetlength" />
+    <MESSAGE value="merging ghamr's branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="merging ghamr's branch" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file:///nfs/ug/homes-0/a/ahmadda4/ece297/work/mapper/main/src/main.cpp</url>
+          <line>66</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
