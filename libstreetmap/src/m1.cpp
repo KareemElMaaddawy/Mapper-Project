@@ -50,7 +50,6 @@ struct TrieNode *root; //root for streetnames trie
 int numOfStreetSegments;
 double *segLength;
 double *segTime;
-std::vector<StreetSegmentIdx> segsToStreet;
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
 //Includes repetition!!
@@ -74,7 +73,6 @@ bool loadMap(std::string map_streets_database_filename) {
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
     if (load_successful) {
-
         numOfStreetSegments = getNumStreetSegments();
         segLength = new double[numOfStreetSegments];
         segTime = new double[numOfStreetSegments];
@@ -86,11 +84,6 @@ bool loadMap(std::string map_streets_database_filename) {
 
         numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
-        *segsToStreet = new std::vector<StreetSegmentIdx>[numOfStreets];
-
-        for(int i = 0; i <numOfStreetSegments; i++){
-            segsToStreet[getStreetSegmentInfo(i).streetID].push_back(i);
-        }
 
         for (int i = 0; i < numOfStreets; i++) { //formatting and storing street names w/o spaces and all lowercase
             streetNames[i] = getStreetName(i);
@@ -349,8 +342,7 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
-    double xMin, xMax, yMin, yMax;
-
+    LatLonBounds stub;
     return stub;
 }
 
