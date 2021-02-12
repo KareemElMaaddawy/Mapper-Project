@@ -21,13 +21,14 @@
 
 #include <iostream>
 #include <cmath> // gain access to math constants and functions such as M_PI
-#include <math.h>
 #include "m1.h"
 #include "StreetsDatabaseAPI.h"
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
 #include <algorithm>
 #include <utility>
 #include "TrieNode.h"
+#include <vector>
+#include <map>
 #define RADIUS_OF_EARTH 6371000
 
 // loadMap will be called with the name of the file that stores the "layer-2"
@@ -90,6 +91,7 @@ bool loadMap(std::string map_streets_database_filename) {
         
         adjacent_intersections.resize(getNumIntersections());
 
+<<<<<<< HEAD
         for (int intersection = 0; intersection < getNumIntersections(); intersection++){
             for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++){
                 int streetSeg_id = getIntersectionStreetSegment(intersection, segment);
@@ -143,7 +145,7 @@ bool loadMap(std::string map_streets_database_filename) {
                 }
             }
         }*/
-    }
+
     return load_successful;
     
 }
@@ -172,6 +174,7 @@ void closeMap() {
     
     
     destroyTrie(root);//dealloc trie
+
 }
 
 double degToRad(double degree){//convert degrees to radians
@@ -230,9 +233,6 @@ double findFeatureArea(FeatureIdx feature_id){
         x[i] = RADIUS_OF_EARTH*radLong*cos(avgLat);
         y[i] = RADIUS_OF_EARTH*radLat;
         
-        
-        
-        
         if(y[i] > yMax) yMax = y[i];
     }
     if(x[0] == x[numOfPoints - 1] && y[0] == y[numOfPoints - 1]){
@@ -243,7 +243,7 @@ double findFeatureArea(FeatureIdx feature_id){
                 area+= x[i]*y[i+1] - y[i]*x[i+1];
             }
         }
-        area = abs(area/2);
+        area = fabs(area/2);
         
         delete[] x;
         delete[] y;
@@ -262,26 +262,28 @@ double findFeatureArea(FeatureIdx feature_id){
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
     street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
     std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
-    
+
     return findStreetName(root, street_prefix);
 }
 
 double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
     // Converting latitude and longitudes from degrees to radians
-   double lat1 =  kDegreeToRadian*points.first.latitude();
-   double long1 = kDegreeToRadian*points.first.longitude();
-   double lat2 =  kDegreeToRadian*points.second.latitude();
-   double long2 = kDegreeToRadian*points.second.longitude();
+   double lat1 =  kDegreeToRadian*(points.first.latitude());
+   double long1 = kDegreeToRadian*(points.first.longitude());
+   double lat2 =  kDegreeToRadian*(points.second.latitude());
+   double long2 = kDegreeToRadian*(points.second.longitude());
    
-   double latAvg = (lat2 - lat1)/2;
-   double x1 = long1 * cos(latAvg);
-   double x2 = lat1;
-   double y1 = long2 * cos(latAvg);
+   double latAvg = (lat2 + lat1)/2;
+   double x1 = long1*(cos(latAvg));
+   double x2 = long2*(cos(latAvg));
+   double y1 = lat1;
    double y2 = lat2;
    double diffinY = y2 - y1;
    double diffinX = x2-x1;
    
-   double distance = kEarthRadiusInMeters * sqrt(pow(diffinY,2)+pow(diffinX,2));
+   double power1 = pow(diffinY,2);
+   double power2 = pow(diffinX,2);
+   double distance = kEarthRadiusInMeters * (sqrt(power1+power2));
    return distance;
 }
 
@@ -296,48 +298,42 @@ double findStreetLength(StreetIdx street_id){
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
-// case if no curve points exist
-    if(getStreetSegmentInfo(street_segment_id).numCurvePoints == 0){
-        int interSec1 = getStreetSegmentInfo(street_segment_id).from;
-        int interSec2 = getStreetSegmentInfo(street_segment_id).to;
+ //case if no curve points exist
+   double length = 0;
+  double firstPoint = double(getStreetSegmentInfo(street_segment_id).from);
+    double lastPoint = double (getStreetSegmentInfo(street_segment_id).to);
+    double numOfCurvePoints = double(getStreetSegmentInfo(street_segment_id).numCurvePoints);
+   if(numOfCurvePoints == 0){
         std::pair<LatLon, LatLon> point;
-        point = std::make_pair(getIntersectionPosition(interSec1), getIntersectionPosition(interSec2));
-        double length = findDistanceBetweenTwoPoints(point);
-        return length;
+        point = std::make_pair(getIntersectionPosition(firstPoint), getIntersectionPosition(lastPoint));
+       length = findDistanceBetweenTwoPoints(point);
     } 
-    // case if there is only one curve point
-    else if(getStreetSegmentInfo(street_segment_id).numCurvePoints == 1){
-        int interSec1 = getStreetSegmentInfo(street_segment_id).from;
-        int interSec2 = getStreetSegmentInfo(street_segment_id).to;
-        std::pair<LatLon, LatLon> pair1;
+     //case if there is only one curve point
+    else if(numOfCurvePoints == 1){
+       std::pair<LatLon, LatLon> pair1;
         std::pair<LatLon, LatLon> pair2;
-        pair1 = std::make_pair(getIntersectionPosition(interSec1), getStreetSegmentCurvePoint(street_segment_id, 0));
-        pair2 = std::make_pair(getStreetSegmentCurvePoint(street_segment_id,0), getIntersectionPosition(interSec2));
-        double length = findDistanceBetweenTwoPoints(pair1) + findDistanceBetweenTwoPoints(pair2);
-        return length;
+        pair1 = std::make_pair(getIntersectionPosition(firstPoint), getStreetSegmentCurvePoint(street_segment_id, 0));
+        pair2 = std::make_pair(getStreetSegmentCurvePoint(street_segment_id,0), getIntersectionPosition(lastPoint));
+        length = findDistanceBetweenTwoPoints(pair1) + findDistanceBetweenTwoPoints(pair2);
     }
     else{
-        double length = 0;
-        for(int i = 0; i < getStreetSegmentInfo(street_segment_id).numCurvePoints; i++){
-            double tempLength = 0;
-            
-            int interSec1 = getStreetSegmentInfo(street_segment_id).from;
-            int interSec2 = getStreetSegmentInfo(street_segment_id).to;
-            int lastCp = (getStreetSegmentInfo(street_segment_id).numCurvePoints) -1;
-            //calculate distances between each successive curve point first then add the from and two towards the end
+        for(int i = 0; i < numOfCurvePoints; i++){
+           double tempLength = 0;
+            double lastCp = numOfCurvePoints - 1;
+            // calculate distances between each successive curve point first then add the from and two towards the end
             std::pair<LatLon, LatLon> curvePoints;
             std::pair<LatLon, LatLon> pair1;
             std::pair<LatLon, LatLon> pair2;
-            pair1 = std::make_pair(getIntersectionPosition(interSec1), getStreetSegmentCurvePoint(street_segment_id, 0));
-            pair2 = std::make_pair(getStreetSegmentCurvePoint(street_segment_id, lastCp), getIntersectionPosition(interSec2));
+            pair1 = std::make_pair(getIntersectionPosition(firstPoint), getStreetSegmentCurvePoint(street_segment_id, 0));
+            pair2 = std::make_pair(getStreetSegmentCurvePoint(street_segment_id, lastCp), getIntersectionPosition(lastPoint));
             curvePoints = std::make_pair(getStreetSegmentCurvePoint(street_segment_id,i),getStreetSegmentCurvePoint(street_segment_id,i+1));
             tempLength += findDistanceBetweenTwoPoints(curvePoints);
             length = tempLength + findDistanceBetweenTwoPoints(pair1) + findDistanceBetweenTwoPoints(pair2);
             
         }
-        return length;
     }
-}
+    return length;
+ }
 
 double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id){
     // fetch the speed limit of the segment in question
