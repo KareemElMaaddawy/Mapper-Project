@@ -333,14 +333,11 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
     double y1 = RADIUS_OF_EARTH * lat1;
     double y2 = RADIUS_OF_EARTH* lat2;
     std::cout.precision(30);
-//    std::cout << "x: " << x1 << " y: " << y1 << std::endl;
-//    std::cout << "x: " << x2 << " y: " << y2 << std::endl;
     double diffinY = y2 - y1;
     double diffinX = x2 - x1;
 
     double power1 = pow(diffinY, 2);
     double power2 = pow(diffinX, 2);
-//    std::cout << (sqrt(power1 + power2)) << std::endl;
     return (sqrt(power1 + power2));
 }
 
@@ -383,22 +380,18 @@ double findStreetSegmentLength(StreetSegmentIdx street_segment_id) {
     } else {
         LatLon previousPoint;
         for (int i = 0; i < numOfCurvePoints; i++) {
-            if(i == 0){
+            if(i == 0) {
                 std::pair<LatLon, LatLon> fromToFirstCurve = std::make_pair(getIntersectionPosition(from),
-                                                                            getStreetSegmentCurvePoint(street_segment_id, 0));
+                                                                            getStreetSegmentCurvePoint(
+                                                                                    street_segment_id, 0));
                 length += findDistanceBetweenTwoPoints(fromToFirstCurve);
                 previousPoint = getStreetSegmentCurvePoint(street_segment_id, 0);
-
-            }else if(i == numOfCurvePoints){
-                std::pair<LatLon, LatLon> lastCurvePointToTo = std::make_pair(getIntersectionPosition(to), previousPoint);
-                length += findDistanceBetweenTwoPoints(lastCurvePointToTo);
             }else{
                 std::pair<LatLon, LatLon> curveToCurve = std::make_pair(getStreetSegmentCurvePoint(street_segment_id, i), previousPoint);
                 length += findDistanceBetweenTwoPoints(curveToCurve);
                 previousPoint = getStreetSegmentCurvePoint(street_segment_id, i);
             }
         }
-
         std::pair<LatLon, LatLon> lastCurvePointToTo = std::make_pair(getIntersectionPosition(to), previousPoint);
         length += findDistanceBetweenTwoPoints(lastCurvePointToTo);
     }
