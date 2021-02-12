@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CLionExternalBuildManager">
+    <target id="c5ecb6a5-48f6-4ef8-a687-5117fb3e3d93" name="release" defaultType="MAKE">
+      <configuration id="d7d1f1ab-5eed-4de6-9730-356db4332c3f" name="release">
+        <build type="MAKE">
+          <make targetName="all CONF=release" />
+        </build>
+        <clean type="MAKE">
+          <make targetName="clean" />
+        </clean>
+      </configuration>
+    </target>
+    <target id="0693899a-d90e-457c-a0a8-e456b3ae3d27" name="debug_check" defaultType="MAKE">
+      <configuration id="cda67a52-ba5b-491e-9e7a-e99a7352ff01" name="debug_check">
+        <build type="MAKE">
+          <make targetName="all CONF=debug_check" />
+        </build>
+        <clean type="MAKE">
+          <make targetName="clean" />
+        </clean>
+      </configuration>
+    </target>
+    <target id="425e68bf-774a-4688-8880-7fe7308b7f50" name="debug" defaultType="MAKE">
+      <configuration id="bd0943ff-198d-4332-a072-75c421f17d4f" name="debug">
+        <build type="MAKE">
+          <make targetName="all CONF=debug" />
+        </build>
+        <clean type="MAKE">
+          <make targetName="clean" />
+        </clean>
+      </configuration>
+    </target>
+  </component>
+</project>
