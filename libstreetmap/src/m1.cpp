@@ -29,6 +29,7 @@
 #include <utility>
 #include "TrieNode.h"
 #include <vector>
+#include <map>
 #define RADIUS_OF_EARTH 6371000
 
 // loadMap will be called with the name of the file that stores the "layer-2"
@@ -46,7 +47,7 @@
 
 int numOfStreets;
 std::string *streetNames;
-struct TrieNode *root; //root for streetnames trie
+std::map<std::string, int> streetNameMap;
 
 double degToRad(double degree);//helper to convert degrees to radians
 
@@ -73,10 +74,8 @@ bool loadMap(std::string map_streets_database_filename) {
             std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
         }
 
-        root = makeNode(); //creating root for trie
-
         for(int i = 0; i < numOfStreets; i++){ //inputs all streetnames and indices into the trie
-            insertToTrie(root, streetNames[i], i);
+            streetNameMap.insert(std::pair<std::string, int>(streetNames[i], i));
         }
 
         segments_of_an_intersection.resize(getNumIntersections());
@@ -87,39 +86,39 @@ bool loadMap(std::string map_streets_database_filename) {
         
         adjacent_intersections.resize(getNumIntersections());
 
-        for (int intersection = 0; intersection < getNumIntersections(); intersection++){
-            for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++){
-                int streetSeg_id = getIntersectionStreetSegment(intersection, segment);
-                segments_of_an_intersection[intersection].push_back(streetSeg_id);
-                  
-                /*FINDING THE STREET NAMES THAT PASS THROUGH AN INTERSECTION*/
-                //gets the street id of a specific segment
-                StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
-                //stores the name at specified street id in th street names function
-                street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
-
-                 /*FINDING INTERSECTIONS OF A STREET*/
-                ///if the intersection does not exists on the list of intersections of a street, then add it
-                if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
-                    intersections_of_a_street[street_ID_of_segment].push_back(intersection);
-                }
-                
-                 /*FINDING ADJACENT INTERSECTIONS*/
-                 /*logic: since each segment has one "from" and one "to" intersection ids,
-                  * then as we loop through the segments we can check if the current intersection 
-                  * is the "from" or the "to" of the segment
-                  * if it is the "from", then we add the "to" of the segment to it's adjacent intersections
-                  * if it's the to, we move on to the next segment
-                  * This will allow each intersection to be added only once to another intersection's adjacent list
-                  * while only going in a direction that fits one way streets */
-                
-                 //check if the current intersection  is the "from" intersection
-                if(intersection == getStreetSegmentInfo(segment).from){
-                    //add the "to" intersection to the adjacent intersections of the current intersection
-                    adjacent_intersections[intersection].push_back(getStreetSegmentInfo(segment).to);
-                }  
-            }
-        }
+//        for (int intersection = 0; intersection < getNumIntersections(); intersection++){
+//            for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++){
+//                int streetSeg_id = getIntersectionStreetSegment(intersection, segment);
+//                segments_of_an_intersection[intersection].push_back(streetSeg_id);
+//                  
+//                /*FINDING THE STREET NAMES THAT PASS THROUGH AN INTERSECTION*/
+//                //gets the street id of a specific segment
+//                StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
+//                //stores the name at specified street id in th street names function
+//                street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
+//
+//                 /*FINDING INTERSECTIONS OF A STREET*/
+//                ///if the intersection does not exists on the list of intersections of a street, then add it
+//                if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
+//                    intersections_of_a_street[street_ID_of_segment].push_back(intersection);
+//                }
+//                
+//                 /*FINDING ADJACENT INTERSECTIONS*/
+//                 /*logic: since each segment has one "from" and one "to" intersection ids,
+//                  * then as we loop through the segments we can check if the current intersection 
+//                  * is the "from" or the "to" of the segment
+//                  * if it is the "from", then we add the "to" of the segment to it's adjacent intersections
+//                  * if it's the to, we move on to the next segment
+//                  * This will allow each intersection to be added only once to another intersection's adjacent list
+//                  * while only going in a direction that fits one way streets */
+//                
+//                 //check if the current intersection  is the "from" intersection
+//                if(intersection == getStreetSegmentInfo(segment).from){
+//                    //add the "to" intersection to the adjacent intersections of the current intersection
+//                    adjacent_intersections[intersection].push_back(getStreetSegmentInfo(segment).to);
+//                }  
+//            }
+//        }
     }
     return load_successful;
     
@@ -128,32 +127,10 @@ bool loadMap(std::string map_streets_database_filename) {
 void closeMap() {
     //Clean-up your map related data structures here
     closeStreetDatabase();
-    
-    delete[] streetNames;
-    destroyTrie(root);//dealloc trie
 }
 
 double degToRad(double degree){//convert degrees to radians
     return (((M_PI)/180)*degree);
-}
-
-double distance(std::pair<LatLon, LatLon> points){
-    // Converting latitude and longitudes from degrees to radians
-   double lat1 = degToRad(points.first.latitude());
-   double long1 = degToRad(points.first.longitude());
-   double lat2 = degToRad(points.second.latitude());
-   double long2 = degToRad(points.second.longitude());
-   
-   double latDistance = lat2 - lat1;
-   double longDistance = long2 - long1;
-   
-   double ans = pow(sin(latDistance/2),2) + cos(lat1)*cos(lat2)*pow(sin(longDistance/2),2);
-   ans = 2 * asin(sqrt(ans));
-   
-   ans = ans * RADIUS_OF_EARTH;
-   
-   return ans;
-   
 }
 
 // Returns the nearest point of interest of the given name to the given position
@@ -166,7 +143,7 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname){
     
     for(int i = 0; i < totalNumOfPOI; i++){
         if(getPOIName(i) == POIname){
-            distanceToCurrentPOI = distance(std::make_pair(my_position,getPOIPosition(i)));
+            distanceToCurrentPOI = findDistanceBetweenTwoPoints(std::make_pair(my_position,getPOIPosition(i)));
             
             if(distanceToCurrentPOI < smallestDistance){ //stores value of smallest distance and the POI index for it
                 smallestDistance = distanceToCurrentPOI;
@@ -208,9 +185,6 @@ double findFeatureArea(FeatureIdx feature_id){
         x[i] = RADIUS_OF_EARTH*radLong*cos(avgLat);
         y[i] = RADIUS_OF_EARTH*radLat;
         
-        
-        
-        
         if(y[i] > yMax) yMax = y[i];
     }
     if(x[0] == x[numOfPoints - 1] && y[0] == y[numOfPoints - 1]){
@@ -241,7 +215,20 @@ std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_pre
     street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
     std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
     
-    return findStreetName(root, street_prefix);
+    std::vector<StreetIdx> prefixStreetIds;
+    
+    std::map<std::string, int>::iterator key = streetNameMap.lower_bound(street_prefix);
+    
+    bool finished = false;
+    int prefixLength = street_prefix.length();
+    std::string temp = key->first.substr(0,prefixLength);
+    while(key->first.substr(0,prefixLength) <= street_prefix){
+        if(key->first.substr(0,prefixLength) == street_prefix){
+                prefixStreetIds.push_back(key->second);
+        }std::advance(key,1);
+    }
+    
+    return prefixStreetIds;
 }
 
 double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
