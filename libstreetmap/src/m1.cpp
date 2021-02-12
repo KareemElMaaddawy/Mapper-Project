@@ -30,8 +30,6 @@
 #include <vector>
 #include <map>
 
-#define RADIUS_OF_EARTH 6371000
-
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
 // data that is higher-level than the raw OSM data). 
@@ -49,7 +47,8 @@ int numOfStreets;
 std::string *streetNames;
 struct TrieNode *root; //root for streetnames trie
 
-double degToRad(double degree);//helper to convert degrees to radians
+int numOfStreetSegments;
+std::map<StreetSegmentIdx,std::pair<double, double>> segLengthAndTime;
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
 //Includes repetition!!
@@ -72,6 +71,12 @@ bool loadMap(std::string map_streets_database_filename) {
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
     if (load_successful) {
+        numOfStreetSegments = getNumStreetSegments();
+        for(int i = 0; i < numOfStreetSegments; i++){
+            double length = findStreetSegmentLength(i);
+            segLengthAndTime.insert(std::make_pair(i,std::make_pair(length,(length / getStreetSegmentInfo(i).speedLimit))));
+        }
+
         numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
 
@@ -227,10 +232,6 @@ void closeMap() {
 
 }
 
-double degToRad(double degree) {//convert degrees to radians
-    return (((M_PI) / 180) * degree);
-}
-
 // Returns the nearest point of interest of the given name to the given position
 // Speed Requirement --> none 
 POIIdx findClosestPOI(LatLon my_position, std::string POIname) {
@@ -268,7 +269,7 @@ double findFeatureArea(FeatureIdx feature_id) {
 
     for (int i = 0; i < numOfPoints; i++) {
         featurePoints[i] = getFeaturePoint(feature_id, i);//creates array of featurePoints
-        avgLat += degToRad(featurePoints[i].latitude());
+        avgLat += kDegreeToRadian *featurePoints[i].latitude();
     }
 
     avgLat = avgLat / numOfPoints;
@@ -278,11 +279,11 @@ double findFeatureArea(FeatureIdx feature_id) {
     double radLat, radLong;
 
     for (int i = 0; i < numOfPoints; i++) {
-        radLat = degToRad(featurePoints[i].latitude());
-        radLong = degToRad(featurePoints[i].longitude());
+        radLat = kDegreeToRadian *featurePoints[i].latitude();
+        radLong = kDegreeToRadian *featurePoints[i].longitude();
 
-        x[i] = RADIUS_OF_EARTH * radLong * cos(avgLat);
-        y[i] = RADIUS_OF_EARTH * radLat;
+        x[i] = kEarthRadiusInMeters * radLong * cos(avgLat);
+        y[i] = kEarthRadiusInMeters * radLat;
 
         if (y[i] > yMax) yMax = y[i];
     }
@@ -326,17 +327,8 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
     double long2 = kDegreeToRadian * (points.second.longitude());
 
     double latAvg = (lat2 + lat1) / 2;
-    double x1 = RADIUS_OF_EARTH* long1 * (cos(latAvg));
-    double x2 = RADIUS_OF_EARTH* long2 * (cos(latAvg));
-    double y1 = RADIUS_OF_EARTH * lat1;
-    double y2 = RADIUS_OF_EARTH* lat2;
-    std::cout.precision(30);
-    double diffinY = y2 - y1;
-    double diffinX = x2 - x1;
 
-    double power1 = pow(diffinY, 2);
-    double power2 = pow(diffinX, 2);
-    return (sqrt(power1 + power2));
+    return (sqrt(pow(kEarthRadiusInMeters*(lat2-lat1), 2) + pow(kEarthRadiusInMeters*cos(latAvg)*(long2-long1), 2)));
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
@@ -397,11 +389,8 @@ double findStreetSegmentLength(StreetSegmentIdx street_segment_id) {
 }
 
 double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id) {
-    // fetch the speed limit of the segment in question
-    float speedLimit = getStreetSegmentInfo(street_segment_id).speedLimit;
     // return the speed which is length/time
-    return findStreetSegmentLength(street_segment_id) / speedLimit;
-
+    return segLengthAndTime.find(street_segment_id)->second.second;
 }
 
 
