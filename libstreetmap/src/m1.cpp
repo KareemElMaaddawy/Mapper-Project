@@ -231,6 +231,8 @@ void closeMap() {
 
 
     delete[] streetNames;
+    delete[] segLength;
+    delete[] segTime;
 
 
     destroyTrie(root);//dealloc trie
