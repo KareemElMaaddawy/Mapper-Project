@@ -43,6 +43,7 @@ void destroyTrie(TrieNode *root){//dealloc trie
         }
     }
     delete root;//deletes nodes
+    root = nullptr;
 } 
 
 void insertToTrie(struct TrieNode *root, std::string key, StreetIdx idx){ //inserts streetname into trie
