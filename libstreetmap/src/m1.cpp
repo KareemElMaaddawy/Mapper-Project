@@ -29,19 +29,19 @@
 #include "TrieNode.h"
 #include <vector>
 #include <map>
-
+#include <unordered_map>
 #define RADIUS_OF_EARTH 6371000
 
 // loadMap will be called with the name of the file that stores the "layer-2"
-// map data accessed through StreetsDatabaseAPI: the street and intersection 
-// data that is higher-level than the raw OSM data). 
-// This file name will always end in ".streets.bin" and you 
+// map data accessed through StreetsDatabaseAPI: the street and intersection
+// data that is higher-level than the raw OSM data).
+// This file name will always end in ".streets.bin" and you
 // can call loadStreetsDatabaseBIN with this filename to initialize the
 // layer 2 (StreetsDatabase) API.
 // If you need data from the lower level, layer 1, API that provides raw OSM
-// data (nodes, ways, etc.) you will also need to initialize the layer 1 
-// OSMDatabaseAPI by calling loadOSMDatabaseBIN. That function needs the 
-// name of the ".osm.bin" file that matches your map -- just change 
+// data (nodes, ways, etc.) you will also need to initialize the layer 1
+// OSMDatabaseAPI by calling loadOSMDatabaseBIN. That function needs the
+// name of the ".osm.bin" file that matches your map -- just change
 // ".streets" to ".osm" in the map_streets_database_filename to get the proper
 // name.
 
@@ -52,14 +52,16 @@ struct TrieNode *root; //root for streetnames trie
 double degToRad(double degree);//helper to convert degrees to radians
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
-//Includes repetition!!
+                                                                    //Includes repetition!!
 std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;
 
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 
 std::vector<std::vector<IntersectionIdx>> adjacent_intersections;
 
-std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> intersections_of_two_streets;
+//std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> intersections_of_two_streets;
+
+std::unordered_map<std::pair<StreetIdx, StreetIdx>, std::vector<IntersectionIdx>> intersections_of_two_streets;
 
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
@@ -90,9 +92,10 @@ bool loadMap(std::string map_streets_database_filename) {
 
         intersections_of_a_street.resize(getNumStreets());
 
-        intersections_of_two_streets.resize(getNumStreets());
+
 
         adjacent_intersections.resize(getNumIntersections());
+
 
         for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
             for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++) {
@@ -133,23 +136,20 @@ bool loadMap(std::string map_streets_database_filename) {
 
             }
         }
-        for (StreetIdx first_street_idx = 0; first_street_idx < getNumStreets(); first_street_idx++) {
-            for (int intersection = 0;
-                 intersection < intersections_of_a_street[first_street_idx].size(); intersection++) {
-                for (int segment = 0; segment < segments_of_an_intersection[intersection].size(); segment++) {
-                    StreetIdx second_street_idx = getStreetSegmentInfo(
-                            segments_of_an_intersection[intersection][segment]).streetID;
-                    if (first_street_idx != second_street_idx) {
-                        std::pair<StreetIdx, StreetIdx> original_id_pair(first_street_idx, second_street_idx);
-                        std::pair<StreetIdx, StreetIdx> reverse_id_pair(second_street_idx, first_street_idx);
-                        if (std::find(intersections_of_two_streets[first_street_idx].begin(),
-                                      intersections_of_two_streets[first_street_idx].end(), original_id_pair) !=
-                            intersections_of_two_streets[first_street_idx].end()) {
-                            if (std::find(intersections_of_two_streets[first_street_idx].begin(),
-                                          intersections_of_two_streets[first_street_idx].end(), reverse_id_pair) !=
-                                intersections_of_two_streets[first_street_idx].end()) {
-                                intersections_of_two_streets[first_street_idx].push_back(original_id_pair);
-                            }
+
+
+        for (StreetIdx first_street_idx = 0; first_street_idx < getNumStreets(); first_street_idx++){
+            for(int intersection = 0; intersection < intersections_of_a_street[first_street_idx].size(); intersection++){
+                ///loop for the number of segments of the intersection from the intersections_of_a_street vector
+                for(int segment = 0; segment < segments_of_an_intersection[intersections_of_a_street[first_street_idx][intersection]].size(); segment++){
+                    ///get the street id of each segment in the vector
+                    StreetIdx second_street_idx = getStreetSegmentInfo(segments_of_an_intersection[intersections_of_a_street[first_street_idx][intersection]][segment]).streetID;
+                    if(first_street_idx != second_street_idx){
+                        std::pair<StreetIdx, StreetIdx> original_street_id_pair(first_street_idx, second_street_idx);
+                        std::pair<StreetIdx, StreetIdx> reverse_street_id_pair(second_street_idx, first_street_idx);
+                        if(!(intersections_of_two_streets.find(reverse_street_id_pair) != intersections_of_a_street.end()){
+                                intersections_of_two_streets[original_street_id_pair].insert(first_street_idx);
+
                         }
                     }
                 }
@@ -159,7 +159,6 @@ bool loadMap(std::string map_streets_database_filename) {
         return load_successful;
 
     }
-}
 
     void closeMap() {
         //Clean-up your map related data structures here
@@ -177,8 +176,7 @@ bool loadMap(std::string map_streets_database_filename) {
         std::vector<std::vector<IntersectionIdx>> GARBAGE_adjacent_intersections;
         adjacent_intersections.swap(GARBAGE_adjacent_intersections);
 
-        std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> GARBAGE_intersections_of_two_streets;
-        intersections_of_two_streets.swap(GARBAGE_intersections_of_two_streets);
+
 
 
         delete[] streetNames;
@@ -193,7 +191,7 @@ bool loadMap(std::string map_streets_database_filename) {
     }
 
 // Returns the nearest point of interest of the given name to the given position
-// Speed Requirement --> none 
+// Speed Requirement --> none
     POIIdx findClosestPOI(LatLon my_position, std::string POIname) {
         double smallestDistance = 99999999999;
         double distanceToCurrentPOI = 0;
@@ -370,6 +368,7 @@ bool loadMap(std::string map_streets_database_filename) {
 // Returns the nearest intersection to the given position
 // Speed Requirement --> none
     IntersectionIdx findClosestIntersection(LatLon my_position) {
+        for ()
         IntersectionIdx stub;
         return stub;
     }
@@ -379,17 +378,6 @@ bool loadMap(std::string map_streets_database_filename) {
 
 
 
-// Return all intersection ids at which the two given streets intersect
-// This function will typically return one intersection id for streets
-// that intersect and a length 0 vector for streets that do not. For unusual 
-// curved streets it is possible to have more than one intersection at which 
-// two streets cross.
-// There should be no duplicate intersections in the returned vector.
-// Speed Requirement --> high
-std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, StreetIdx> street_ids){
-    
-    return {};
-}
 
 
 
@@ -399,7 +387,7 @@ std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, 
 
 //GHAMR: DONE////////////////////////////////////////////////////////////////////////
 
-// Returns the street names at the given intersection (includes duplicate 
+// Returns the street names at the given intersection (includes duplicate
 // street names in the returned vector)
 // Speed Requirement --> high 
     std::vector<std::string> findStreetNamesOfIntersection(IntersectionIdx intersection_id) {
@@ -407,7 +395,7 @@ std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, 
         return street_names_of_intersection[intersection_id];
     }
 
-// Returns the street segments that connect to the given intersection 
+// Returns the street segments that connect to the given intersection
 // Speed Requirement --> high
     std::vector<StreetSegmentIdx> findStreetSegmentsOfIntersection(IntersectionIdx intersection_id) {
 
@@ -424,12 +412,26 @@ std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, 
 
     }
 
-// Returns all intersections reachable by traveling down one street segment 
-// from the given intersection (hint: you can't travel the wrong way on a 
+// Returns all intersections reachable by traveling down one street segment
+// from the given intersection (hint: you can't travel the wrong way on a
 // 1-way street)
 // the returned vector should NOT contain duplicate intersections
-// Speed Requirement --> high 
+// Speed Requirement --> high
     std::vector<IntersectionIdx> findAdjacentIntersections(IntersectionIdx intersection_id) {
 
         return adjacent_intersections[intersection_id];
     }
+}
+
+/*Return all intersection ids at which the two given streets intersect
+ This function will typically return one intersection id for streets
+ that intersect and a length 0 vector for streets that do not. For unusual
+ curved streets it is possible to have more than one intersection at which
+ two streets cross.
+ There should be no duplicate intersections in the returned vector.
+ Speed Requirement --> high*/
+
+std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, StreetIdx> street_ids){
+
+    return intersections_of_two_streets[street_ids];
+}
