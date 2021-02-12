@@ -431,8 +431,19 @@ double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id) {
 // Returns the nearest intersection to the given position
 // Speed Requirement --> none
 IntersectionIdx findClosestIntersection(LatLon my_position) {
-    IntersectionIdx stub;
-    return stub;
+    double smallestDistance = 99999999999;
+    double distanceToIntersection = 0;
+    int totalNumOfIntersec = getNumIntersections();
+    IntersectionIdx closestIntersec = -1;
+    
+    for(int i = 0; i < totalNumOfIntersec ; i++){
+        distanceToIntersection = findDistanceBetweenTwoPoints(std::make_pair(my_position, getIntersectionPosition(i)));
+        if(distanceToIntersection < smallestDistance){
+            smallestDistance = distanceToIntersection;
+            closestIntersec = i;
+        }
+    }
+    return closestIntersec;
 }
 
 
