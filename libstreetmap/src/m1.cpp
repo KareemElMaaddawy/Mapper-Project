@@ -51,7 +51,9 @@ int numOfStreetSegments;
 double *segLength;
 double *segTime;
 
-std::map<StreetIdx, std::vector<StreetSegmentIdx>> segsToStreet;
+//double *streetLengths;
+
+//std::map<StreetIdx, std::vector<StreetSegmentIdx>> segsToStreet;
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
 //Includes repetition!!
@@ -100,16 +102,31 @@ bool loadMap(std::string map_streets_database_filename) {
             insertToTrie(root, streetNames[i], i);
         }
 
-        for(int i = 0; i < numOfStreetSegments; i++){
-            if(segsToStreet.find(getStreetSegmentInfo(i).streetID) == segsToStreet.end()){
-                segsToStreet.insert(std::make_pair(getStreetSegmentInfo(i).streetID,std::vector<int>()));
-                std::vector<int> tempVector;
-                tempVector.push_back(i);
-                segsToStreet[getStreetSegmentInfo(i).streetID].swap(tempVector);
-            }else{
-                segsToStreet[getStreetSegmentInfo(i).streetID].push_back(i);
-            }
-        }
+//        for(int i = 0; i < numOfStreetSegments; i++){
+//            if(segsToStreet.find(getStreetSegmentInfo(i).streetID) == segsToStreet.end()){
+//                segsToStreet.insert(std::make_pair(getStreetSegmentInfo(i).streetID,std::vector<int>()));
+//                std::vector<int> tempVector;
+//                tempVector.push_back(i);
+//                segsToStreet[getStreetSegmentInfo(i).streetID].swap(tempVector);
+//            }else{
+//                segsToStreet[getStreetSegmentInfo(i).streetID].push_back(i);
+//            }
+//        }
+
+//        streetLengths = new double[numOfStreets];
+//
+//        for(int i = 0; i < numOfStreets; i++){
+//            double length = 0;
+//            if(segsToStreet.find(i) != segsToStreet.end()){
+//                std::vector<int> tempVector = segsToStreet[i];
+//                for(int j = 0; j < int(tempVector.size()); j++){
+//                    length += lengthHelper(tempVector[j]);
+//                }
+//                streetLengths[i] = length;
+//            }else{
+//                streetLengths[i] = -1;
+//            }
+//        }
 
         segments_of_an_intersection.resize(getNumIntersections());
 
@@ -362,13 +379,14 @@ LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
 
 double findStreetLength(StreetIdx street_id){
 //    double length = 0;
-//    std::vector<double> street_segment_id; // vector that stores streetsegment id's of a street
-//    for(int i = 0; i < getNumStreetSegments(); i++){
-//        if(getStreetSegmentInfo(i).streetID ==  street_id){
-//        street_segment_id.push_back(i);
+//    if(segsToStreet.find(street_id) != segsToStreet.end()){
+//        std::vector<int> tempVector = segsToStreet[street_id];
+//        for(int j = 0; j < int(tempVector.size()); j++){
+//            length += lengthHelper(tempVector[j]);
 //        }
-//    }
-    return 0;
+//        return length;
+//    }return -1;
+return 0;
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){

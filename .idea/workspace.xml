@@ -23,7 +23,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="merging ghamr's branch">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="data structure to relate streetsegments to streets">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +68,7 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="settings.editor.selected.configurable" value="debugger.stepping" />
   </component>
-  <component name="RunManager" selected="Makefile Application.Release">
+  <component name="RunManager" selected="Makefile Application.Debug">
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -89,9 +90,9 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Makefile Application.Release" />
-      <item itemvalue="Makefile Application.Debug_check" />
       <item itemvalue="Makefile Application.Debug" />
+      <item itemvalue="Makefile Application.Debug_check" />
+      <item itemvalue="Makefile Application.Release" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -113,7 +114,7 @@
       <workItem from="1613154984403" duration="5536000" />
       <workItem from="1613160805098" duration="71000" />
       <workItem from="1613160970794" duration="327000" />
-      <workItem from="1613161346045" duration="3234000" />
+      <workItem from="1613161346045" duration="8116000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -206,7 +207,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613163506650</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="data structure to relate streetsegments to streets">
+      <created>1613164593029</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1613164593029</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,7 +244,8 @@
     <MESSAGE value="fixed mem leaks" />
     <MESSAGE value="making data structure for streetlength" />
     <MESSAGE value="merging ghamr's branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="merging ghamr's branch" />
+    <MESSAGE value="data structure to relate streetsegments to streets" />
+    <option name="LAST_COMMIT_MESSAGE" value="data structure to relate streetsegments to streets" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -248,5 +257,11 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CLionNativeAppRunConfigurationType">
+        <watch expression="tempVector[0]" language="ObjectiveC" />
+        <watch expression="tempVector[i]" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
