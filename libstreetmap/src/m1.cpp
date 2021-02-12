@@ -384,18 +384,15 @@ double findStreetSegmentLength(StreetSegmentIdx street_segment_id) {
         LatLon previousPoint;
         for (int i = 0; i < numOfCurvePoints; i++) {
             if(i == 0){
-//                std::cout << i << std::endl;
                 std::pair<LatLon, LatLon> fromToFirstCurve = std::make_pair(getIntersectionPosition(from),
                                                                             getStreetSegmentCurvePoint(street_segment_id, 0));
                 length += findDistanceBetweenTwoPoints(fromToFirstCurve);
                 previousPoint = getStreetSegmentCurvePoint(street_segment_id, 0);
 
             }else if(i == numOfCurvePoints){
-//                std::cout << i << std::endl;
                 std::pair<LatLon, LatLon> lastCurvePointToTo = std::make_pair(getIntersectionPosition(to), previousPoint);
                 length += findDistanceBetweenTwoPoints(lastCurvePointToTo);
             }else{
-//                std::cout << i << std::endl;
                 std::pair<LatLon, LatLon> curveToCurve = std::make_pair(getStreetSegmentCurvePoint(street_segment_id, i), previousPoint);
                 length += findDistanceBetweenTwoPoints(curveToCurve);
                 previousPoint = getStreetSegmentCurvePoint(street_segment_id, i);
