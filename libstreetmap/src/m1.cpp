@@ -197,9 +197,7 @@ bool loadMap(std::string map_streets_database_filename) {
                 }
             }
         }
-
-        return load_successful;
-    }
+    }return load_successful;
 }
 
 void closeMap() {
