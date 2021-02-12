@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <cmath> // gain access to math constants and functions such as M_PI
-#include <math.h>
 #include "m1.h"
 #include "StreetsDatabaseAPI.h"
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
@@ -47,7 +46,7 @@
 
 int numOfStreets;
 std::string *streetNames;
-std::map<std::string, int> streetNameMap;
+struct TrieNode *root; //root for streetnames trie
 
 double degToRad(double degree);//helper to convert degrees to radians
 
@@ -74,8 +73,10 @@ bool loadMap(std::string map_streets_database_filename) {
             std::transform(streetNames[i].begin(),streetNames[i].end(), streetNames[i].begin(), [] (unsigned char c){return std::tolower(c);});
         }
 
+        root = makeNode(); //creating root for trie
+
         for(int i = 0; i < numOfStreets; i++){ //inputs all streetnames and indices into the trie
-            streetNameMap.insert(std::pair<std::string, int>(streetNames[i], i));
+            insertToTrie(root, streetNames[i], i);
         }
 
         segments_of_an_intersection.resize(getNumIntersections());
@@ -127,6 +128,8 @@ bool loadMap(std::string map_streets_database_filename) {
 void closeMap() {
     //Clean-up your map related data structures here
     closeStreetDatabase();
+    destroyTrie(root);
+    delete[] streetNames;
 }
 
 double degToRad(double degree){//convert degrees to radians
@@ -195,7 +198,7 @@ double findFeatureArea(FeatureIdx feature_id){
                 area+= x[i]*y[i+1] - y[i]*x[i+1];
             }
         }
-        area = abs(area/2);
+        area = fabs(area/2);
         
         delete[] x;
         delete[] y;
@@ -214,21 +217,8 @@ double findFeatureArea(FeatureIdx feature_id){
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix){
     street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
     std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(), [] (unsigned char c){return std::tolower(c);});
-    
-    std::vector<StreetIdx> prefixStreetIds;
-    
-    std::map<std::string, int>::iterator key = streetNameMap.lower_bound(street_prefix);
-    
-    bool finished = false;
-    int prefixLength = street_prefix.length();
-    std::string temp = key->first.substr(0,prefixLength);
-    while(key->first.substr(0,prefixLength) <= street_prefix){
-        if(key->first.substr(0,prefixLength) == street_prefix){
-                prefixStreetIds.push_back(key->second);
-        }std::advance(key,1);
-    }
-    
-    return prefixStreetIds;
+
+    return findStreetName(root, street_prefix);
 }
 
 double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points){
