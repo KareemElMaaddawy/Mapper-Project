@@ -59,11 +59,10 @@ std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 
 std::vector<std::vector<IntersectionIdx>> adjacent_intersections;
 
-<<<<<<< HEAD
 std::vector<StreetSegmentInfo> street_segment_info; //vector that holds info struct of each street segment
-=======
+
 std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> intersections_of_two_streets;
->>>>>>> 3ea9c0f5c8865d6184b6657cde44ae0ee158dfd7
+
 
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
@@ -97,7 +96,7 @@ bool loadMap(std::string map_streets_database_filename) {
         intersections_of_two_streets.resize(getNumStreets());
 
         adjacent_intersections.resize(getNumIntersections());
-<<<<<<< HEAD
+ 
         
         for(int i = 0; i < getNumStreetSegments(); i++){
             street_segment_info.push_back(getStreetSegmentInfo(i)); // vector is filled with struct of info
@@ -136,7 +135,7 @@ bool loadMap(std::string map_streets_database_filename) {
 //                }  
 //            }
 //        }
-=======
+
 
         for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
             for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++) {
@@ -202,7 +201,7 @@ bool loadMap(std::string map_streets_database_filename) {
 
         return load_successful;
 
->>>>>>> 3ea9c0f5c8865d6184b6657cde44ae0ee158dfd7
+ 
     }
 }
 
@@ -350,7 +349,6 @@ LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
     return stub;
 }
 
-<<<<<<< HEAD
 double findStreetLength(StreetIdx street_id){
     double length = 0;
     for(int i = 0; i < street_segment_info.size() ; i++){
@@ -359,11 +357,6 @@ double findStreetLength(StreetIdx street_id){
         }
     }
     return length;
-=======
-double findStreetLength(StreetIdx street_id) {
-    double stub;
-    return stub;
->>>>>>> 3ea9c0f5c8865d6184b6657cde44ae0ee158dfd7
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id) {
