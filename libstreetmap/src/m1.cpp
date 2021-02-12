@@ -59,11 +59,11 @@ std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 
 std::vector<std::vector<IntersectionIdx>> adjacent_intersections;
 
-<<<<<<< HEAD
+
 std::vector<StreetSegmentInfo> street_segment_info; //vector that holds info struct of each street segment
-=======
+
 std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> intersections_of_two_streets;
->>>>>>> 3ea9c0f5c8865d6184b6657cde44ae0ee158dfd7
+
 
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
@@ -97,7 +97,6 @@ bool loadMap(std::string map_streets_database_filename) {
         intersections_of_two_streets.resize(getNumStreets());
 
         adjacent_intersections.resize(getNumIntersections());
-<<<<<<< HEAD
         
         for(int i = 0; i < getNumStreetSegments(); i++){
             street_segment_info.push_back(getStreetSegmentInfo(i)); // vector is filled with struct of info
@@ -136,7 +135,6 @@ bool loadMap(std::string map_streets_database_filename) {
 //                }  
 //            }
 //        }
-=======
 
         for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
             for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++) {
@@ -201,8 +199,6 @@ bool loadMap(std::string map_streets_database_filename) {
         }
 
         return load_successful;
-
->>>>>>> 3ea9c0f5c8865d6184b6657cde44ae0ee158dfd7
     }
 }
 
@@ -332,17 +328,20 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
     double long2 = kDegreeToRadian * (points.second.longitude());
 
     double latAvg = (lat2 + lat1) / 2;
-    double x1 = long1 * (cos(latAvg));
-    double x2 = long2 * (cos(latAvg));
-    double y1 = lat1;
-    double y2 = lat2;
+    double x1 = RADIUS_OF_EARTH* long1 * (cos(latAvg));
+    double x2 = RADIUS_OF_EARTH* long2 * (cos(latAvg));
+    double y1 = RADIUS_OF_EARTH * lat1;
+    double y2 = RADIUS_OF_EARTH* lat2;
+    std::cout.precision(30);
+//    std::cout << "x: " << x1 << " y: " << y1 << std::endl;
+//    std::cout << "x: " << x2 << " y: " << y2 << std::endl;
     double diffinY = y2 - y1;
     double diffinX = x2 - x1;
 
     double power1 = pow(diffinY, 2);
     double power2 = pow(diffinX, 2);
-    double distance = kEarthRadiusInMeters * (sqrt(power1 + power2));
-    return distance;
+//    std::cout << (sqrt(power1 + power2)) << std::endl;
+    return (sqrt(power1 + power2));
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
@@ -350,7 +349,7 @@ LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
     return stub;
 }
 
-<<<<<<< HEAD
+
 double findStreetLength(StreetIdx street_id){
     double length = 0;
     for(int i = 0; i < street_segment_info.size() ; i++){
@@ -359,11 +358,6 @@ double findStreetLength(StreetIdx street_id){
         }
     }
     return length;
-=======
-double findStreetLength(StreetIdx street_id) {
-    double stub;
-    return stub;
->>>>>>> 3ea9c0f5c8865d6184b6657cde44ae0ee158dfd7
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id) {
@@ -388,23 +382,28 @@ double findStreetSegmentLength(StreetSegmentIdx street_segment_id) {
         length = findDistanceBetweenTwoPoints(pair1) + findDistanceBetweenTwoPoints(pair2);
     } else {
         LatLon previousPoint;
-        LatLon temp1 = getIntersectionPosition(from);
-        LatLon temp2 = getIntersectionPosition(to);
         for (int i = 0; i < numOfCurvePoints; i++) {
             if(i == 0){
+//                std::cout << i << std::endl;
                 std::pair<LatLon, LatLon> fromToFirstCurve = std::make_pair(getIntersectionPosition(from),
                                                                             getStreetSegmentCurvePoint(street_segment_id, 0));
                 length += findDistanceBetweenTwoPoints(fromToFirstCurve);
                 previousPoint = getStreetSegmentCurvePoint(street_segment_id, 0);
-            }else if(i == numOfCurvePoints - 1){
+
+            }else if(i == numOfCurvePoints){
+//                std::cout << i << std::endl;
                 std::pair<LatLon, LatLon> lastCurvePointToTo = std::make_pair(getIntersectionPosition(to), previousPoint);
                 length += findDistanceBetweenTwoPoints(lastCurvePointToTo);
             }else{
+//                std::cout << i << std::endl;
                 std::pair<LatLon, LatLon> curveToCurve = std::make_pair(getStreetSegmentCurvePoint(street_segment_id, i), previousPoint);
                 length += findDistanceBetweenTwoPoints(curveToCurve);
                 previousPoint = getStreetSegmentCurvePoint(street_segment_id, i);
             }
         }
+
+        std::pair<LatLon, LatLon> lastCurvePointToTo = std::make_pair(getIntersectionPosition(to), previousPoint);
+        length += findDistanceBetweenTwoPoints(lastCurvePointToTo);
     }
     return length;
 }
