@@ -348,14 +348,14 @@ LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
 
 
 double findStreetLength(StreetIdx street_id){
-    double length = 0;
-    std::vector<double> street_segment_id; // vector that stores streetsegment id's of a street
-    for(int i = 0; i < getNumStreetSegments(); i++){
-        if(getStreetSegmentInfo(i).streetID ==  street_id){
-        street_segment_id.push_back(i);
-        }
-    }
- 
+//    double length = 0;
+//    std::vector<double> street_segment_id; // vector that stores streetsegment id's of a street
+//    for(int i = 0; i < getNumStreetSegments(); i++){
+//        if(getStreetSegmentInfo(i).streetID ==  street_id){
+//        street_segment_id.push_back(i);
+//        }
+//    }
+    return 0;
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
