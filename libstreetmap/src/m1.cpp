@@ -51,6 +51,8 @@ int numOfStreetSegments;
 double *segLength;
 double *segTime;
 
+std::map<StreetIdx, std::vector<StreetSegmentIdx>> segsToStreet;
+
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
 //Includes repetition!!
 std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;
@@ -96,6 +98,17 @@ bool loadMap(std::string map_streets_database_filename) {
 
         for (int i = 0; i < numOfStreets; i++) { //inputs all streetnames and indices into the trie
             insertToTrie(root, streetNames[i], i);
+        }
+
+        for(int i = 0; i < numOfStreetSegments; i++){
+            if(segsToStreet.find(getStreetSegmentInfo(i).streetID) == segsToStreet.end()){
+                segsToStreet.insert(std::make_pair(getStreetSegmentInfo(i).streetID,std::vector<int>()));
+                std::vector<int> tempVector;
+                tempVector.push_back(i);
+                segsToStreet[getStreetSegmentInfo(i).streetID].swap(tempVector);
+            }else{
+                segsToStreet[getStreetSegmentInfo(i).streetID].push_back(i);
+            }
         }
 
         segments_of_an_intersection.resize(getNumIntersections());
