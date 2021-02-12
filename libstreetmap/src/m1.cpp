@@ -48,7 +48,8 @@ std::string *streetNames;
 struct TrieNode *root; //root for streetnames trie
 
 int numOfStreetSegments;
-std::map<StreetSegmentIdx,std::pair<double, double>> segLengthAndTime;
+double *segLength;
+double *segTime;
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
 //Includes repetition!!
@@ -63,6 +64,7 @@ std::vector<StreetSegmentInfo> street_segment_info; //vector that holds info str
 
 std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> intersections_of_two_streets;
 
+double lengthHelper(StreetSegmentIdx street_segment_id);
 
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
@@ -72,9 +74,12 @@ bool loadMap(std::string map_streets_database_filename) {
 
     if (load_successful) {
         numOfStreetSegments = getNumStreetSegments();
+        segLength = new double[numOfStreetSegments];
+        segTime = new double[numOfStreetSegments];
         for(int i = 0; i < numOfStreetSegments; i++){
-            double length = findStreetSegmentLength(i);
-            segLengthAndTime.insert(std::make_pair(i,std::make_pair(length,(length / getStreetSegmentInfo(i).speedLimit))));
+            double length = lengthHelper(i);
+            segLength[i] = length;
+            segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
         }
 
         numOfStreets = getNumStreets();
@@ -338,16 +343,20 @@ LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
 
 
 double findStreetLength(StreetIdx street_id){
-    double length = 0;
-    for(int i = 0; i < street_segment_info.size() ; i++){
-        if(street_segment_info[i].streetID == street_id){
-            length += findStreetSegmentLength(i);
-        }
-    }
-    return length;
+//    double length = 0;
+//    for(int i = 0; i < street_segment_info.size() ; i++){
+//        if(street_segment_info[i].streetID == street_id){
+//            length += findStreetSegmentLength(i);
+//        }
+//    }
+    return 0;
 }
 
-double findStreetSegmentLength(StreetSegmentIdx street_segment_id) {
+double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
+    return segLength[street_segment_id];
+}
+
+double lengthHelper(StreetSegmentIdx street_segment_id) {
     //case if no curve points exist
     double length = 0;
     IntersectionIdx from = getStreetSegmentInfo(street_segment_id).from;
@@ -390,7 +399,7 @@ double findStreetSegmentLength(StreetSegmentIdx street_segment_id) {
 
 double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id) {
     // return the speed which is length/time
-    return segLengthAndTime.find(street_segment_id)->second.second;
+    return segTime[street_segment_id];
 }
 
 
