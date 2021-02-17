@@ -51,20 +51,20 @@ int numOfStreetSegments;
 double *segLength;
 double *segTime;
 
+// Vector Declerations
 std::map<StreetIdx, std::vector<StreetSegmentIdx>> segsToStreet;
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
-//Includes repetition!!
+                                                                    //Includes repetition!!
 std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;
 
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 
 std::vector<std::vector<IntersectionIdx>> adjacent_intersections;
 
-
-std::vector<StreetSegmentInfo> street_segment_info; //vector that holds info struct of each street segment
-
 std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> intersections_of_two_streets;
+
+// std::vector<StreetSegmentInfo> street_segment_info; //vector that holds info struct of each street segment
 
 double lengthHelper(StreetSegmentIdx street_segment_id);
 
