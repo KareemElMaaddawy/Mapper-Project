@@ -29,7 +29,8 @@
 #include "TrieNode.h"
 #include <vector>
 #include <map>
-
+#include <boost/functional/hash.hpp>
+#include <unordered_map>
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection 
 // data that is higher-level than the raw OSM data). 
@@ -53,20 +54,20 @@ double *segTime;
 
 
 // Vector Declerations
-std::map<StreetIdx, std::vector<StreetSegmentIdx>> segsToStreet;
 
->>>>>>> 61df521f7cf8c6db4b97a93327925430dcca9347
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
-                                                                    //Includes repetition!!
+//Includes repetition!!
 std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;
 
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 
 std::vector<std::vector<IntersectionIdx>> adjacent_intersections;
 
-std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> intersections_of_two_streets;
 
-// std::vector<StreetSegmentInfo> street_segment_info; //vector that holds info struct of each street segment
+std::vector<StreetSegmentInfo> street_segment_info; //vector that holds info struct of each street segment
+
+typedef std::pair<StreetIdx, StreetIdx> pair;
+std::unordered_map<std::pair<StreetIdx, StreetIdx>, std::vector<IntersectionIdx>, boost::hash<pair>>  unordered_map_intersections_of_two_streets;
 
 double lengthHelper(StreetSegmentIdx street_segment_id);
 
@@ -118,53 +119,23 @@ bool loadMap(std::string map_streets_database_filename) {
         
   
             
-        //for(int i = 0; i < getNumStreetSegments(); i++){
-         //   street_segment_info.push_back(getStreetSegmentInfo(i)); // vector is filled with struct of info
-        // }
-        
-//        for (int intersection = 0; intersection < getNumIntersections(); intersection++){
-//            for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++){
-//                int streetSeg_id = getIntersectionStreetSegment(intersection, segment);
-//                segments_of_an_intersection[intersection].push_back(streetSeg_id);
-//                  
-//                /*FINDING THE STREET NAMES THAT PASS THROUGH AN INTERSECTION*/
-//                //gets the street id of a specific segment
-//                StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
-//                //stores the name at specified street id in th street names function
-//                street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
-//
-//                 /*FINDING INTERSECTIONS OF A STREET*/
-//                ///if the intersection does not exists on the list of intersections of a street, then add it
-//                if (!(std::find(intersections_of_a_street[street_ID_of_segment].begin(), intersections_of_a_street[street_ID_of_segment].end(), intersection) != intersections_of_a_street[street_ID_of_segment].end())){  
-//                    intersections_of_a_street[street_ID_of_segment].push_back(intersection);
-//                }
-//                
-//                 /*FINDING ADJACENT INTERSECTIONS*/
-//                 /*logic: since each segment has one "from" and one "to" intersection ids,
-//                  * then as we loop through the segments we can check if the current intersection 
-//                  * is the "from" or the "to" of the segment
-//                  * if it is the "from", then we add the "to" of the segment to it's adjacent intersections
-//                  * if it's the to, we move on to the next segment
-//                  * This will allow each intersection to be added only once to another intersection's adjacent list
-//                  * while only going in a direction that fits one way streets */
-//                
-//                 //check if the current intersection  is the "from" intersection
-//                if(intersection == getStreetSegmentInfo(segment).from){
-//                    //add the "to" intersection to the adjacent intersections of the current intersection
-//                    adjacent_intersections[intersection].push_back(getStreetSegmentInfo(segment).to);
-//                }  
-//            }
-//        }
+ for (int i = 0; i < getNumStreetSegments(); i++) {
+            street_segment_info.push_back(getStreetSegmentInfo(i)); // vector is filled with struct of info
+        }
 
         for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
             for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++) {
+
+                /*SEGMENTS OF AN INTERSECTION*/
+                //get the index of the segment you're on
                 int streetSeg_id = getIntersectionStreetSegment(intersection, segment);
+                //for each intersection add each segment id to that intersection's associated sub vector
                 segments_of_an_intersection[intersection].push_back(streetSeg_id);
 
                 /*FINDING THE STREET NAMES THAT PASS THROUGH AN INTERSECTION*/
                 //gets the street id of a specific segment
                 StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
-                //stores the name at specified street id in th street names function
+                //stores the name at specified street id in the street names function
                 street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
 
                 /*FINDING INTERSECTIONS OF A STREET*/
@@ -177,46 +148,143 @@ bool loadMap(std::string map_streets_database_filename) {
 
 
 
-                /*FINDING ADJACENT INTERSECTIONS*/
-                /*logic: since each segment has one "from" and one "to" intersection ids,
-                 * then as we loop through the segments we can check if the current intersection
-                 * is the "from" or the "to" of the segment
-                 * if it is the "from", then we add the "to" of the segment to it's adjacent intersections
-                 * if it's the to, we move on to the next segment
-                 * This will allow each intersection to be added only once to another intersection's adjacent list
-                 * while only going in a direction that fits one way streets */
-
-                //check if the current intersection  is the "from" intersection
-                if (intersection == getStreetSegmentInfo(segment).from) {
-                    //add the "to" intersection to the adjacent intersections of the current intersection
-                    adjacent_intersections[intersection].push_back(getStreetSegmentInfo(segment).to);
-                }
-
-
             }
+
         }
-        for (StreetIdx first_street_idx = 0; first_street_idx < getNumStreets(); first_street_idx++) {
-            for (int intersection = 0;
-                 intersection < intersections_of_a_street[first_street_idx].size(); intersection++) {
-                for (int segment = 0; segment < segments_of_an_intersection[intersection].size(); segment++) {
-                    StreetIdx second_street_idx = getStreetSegmentInfo(
-                            segments_of_an_intersection[intersection][segment]).streetID;
-                    if (first_street_idx != second_street_idx) {
-                        std::pair<StreetIdx, StreetIdx> original_id_pair(first_street_idx, second_street_idx);
-                        std::pair<StreetIdx, StreetIdx> reverse_id_pair(second_street_idx, first_street_idx);
-                        if (std::find(intersections_of_two_streets[first_street_idx].begin(),
-                                      intersections_of_two_streets[first_street_idx].end(), original_id_pair) !=
-                            intersections_of_two_streets[first_street_idx].end()) {
-                            if (std::find(intersections_of_two_streets[first_street_idx].begin(),
-                                          intersections_of_two_streets[first_street_idx].end(), reverse_id_pair) !=
-                                intersections_of_two_streets[first_street_idx].end()) {
-                                intersections_of_two_streets[first_street_idx].push_back(original_id_pair);
+        /*FINDING ADJACENT INTERSECTIONS*/
+        //Helpers: findStreetSegmentsOfIntersection
+        
+        /*logic:
+         loop through every intersection and then loop through the segments of that intersection 
+         use findStreetSegmentsOfIntersection to find the ids of each segment
+         find the "to" and the "from" intersections of each segment 
+         if those were not already stored in the adjacent intersections vector AND if the intersection we are on is the from intersection 
+         Add the intersection to the intersections vector 
+         if we are not on the from intersection but the street is a 2 way street then also add the intersection to the vector*/
+
+        // loop through intersections
+        for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
+            //create a vector to store the segment id of each segment on the intersection
+            const std::vector<StreetSegmentIdx> segments_of_current_intersection = findStreetSegmentsOfIntersection(intersection);
+            //loop through the segments
+            for (int segment = 0; segment < segments_of_current_intersection.size(); segment++){
+                //assign the segments "to" intersection id to a variable called to, do the same for "from"
+                IntersectionIdx to = getStreetSegmentInfo(segments_of_current_intersection[segment]).to;
+                IntersectionIdx from = getStreetSegmentInfo(segments_of_current_intersection[segment]).from;
+                
+                //check if the vecor of adjacent intersection doesn't have to and from  
+                if(!(std::find(std::begin(adjacent_intersections[intersection]), std::end(adjacent_intersections[intersection]), to) != std::end(adjacent_intersections[intersection]))){
+                    if(!(std::find(std::begin(adjacent_intersections[intersection]), std::end(adjacent_intersections[intersection]), from) != std::end(adjacent_intersections[intersection]))) {
+                        
+                        //check if the current intersection is the "from" intersection
+                        if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).from)) {
+                            //add the "to" intersection to the adjacent intersections of the current intersection
+                            adjacent_intersections[intersection].push_back(
+                                    getStreetSegmentInfo(segments_of_current_intersection[segment]).to);
+                        }
+                        //check if the segment is not a one way segment
+                        if (!getStreetSegmentInfo(segments_of_current_intersection[segment]).oneWay) {
+                            //check if the current intersection is the "to" intersection
+                            if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).to)) {
+                                //add the "from" intersection to the adjacent intersections of the current intersection
+                                adjacent_intersections[intersection].push_back(
+                                        getStreetSegmentInfo(segments_of_current_intersection[segment]).from);
                             }
                         }
                     }
                 }
             }
         }
+        
+
+        /*for (StreetIdx first_street_idx = 0; first_street_idx < getNumStreets(); first_street_idx++){
+            for (int common_intersection_number = 0; common_intersection_number < intersections_of_a_street[first_street_idx].size(); common_intersection_number++){
+                IntersectionIdx common_intersection_idx = intersections_of_a_street[first_street_idx][common_intersection_idx];
+                for (int segment_number = 0; segment_number < segments_of_an_intersection[common_intersection_idx].size(); segment_number++){
+                    StreetSegmentIdx segment_idx = segments_of_an_intersection[common_intersection_idx][segment_number];
+                    StreetIdx second_street_idx = getStreetSegmentInfo(segment_idx).streetID;
+                    if(first_street_idx != second_street_idx){
+                        std::pair<StreetIdx, StreetIdx> original_street_id_pair(first_street_idx, second_street_idx);
+                        std::pair<StreetIdx, StreetIdx> reverse_street_id_pair(second_street_idx, first_street_idx);
+                        if (unordered_map_intersections_of_two_streets.find(original_street_id_pair) == unordered_map_intersections_of_two_streets.end()){
+                            if (unordered_map_intersections_of_two_streets.find(reverse_street_id_pair) == unordered_map_intersections_of_two_streets.end()){
+                                //the street pair does not exist entirely
+
+                                //this should create a pair in the original order in the map and add the first street index to their vector of intersections
+                                unordered_map_intersections_of_two_streets[original_street_id_pair].push_back(first_street_idx);
+
+                            }else if(unordered_map_intersections_of_two_streets.find(reverse_street_id_pair) != unordered_map_intersections_of_two_streets.end()){
+                                //the street pair exists in reverse only (we have gone through this intersection for another street)
+
+                                //we still need to create an original pair and add the index to it
+                                unordered_map_intersections_of_two_streets[original_street_id_pair].push_back(first_street_idx);
+
+
+                            }
+                        }else if(unordered_map_intersections_of_two_streets.find(original_street_id_pair) != unordered_map_intersections_of_two_streets.end()){
+                            if(unordered_map_intersections_of_two_streets.find(reverse_street_id_pair) == unordered_map_intersections_of_two_streets.end()){
+                                //the original pair already exists but the reverse pair does not exist
+                                std::vector<StreetIdx> vector_of_intersections = unordered_map_intersections_of_two_streets[original_street_id_pair];
+                                if(std::find(vector_of_intersections.begin(), vector_of_intersections.end(), common_intersection_idx) == vector_of_intersections.end()){
+                                    //the syntax for adding to a pair vector and for creating a new pair then adding to it's vector is the same
+                                    unordered_map_intersections_of_two_streets[original_street_id_pair].push_back(first_street_idx);
+                                }
+
+                            }else if(unordered_map_intersections_of_two_streets.find(reverse_street_id_pair) != unordered_map_intersections_of_two_streets.end()){
+                                //both the original pair and the reverse pair exist
+                                std::vector<StreetIdx> vector_of_intersections = unordered_map_intersections_of_two_streets[original_street_id_pair];
+                                if(std::find(vector_of_intersections.begin(), vector_of_intersections.end(), common_intersection_idx) == vector_of_intersections.end()){
+                                    //the syntax for adding to a pair vector and for creating a new pair then adding to it's vector is the same
+                                    unordered_map_intersections_of_two_streets[original_street_id_pair].push_back(first_street_idx);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }*/
+      
+        
+      /*Find intersections of two streets*/
+      ///Uses the vector from find intersections of a street   
+     //loop through all the streets   
+     /*for (StreetIdx first_street_idx = 0; first_street_idx < getNumStreets(); first_street_idx++){
+            //for each street loop through all the intersections on that street
+            for(int intersection = 0; intersection < intersections_of_a_street[first_street_idx].size(); intersection++){
+            IntersectionIdx index_of_common_intersection = intersections_of_a_street[first_street_idx][intersection];
+                ///loop for the number of segments of the intersection from the intersections_of_a_street vector
+                for(int segment = 0; segment < segments_of_an_intersection[index_of_common_intersection].size(); segment++){
+                    ///get the street id of each segment in that links to the common intersection
+                    StreetIdx second_street_idx = getStreetSegmentInfo(segments_of_an_intersection[index_of_common_intersection][segment]).streetID;
+                    //make sure we are not finding the common intersections between the street we are on and itself
+
+
+                    if(first_street_idx != second_street_idx){
+                        std::vector<IntersectionIdx> intersections_of_current_streets;
+                        std::pair<StreetIdx, StreetIdx> original_street_id_pair(first_street_idx, second_street_idx);
+                        std::pair<StreetIdx, StreetIdx> reverse_street_id_pair(second_street_idx, first_street_idx);
+                        if (intersections_of_two_streets.find(reverse_street_id_pair) == intersections_of_two_streets.end()){
+                            if(intersections_of_two_streets.find(original_street_id_pair) != intersections_of_two_streets.end()){
+
+
+                                intersections_of_two_streets.insert(std::make_pair(original_street_id_pair, intersections_of_current_streets));
+                                if(std::find(intersections_of_two_streets[original_street_id_pair].begin(), intersections_of_two_streets[original_street_id_pair].end(), index_of_common_intersection) ==
+                      intersections_of_two_streets[original_street_id_pair].end()){
+                                intersections_of_two_streets[original_street_id_pair].push_back(index_of_common_intersection);
+                                }
+                            }else {
+                                
+                                        
+                                if(std::find(intersections_of_two_streets[original_street_id_pair].begin(), intersections_of_two_streets[original_street_id_pair].end(), index_of_common_intersection) ==
+                      intersections_of_two_streets[original_street_id_pair].end()){
+                                    intersections_of_two_streets[original_street_id_pair].push_back(index_of_common_intersection);
+                                }    
+                            }
+                        }
+                    }
+                }
+            }
+        }*/
     }return load_successful;
 }
 
@@ -236,8 +304,7 @@ void closeMap() {
     std::vector<std::vector<IntersectionIdx>> GARBAGE_adjacent_intersections;
     adjacent_intersections.swap(GARBAGE_adjacent_intersections);
 
-    std::vector<std::vector<std::pair<StreetIdx, StreetIdx>>> GARBAGE_intersections_of_two_streets;
-    intersections_of_two_streets.swap(GARBAGE_intersections_of_two_streets);
+    
 
 
     delete[] streetNames;
@@ -432,12 +499,7 @@ double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id) {
 
 
 
-// Returns the nearest intersection to the given position
-// Speed Requirement --> none
-IntersectionIdx findClosestIntersection(LatLon my_position) {
-    IntersectionIdx stub;
-    return stub;
-}
+
 
 
 
@@ -453,7 +515,7 @@ IntersectionIdx findClosestIntersection(LatLon my_position) {
 // Speed Requirement --> high
 std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, StreetIdx> street_ids){
 
-    return {};
+    return unordered_map_intersections_of_two_streets[street_ids];
 }
 
 
@@ -495,6 +557,38 @@ std::vector<IntersectionIdx> findIntersectionsOfStreet(StreetIdx street_id) {
 // the returned vector should NOT contain duplicate intersections
 // Speed Requirement --> high 
 std::vector<IntersectionIdx> findAdjacentIntersections(IntersectionIdx intersection_id) {
-
+    
     return adjacent_intersections[intersection_id];
+}
+
+// Returns the nearest intersection to the given position
+// Speed Requirement --> none
+//helpers: findDistanceBetweenTwoPoints
+/*logic:
+ Assign an arbitrary intersection to be the closest so far
+ find the position of that intersection and the distance between that intersection and my position using findDistanceBetweenTwoPoints
+ loop through all the intersections
+ while looping, find the current intersection's position and it's distance using findDistanceBetweenTwoPoints
+ compare the current intersections distance form my position to that of the closest intersection
+ If it is less make the current intersection the closest intersection and make the current distance the closest distance
+ once done looping return the closest intersection*/  
+
+//this code should be readable with no comments, please let me know if you would like to see it commented
+IntersectionIdx findClosestIntersection(LatLon my_position) {
+    
+    IntersectionIdx closest_so_far = 0;
+    LatLon position_of_closest = getIntersectionPosition(closest_so_far);
+    long double distance_from_closest_so_far = findDistanceBetweenTwoPoints(std::make_pair(my_position, position_of_closest));
+    
+    for (int intersection = 0; intersection < getNumIntersections(); intersection++){
+        LatLon current_intersection_position = getIntersectionPosition(intersection);
+        double distance_from_current_intersection = findDistanceBetweenTwoPoints(std::make_pair(my_position, current_intersection_position));
+        if (distance_from_current_intersection < distance_from_closest_so_far){
+            closest_so_far = intersection; 
+            distance_from_closest_so_far = distance_from_current_intersection;
+        }
+        
+    }
+   
+    return closest_so_far;
 }
