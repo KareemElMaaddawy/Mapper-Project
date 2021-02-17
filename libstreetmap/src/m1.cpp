@@ -51,11 +51,10 @@ int numOfStreetSegments;
 double *segLength;
 double *segTime;
 
-<<<<<<< HEAD
+
 // Vector Declerations
 std::map<StreetIdx, std::vector<StreetSegmentIdx>> segsToStreet;
 
-=======
 >>>>>>> 61df521f7cf8c6db4b97a93327925430dcca9347
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
                                                                     //Includes repetition!!
@@ -113,9 +112,12 @@ bool loadMap(std::string map_streets_database_filename) {
 
         adjacent_intersections.resize(getNumIntersections());
         
+        for(int streetId = 0; i < getNumStreets() ; streetId++){
+            segsToStreet[i] = fillVector(i);
+        }
+        
   
-        
-        
+            
         //for(int i = 0; i < getNumStreetSegments(); i++){
          //   street_segment_info.push_back(getStreetSegmentInfo(i)); // vector is filled with struct of info
         // }
@@ -268,7 +270,17 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname) {
     }
     return closestPOIIdx;
 }
+std::vector<double> fillVector(street_id);
 
+std::vector<double> fillvector(street_id){
+    std::vector<double> filledUpVector;
+    for(int i = 0; i < getNumStreetSegments(); i++){
+        if(getStreetSegmentInfo(i).streetID == street_id){
+            filledUpVector.push_back(i);
+        }
+    }
+    return filledUpVector;
+}
 // Returns the area of the given closed feature in square meters
 // Assume a non self-intersecting polygon (i.e. no holes)
 // Return 0 if this feature is not a closed polygon.
