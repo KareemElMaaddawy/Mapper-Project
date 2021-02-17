@@ -51,9 +51,12 @@ int numOfStreetSegments;
 double *segLength;
 double *segTime;
 
+<<<<<<< HEAD
 // Vector Declerations
 std::map<StreetIdx, std::vector<StreetSegmentIdx>> segsToStreet;
 
+=======
+>>>>>>> 61df521f7cf8c6db4b97a93327925430dcca9347
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
                                                                     //Includes repetition!!
 std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;
@@ -98,17 +101,6 @@ bool loadMap(std::string map_streets_database_filename) {
 
         for (int i = 0; i < numOfStreets; i++) { //inputs all streetnames and indices into the trie
             insertToTrie(root, streetNames[i], i);
-        }
-
-        for(int i = 0; i < numOfStreetSegments; i++){
-            if(segsToStreet.find(getStreetSegmentInfo(i).streetID) == segsToStreet.end()){
-                segsToStreet.insert(std::make_pair(getStreetSegmentInfo(i).streetID,std::vector<int>()));
-                std::vector<int> tempVector;
-                tempVector.push_back(i);
-                segsToStreet[getStreetSegmentInfo(i).streetID].swap(tempVector);
-            }else{
-                segsToStreet[getStreetSegmentInfo(i).streetID].push_back(i);
-            }
         }
 
         segments_of_an_intersection.resize(getNumIntersections());
@@ -431,19 +423,8 @@ double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id) {
 // Returns the nearest intersection to the given position
 // Speed Requirement --> none
 IntersectionIdx findClosestIntersection(LatLon my_position) {
-    double smallestDistance = 99999999999;
-    double distanceToIntersection = 0;
-    int totalNumOfIntersec = getNumIntersections();
-    IntersectionIdx closestIntersec = -1;
-    
-    for(int i = 0; i < totalNumOfIntersec ; i++){
-        distanceToIntersection = findDistanceBetweenTwoPoints(std::make_pair(my_position, getIntersectionPosition(i)));
-        if(distanceToIntersection < smallestDistance){
-            smallestDistance = distanceToIntersection;
-            closestIntersec = i;
-        }
-    }
-    return closestIntersec;
+    IntersectionIdx stub;
+    return stub;
 }
 
 

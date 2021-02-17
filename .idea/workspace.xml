@@ -23,8 +23,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="merging ghamr's branch">
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="building streetlength">
+      <change beforePath="$PROJECT_DIR$/.idea/mapper.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mapper.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +68,7 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="settings.editor.selected.configurable" value="debugger.stepping" />
   </component>
-  <component name="RunManager" selected="Makefile Application.Release">
+  <component name="RunManager" selected="Makefile Application.Debug">
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -113,7 +114,8 @@
       <workItem from="1613154984403" duration="5536000" />
       <workItem from="1613160805098" duration="71000" />
       <workItem from="1613160970794" duration="327000" />
-      <workItem from="1613161346045" duration="3234000" />
+      <workItem from="1613161346045" duration="8225000" />
+      <workItem from="1613171564204" duration="331000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -206,7 +208,28 @@
       <option name="project" value="LOCAL" />
       <updated>1613163506650</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="data structure to relate streetsegments to streets">
+      <created>1613164593029</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1613164593029</updated>
+    </task>
+    <task id="LOCAL-00015" summary="building streetlength">
+      <created>1613170155268</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1613170155268</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543">
+      <created>1613171637829</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1613171637829</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,7 +259,10 @@
     <MESSAGE value="fixed mem leaks" />
     <MESSAGE value="making data structure for streetlength" />
     <MESSAGE value="merging ghamr's branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="merging ghamr's branch" />
+    <MESSAGE value="data structure to relate streetsegments to streets" />
+    <MESSAGE value="building streetlength" />
+    <MESSAGE value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
+    <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -248,5 +274,11 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CLionNativeAppRunConfigurationType">
+        <watch expression="tempVector[0]" language="ObjectiveC" />
+        <watch expression="tempVector[i]" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
