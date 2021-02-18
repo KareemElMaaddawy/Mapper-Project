@@ -71,6 +71,7 @@ typedef std::pair<StreetIdx, StreetIdx> pair;
 std::unordered_map<std::pair<StreetIdx, StreetIdx>, std::vector<IntersectionIdx>, boost::hash<pair>>  intersections_of_two_streets;
 
 double lengthHelper(StreetSegmentIdx street_segment_id);
+std::vector<double> fillVector(StreetIdx street_id);
 
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
@@ -344,18 +345,16 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname) {
     return closestPOIIdx;
 }
 
-//std::vector<double> fillVector(street_id);
 
-
-//std::vector<double> fillvector(street_id){
-//    std::vector<double> filledUpVector;
-//    for(int i = 0; i < getNumStreetSegments(); i++){
-//        if(getStreetSegmentInfo(i).streetID == street_id){
-//            filledUpVector.push_back(i);
-//        }
-//    }
-//    return filledUpVector;
-//}
+std::vector<double> fillVector(StreetIdx street_id){
+    std::vector<double> filledUpVector;
+    for(int i = 0; i < getNumStreetSegments(); i++){
+        if(getStreetSegmentInfo(i).streetID == street_id){
+            filledUpVector.push_back(i);
+        }
+    }
+    return filledUpVector;
+}
 
 
 
@@ -451,14 +450,12 @@ LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
 
 
 double findStreetLength(StreetIdx street_id){
-//    double length = 0;
-//    std::vector<double> street_segment_id; // vector that stores streetsegment id's of a street
-//    for(int i = 0; i < getNumStreetSegments(); i++){
-//        if(getStreetSegmentInfo(i).streetID ==  street_id){
-//        street_segment_id.push_back(i);
-//        }
-//    }
-    return 0;
+    double length = 0;
+    std::vector<double> tempVec = fillVector(street_id);
+    for(std::vector<double>::iterator it = tempVec.begin(); it != tempVec.end(); it++){
+        length += findStreetSegmentLength(*it);
+    }
+    return length;
 }
 
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
