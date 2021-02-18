@@ -72,6 +72,7 @@ std::unordered_map<std::pair<StreetIdx, StreetIdx>, std::vector<IntersectionIdx>
 
 double lengthHelper(StreetSegmentIdx street_segment_id);
 std::vector<double> fillVector(StreetIdx street_id);
+std::vector<LatLon> vectorOfCoord(StreetIdx street_id);
 
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
@@ -356,6 +357,24 @@ std::vector<double> fillVector(StreetIdx street_id){
     return filledUpVector;
 }
 
+std::vector<LatLon> vectorOfCoord(StreetIdx street_id){
+    std::vector<double> streetSegs = fillVector(street_id);
+    std::vector<LatLon> tempVec;
+    for(std::vector<double>::iterator it = streetSegs.begin(); it != streetSegs.end(); it++){
+        if(getStreetSegmentInfo(*it).numCurvePoints == 0){
+            tempVec.push_back(getIntersectionPosition(getStreetSegmentInfo(*it).from));
+            tempVec.push_back(getIntersectionPosition(getStreetSegmentInfo(*it).to));
+        }else if(getStreetSegmentInfo(*it).numCurvePoints > 0){
+            tempVec.push_back(getIntersectionPosition(getStreetSegmentInfo(*it).from));
+            tempVec.push_back(getIntersectionPosition(getStreetSegmentInfo(*it).to));
+            for(int i = 0; i < getStreetSegmentInfo(*it).numCurvePoints; i++){
+                tempVec.push_back(getStreetSegmentCurvePoint(*it,i));
+            }
+        }
+    }
+    return tempVec;
+}
+
 
 
 // Returns the area of the given closed feature in square meters
@@ -445,6 +464,15 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
+    double smallestLat = 9999999999;
+    double smallestLong = 9999999999;
+    double maxLat = 0;
+    double maxLong = 0;
+    struct LatLonBounds tempItem;
+    std::vector<LatLon> tempVec = vectorOfCoord(street_id);
+    for(std::vector<LatLon>::iterator it = tempVec.begin(); it != tempVec.end() ; it++){
+        
+    }
     
 }
 
