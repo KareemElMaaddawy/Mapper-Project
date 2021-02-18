@@ -26,7 +26,7 @@
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
 #include <algorithm>
 #include <utility>
-#include "TrieNode.h"
+
 #include <vector>
 #include <map>
 #include <boost/functional/hash.hpp>
