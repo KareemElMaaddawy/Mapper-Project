@@ -3,20 +3,6 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
-    <generated>
-      <config projectName="mapper" targetName="all CONF=debug" />
-      <config projectName="mapper" targetName="libstreetmap.a" />
-      <config projectName="mapper" targetName="test_libstreetmap" />
-      <config projectName="mapper" targetName="all CONF=release" />
-      <config projectName="mapper" targetName="echo_flags" />
-      <config projectName="mapper" targetName="all CONF=debug_check" />
-      <config projectName="mapper" targetName="mapper" />
-      <config projectName="mapper" targetName="help" />
-      <config projectName="mapper" targetName="test" />
-      <config projectName="mapper" targetName="all" />
-    </generated>
-  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" ENABLED="true" />
@@ -24,8 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="building streetlength">
-      <change beforePath="$PROJECT_DIR$/.idea/mapper.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mapper.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/TrieNode.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/TrieNode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +29,11 @@
     </projectState>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
@@ -55,7 +48,7 @@
   <component name="OCResolveContextSettings">
     <option name="configuration" value="/nfs/ug/homes-0/a/ahmadda4/ece297/work/mapper/libstreetmap/src/m1.cpp" />
   </component>
-  <component name="ProjectId" id="1niyxyuxheTUWwRmUyRGGj4pIhO" />
+  <component name="ProjectId" id="1od3Mfrhm3mWgMvzqKwuymNC8BU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -66,9 +59,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.first.check.clang-format" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="debugger.stepping" />
   </component>
-  <component name="RunManager" selected="Makefile Application.Debug">
+  <component name="RunManager" selected="Makefile Application.Release">
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -90,9 +84,9 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Makefile Application.Release" />
-      <item itemvalue="Makefile Application.Debug_check" />
       <item itemvalue="Makefile Application.Debug" />
+      <item itemvalue="Makefile Application.Debug_check" />
+      <item itemvalue="Makefile Application.Release" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -116,6 +110,8 @@
       <workItem from="1613160970794" duration="327000" />
       <workItem from="1613161346045" duration="8225000" />
       <workItem from="1613171564204" duration="331000" />
+      <workItem from="1613602157230" duration="427000" />
+      <workItem from="1613602597843" duration="8758000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -265,19 +261,11 @@
     <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file:///nfs/ug/homes-0/a/ahmadda4/ece297/work/mapper/main/src/main.cpp</url>
-          <line>66</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
-        <watch expression="tempVector[0]" language="ObjectiveC" />
-        <watch expression="tempVector[i]" language="ObjectiveC" />
+        <watch expression="key-&gt;first._M_dataplus._M_p" />
+        <watch expression="street_prefix._M_dataplus._M_p" />
+        <watch expression="key-&gt;second" />
       </configuration>
     </watches-manager>
   </component>
