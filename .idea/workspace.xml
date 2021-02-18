@@ -3,28 +3,13 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
-    <generated>
-      <config projectName="mapper" targetName="all CONF=debug" />
-      <config projectName="mapper" targetName="libstreetmap.a" />
-      <config projectName="mapper" targetName="test_libstreetmap" />
-      <config projectName="mapper" targetName="all CONF=release" />
-      <config projectName="mapper" targetName="echo_flags" />
-      <config projectName="mapper" targetName="all CONF=debug_check" />
-      <config projectName="mapper" targetName="mapper" />
-      <config projectName="mapper" targetName="help" />
-      <config projectName="mapper" targetName="test" />
-      <config projectName="mapper" targetName="all" />
-    </generated>
-  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" ENABLED="true" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="building streetlength">
-      <change beforePath="$PROJECT_DIR$/.idea/mapper.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mapper.iml" afterDir="false" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="commented out fillvector">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +26,11 @@
     </projectState>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
@@ -55,7 +45,7 @@
   <component name="OCResolveContextSettings">
     <option name="configuration" value="/nfs/ug/homes-0/a/ahmadda4/ece297/work/mapper/libstreetmap/src/m1.cpp" />
   </component>
-  <component name="ProjectId" id="1niyxyuxheTUWwRmUyRGGj4pIhO" />
+  <component name="ProjectId" id="1od3Mfrhm3mWgMvzqKwuymNC8BU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -66,9 +56,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.first.check.clang-format" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="debugger.stepping" />
   </component>
-  <component name="RunManager" selected="Makefile Application.Debug">
+  <component name="RunManager" selected="Makefile Application.Release">
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -116,6 +107,9 @@
       <workItem from="1613160970794" duration="327000" />
       <workItem from="1613161346045" duration="8225000" />
       <workItem from="1613171564204" duration="331000" />
+      <workItem from="1613602157230" duration="427000" />
+      <workItem from="1613602597843" duration="9076000" />
+      <workItem from="1613613246576" duration="654000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -229,7 +223,21 @@
       <option name="project" value="LOCAL" />
       <updated>1613171637829</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="restructured partialStreetName around multimap, removed trie">
+      <created>1613612495734</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1613612495734</updated>
+    </task>
+    <task id="LOCAL-00018" summary="commented out fillvector">
+      <created>1613613815299</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1613613815300</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,22 +270,16 @@
     <MESSAGE value="data structure to relate streetsegments to streets" />
     <MESSAGE value="building streetlength" />
     <MESSAGE value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
-    <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
+    <MESSAGE value="restructured partialStreetName around multimap, removed trie" />
+    <MESSAGE value="commented out fillvector" />
+    <option name="LAST_COMMIT_MESSAGE" value="commented out fillvector" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file:///nfs/ug/homes-0/a/ahmadda4/ece297/work/mapper/main/src/main.cpp</url>
-          <line>66</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
-        <watch expression="tempVector[0]" language="ObjectiveC" />
-        <watch expression="tempVector[i]" language="ObjectiveC" />
+        <watch expression="key-&gt;first._M_dataplus._M_p" />
+        <watch expression="street_prefix._M_dataplus._M_p" />
+        <watch expression="key-&gt;second" />
       </configuration>
     </watches-manager>
   </component>
