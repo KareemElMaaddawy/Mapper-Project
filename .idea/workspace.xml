@@ -9,9 +9,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="restructured partialStreetName around multimap, removed trie">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="commented out fillvector">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,9 +81,9 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Makefile Application.Debug" />
-      <item itemvalue="Makefile Application.Debug_check" />
       <item itemvalue="Makefile Application.Release" />
+      <item itemvalue="Makefile Application.Debug_check" />
+      <item itemvalue="Makefile Application.Debug" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -110,7 +109,7 @@
       <workItem from="1613171564204" duration="331000" />
       <workItem from="1613602157230" duration="427000" />
       <workItem from="1613602597843" duration="9076000" />
-      <workItem from="1613613246576" duration="300000" />
+      <workItem from="1613613246576" duration="654000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -231,7 +230,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613612495734</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="commented out fillvector">
+      <created>1613613815299</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1613613815300</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,7 +271,8 @@
     <MESSAGE value="building streetlength" />
     <MESSAGE value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
     <MESSAGE value="restructured partialStreetName around multimap, removed trie" />
-    <option name="LAST_COMMIT_MESSAGE" value="restructured partialStreetName around multimap, removed trie" />
+    <MESSAGE value="commented out fillvector" />
+    <option name="LAST_COMMIT_MESSAGE" value="commented out fillvector" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

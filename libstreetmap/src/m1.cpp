@@ -108,7 +108,7 @@ bool loadMap(std::string map_streets_database_filename) {
 
         intersections_of_a_street.resize(getNumStreets());
 
-        intersections_of_two_streets.resize(getNumStreets());
+//        intersections_of_two_streets.resize(getNumStreets());
 
         adjacent_intersections.resize(getNumIntersections());
 
@@ -291,7 +291,6 @@ void closeMap() {
     intersections_of_a_street.clear();
     segments_of_an_intersection.clear();
     adjacent_intersections.clear();
-    intersections_of_two_streets.clear();
     streetNameMap.clear();
 
     delete[] streetNames;
@@ -320,7 +319,7 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname) {
     }
     return closestPOIIdx;
 }
-std::vector<double> fillVector(street_id);
+//std::vector<double> fillVector(street_id);
 
 //std::vector<double> fillvector(street_id){
 //    std::vector<double> filledUpVector;
