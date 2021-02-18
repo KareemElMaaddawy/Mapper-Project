@@ -322,15 +322,15 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname) {
 }
 std::vector<double> fillVector(street_id);
 
-std::vector<double> fillvector(street_id){
-    std::vector<double> filledUpVector;
-    for(int i = 0; i < getNumStreetSegments(); i++){
-        if(getStreetSegmentInfo(i).streetID == street_id){
-            filledUpVector.push_back(i);
-        }
-    }
-    return filledUpVector;
-}
+//std::vector<double> fillvector(street_id){
+//    std::vector<double> filledUpVector;
+//    for(int i = 0; i < getNumStreetSegments(); i++){
+//        if(getStreetSegmentInfo(i).streetID == street_id){
+//            filledUpVector.push_back(i);
+//        }
+//    }
+//    return filledUpVector;
+//}
 // Returns the area of the given closed feature in square meters
 // Assume a non self-intersecting polygon (i.e. no holes)
 // Return 0 if this feature is not a closed polygon.
