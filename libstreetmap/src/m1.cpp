@@ -113,7 +113,7 @@ bool loadMap(std::string map_streets_database_filename) {
 //        intersections_of_two_streets.resize(getNumStreets());
 
         adjacent_intersections.resize(getNumIntersections());
-<<<<<<< HEAD
+
         
         // for loop that loads the map with each street id and the street segments in that street
         //for(int i = 0; i < getNumStreets() ; i++)
@@ -124,11 +124,11 @@ bool loadMap(std::string map_streets_database_filename) {
         
   
             
-=======
 
 
 
->>>>>>> 2ce95da305b7642218919d4029738e73449b0a2b
+
+
  for (int i = 0; i < getNumStreetSegments(); i++) {
             street_segment_info.push_back(getStreetSegmentInfo(i)); // vector is filled with struct of info
         }
@@ -334,7 +334,7 @@ POIIdx findClosestPOI(LatLon my_position, std::string POIname) {
     }
     return closestPOIIdx;
 }
-<<<<<<< HEAD
+
 
 
 std::vector<double> fillVector(StreetIdx street_id){
@@ -346,19 +346,8 @@ std::vector<double> fillVector(StreetIdx street_id){
     }
     return filledUpVector;
 }
-=======
-//std::vector<double> fillVector(street_id);
 
-//std::vector<double> fillvector(street_id){
-//    std::vector<double> filledUpVector;
-//    for(int i = 0; i < getNumStreetSegments(); i++){
-//        if(getStreetSegmentInfo(i).streetID == street_id){
-//            filledUpVector.push_back(i);
-//        }
-//    }
-//    return filledUpVector;
-//}
->>>>>>> 2ce95da305b7642218919d4029738e73449b0a2b
+
 // Returns the area of the given closed feature in square meters
 // Assume a non self-intersecting polygon (i.e. no holes)
 // Return 0 if this feature is not a closed polygon.
@@ -446,8 +435,30 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
-    LatLonBounds stub;
-    return stub;
+    struct LatLonBounds tempItem;
+    std::vector<double> tempVec;
+    double interSec1;
+    double interSec2;
+    std::pair<LatLon, LatLon> tempPair;
+    tempVec = fillVector(street_id);
+    for(std::vector<double>::iterator it = tempVec.begin(); it != tempVec.end(); ++it){
+        if(getStreetSegmentInfo(*it).numCurvePoints = 0){
+            interSec1 = getStreetSegmentInfo(*it).from;
+            interSec2 = getStreetSegmentInfo(*it).to;
+            tempPair = std::make_pair<getIntersectionPosition(interSec1), getIntersectionPosition;  
+            if(tempPair.first.latitude() > tempPair.second.latitude()){
+                tempItem.max.latitude() = tempPair.first.latitude();
+            }
+                else{
+                    tempItem.max.latitude() = tempPair.second.latitude();
+                }
+            if(tempPair.first.longitude() > tempPair.second.longitude()){
+                
+            }
+        else if(getStreetSegmentInfo(*it) == 1){
+            
+        }
+    }
 }
 
 
