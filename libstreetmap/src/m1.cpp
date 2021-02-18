@@ -446,30 +446,7 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
 }
 
 LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
-    struct LatLonBounds tempItem;
-    std::vector<double> tempVec;
-    double interSec1;
-    double interSec2;
-    std::pair<LatLon, LatLon> tempPair;
-    tempVec = fillVector(street_id);
-    for(std::vector<double>::iterator it = tempVec.begin(); it != tempVec.end(); ++it){
-        if(getStreetSegmentInfo(*it).numCurvePoints = 0){
-            interSec1 = getStreetSegmentInfo(*it).from;
-            interSec2 = getStreetSegmentInfo(*it).to;
-            tempPair = std::make_pair<getIntersectionPosition(interSec1), getIntersectionPosition;  
-            if(tempPair.first.latitude() > tempPair.second.latitude()){
-                tempItem.max.latitude() = tempPair.first.latitude();
-            }
-                else{
-                    tempItem.max.latitude() = tempPair.second.latitude();
-                }
-            if(tempPair.first.longitude() > tempPair.second.longitude()){
-                
-            }
-        else if(getStreetSegmentInfo(*it) == 1){
-            
-        }
-    }
+    
 }
 
 
