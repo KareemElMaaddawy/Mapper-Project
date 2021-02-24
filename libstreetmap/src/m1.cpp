@@ -52,6 +52,7 @@ std::multimap<std::string, int> streetNameMap;
 int numOfStreetSegments;
 double *segLength;
 double *segTime;
+double *stLength;
 
 
 // Vector Declerations
@@ -71,6 +72,7 @@ typedef std::pair<StreetIdx, StreetIdx> pair;
 std::unordered_map<std::pair<StreetIdx, StreetIdx>, std::vector<IntersectionIdx>, boost::hash<pair>>  intersections_of_two_streets;
 
 double lengthHelper(StreetSegmentIdx street_segment_id);
+double streetLengthHelper(StreetIdx street_id);
 std::vector<double> fillVector(StreetIdx street_id);
 std::vector<LatLon> vectorOfCoord(StreetIdx street_id);
 
@@ -88,6 +90,11 @@ bool loadMap(std::string map_streets_database_filename) {
             double length = lengthHelper(i);
             segLength[i] = length;
             segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
+        }
+        stLength = new double[numOfStreets];
+        for(int i = 0; i < numOfStreets; i++){
+            double stlength = streetLengthHelper(i);
+            stLength[i] = stlength;
         }
 
         numOfStreets = getNumStreets();
@@ -463,21 +470,13 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
     return (sqrt(pow(kEarthRadiusInMeters*(lat2-lat1), 2) + pow(kEarthRadiusInMeters*cos(latAvg)*(long2-long1), 2)));
 }
 
-LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
-    double smallestLat = 9999999999;
-    double smallestLong = 9999999999;
-    double maxLat = 0;
-    double maxLong = 0;
-    struct LatLonBounds tempItem;
-    std::vector<LatLon> tempVec = vectorOfCoord(street_id);
-    for(std::vector<LatLon>::iterator it = tempVec.begin(); it != tempVec.end() ; it++){
-        
-    }
-    
-}
+//LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
+  //  return 0;
+//}
+ 
 
 
-double findStreetLength(StreetIdx street_id){
+double streetLengthHelper(StreetIdx street_id){
     double length = 0;
     std::vector<double> tempVec = fillVector(street_id);
     for(std::vector<double>::iterator it = tempVec.begin(); it != tempVec.end(); it++){
@@ -486,6 +485,9 @@ double findStreetLength(StreetIdx street_id){
     return length;
 }
 
+double findStreetLength(StreetIdx street_id){
+    return stLength[street_id];
+}
 double findStreetSegmentLength(StreetSegmentIdx street_segment_id){
     return segLength[street_segment_id];
 }
