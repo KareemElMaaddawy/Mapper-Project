@@ -18,6 +18,11 @@ struct intersection_data {
     bool highlight = false;
 }typedef intersection_data;
 
+struct poiData {
+    LatLon position;
+    std::string name;
+};
+
 std::vector<intersection_data> intersections;
 double avg_lat = 0;
 
@@ -105,7 +110,7 @@ void drawMainCanvas(ezgl::renderer *g) {
             g->set_color(ezgl::GREY_55);
           }
         
-        float width = 100;
+        float width = 75;
         float height = width;
 
         g->fill_rectangle({x - width/2, y - height/2}, {x + width/2, y + height/2});
