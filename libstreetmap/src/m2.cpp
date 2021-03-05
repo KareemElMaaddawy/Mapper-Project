@@ -8,6 +8,8 @@ double x_from_lon(double lon);
 double y_from_lat(double lat);
 double lon_from_x(double x);
 double lat_from_y(double lat);
+double xFromLonPoi(double lon);
+double yFromLatPoi(double lat);
 void act_on_mouse_click(ezgl::application* app,   
                         GdkEventButton* event,
                         double x, double y); 
@@ -21,10 +23,13 @@ struct intersection_data {
 struct poiData {
     LatLon position;
     std::string name;
+    bool highlight = false;
 };
 
 std::vector<intersection_data> intersections;
+std::vector<poiData> poi;
 double avg_lat = 0;
+double avgPoiLat = 0;
 
 //implementations
 double x_from_lon(double lon){
@@ -43,6 +48,13 @@ double lat_from_y(double lon){
     return lon/(kDegreeToRadian * kEarthRadiusInMeters);
 }
 
+double xFromLonPoi(double lon){
+    return lon * kDegreeToRadian * kEarthRadiusInMeters * std::cos(avgPoiLat * kDegreeToRadian);
+}
+
+double yFromLatPoi(double lat){
+    return lat * kDegreeToRadian * kEarthRadiusInMeters;
+}
 
 
 void act_on_mouse_click(ezgl::application* app,   
@@ -60,11 +72,16 @@ void act_on_mouse_click(ezgl::application* app,
 }
 
 void drawMap () {
+    double maxPoiLat = getPOIPosition(0).latitude();
+    double minPoiLat = maxPoiLat;
+    double maxPoiLong = getPOIPosition(0).longitude();
+    double minPoiLong = maxPoiLong;
     double max_lat = getIntersectionPosition(0).latitude(); 
     double min_lat = max_lat;
     double max_lon = getIntersectionPosition(0).longitude();
     double min_lon = max_lon;
     intersections.resize(getNumIntersections());
+    poi.resize(getNumPointsOfInterest());
 
     for (int id = 0; id < getNumIntersections(); ++id) {  
       intersections[id].position = getIntersectionPosition(id);
@@ -76,7 +93,19 @@ void drawMap () {
       min_lon = std::min(min_lon, intersections[id].position.longitude());
     }
     
+    for(int i = 0; i < getNumPointsOfInterest(); i++){
+        poi[i].position = getPOIPosition(i);
+        poi[i].name = getPOIName(i);
+        
+        maxPoiLat = std::max(maxPoiLat, poi[i].position.latitude());
+        minPoiLat = std::max(minPoiLat, poi[i].position.latitude());
+        maxPoiLong = std::max(maxPoiLong, poi[i].position.longitude());
+        minPoiLong = std::min(minPoiLong, poi[i].position.longitude());
+    }
+    
+    
     avg_lat = (min_lat + max_lat)/2;
+    avgPoiLat = (minPoiLat + maxPoiLat)/2;
 
     ezgl::application::settings settings;
     settings.main_ui_resource = "libstreetmap/resources/main.ui";
@@ -114,5 +143,19 @@ void drawMainCanvas(ezgl::renderer *g) {
         float height = width;
 
         g->fill_rectangle({x - width/2, y - height/2}, {x + width/2, y + height/2});
+    }
+    
+    for(int i = 0; i < poi.size(); i++){
+        double x = xFromLonPoi(poi[i].position.longitude());
+        double y = yFromLatPoi(poi[i].position.latitude());
+        
+        if (poi[i].highlight == false){
+            g->set_color(ezgl::RED);
+        }
+        
+        double width = 100;
+        float height = width;
+        
+        g->fill_rectangle({x-width/2, y-height/2}, {x+width/2, y+height/2});
     }
 }
