@@ -143,6 +143,20 @@ void drawMainCanvas(ezgl::renderer *g) {
         float height = width;
 
         g->fill_rectangle({x - width/2, y - height/2}, {x + width/2, y + height/2});
+        /*DRAWS THE SEGMENTS OF AN INTERSECTION*/
+        
+        //create a vector of adjacent intersections
+        std::vector<IntersectionIdx> adjacent_intersections = findAdjacentIntersections(i);
+        
+        //loop through the adjacent intersections
+        for(IntersectionIdx adjacent_ids = 0; adjacent_ids < adjacent_intersections.size(); ++adjacent_ids){
+            //find the x and y coordinates of those adjacent intersections 
+            LatLon adjacent_latlon = getIntersectionPosition(adjacent_intersections[adjacent_ids]);
+            float x_adj = x_from_lon(adjacent_latlon.longitude());
+            float y_adj = y_from_lat(adjacent_latlon.latitude());
+            
+            g->draw_line({x, y}, {x_adj, y_adj});
+        }
     }
     
     for(int i = 0; i < poi.size(); i++){
