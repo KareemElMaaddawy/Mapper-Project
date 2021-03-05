@@ -90,16 +90,10 @@ void drawMap () {
     
     
     
-    application.run(nullptr, nullptr, act_on_mouse_click, nullptr);
+    application.run(nullptr, act_on_mouse_click, nullptr, nullptr);
 }
 
 void drawMainCanvas(ezgl::renderer *g) { 
- 
-    
-    for (int id = 0; id < getNumIntersections(); ++id) {
-        intersections[id].position = getIntersectionPosition(id);   
-        intersections[id].name = getIntersectionName(id);
-    }
   
     for (int i = 0; i < intersections.size(); ++i) {
         float x = x_from_lon(intersections[i].position.longitude());
