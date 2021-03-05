@@ -108,6 +108,6 @@ void drawMainCanvas(ezgl::renderer *g) {
         float width = 100;
         float height = width;
 
-        g->fill_rectangle({x, y}, {x + width, y + height});
+        g->fill_rectangle({x - width/2, y - height/2}, {x + width/2, y + height/2});
     }
 }
