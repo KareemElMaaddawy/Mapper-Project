@@ -134,7 +134,7 @@ void drawMainCanvas(ezgl::renderer *g) {
         float y = y_from_lat(intersections[i].position.latitude());
         
         if (intersections[i].highlight) {
-            g->set_color(ezgl::RED);
+            g->set_color(ezgl::YELLOW);
           } else {
             g->set_color(ezgl::GREY_55);
           }
