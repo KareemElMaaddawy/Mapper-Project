@@ -2,7 +2,7 @@
 #include "m1.h"
 #include "ezgl/application.hpp"
 #include "ezgl/graphics.hpp"
-
+#include "globalClasses.h"
 //function declarations
 void drawMainCanvas(ezgl::renderer *g);
 
@@ -182,7 +182,14 @@ void drawMainCanvas(ezgl::renderer *g) {
             LatLon adjacent_latlon = getIntersectionPosition(adjacent_intersections[adjacent_ids]);
             float x_adj = x_from_lon(adjacent_latlon.longitude());
             float y_adj = y_from_lat(adjacent_latlon.latitude());
-
+            
+            if (aspVar >= 0){
+                g->set_line_width(aspVar/2);
+            }else{
+                aspVar = 0;
+                g->set_line_width(aspVar);
+            }
+            
             g->draw_line({x, y}, {x_adj, y_adj});
         }
     }

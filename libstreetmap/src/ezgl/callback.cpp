@@ -147,6 +147,7 @@ gboolean scroll_mouse(GtkWidget *, GdkEvent *event, gpointer data)
     if(scroll_event->direction == GDK_SCROLL_UP) {
       // Zoom in at the scroll point
       ezgl::zoom_in(canvas, scroll_point, 5.0 / 3.0);
+      
     } else if(scroll_event->direction == GDK_SCROLL_DOWN) {
       // Zoom out at the scroll point
       ezgl::zoom_out(canvas, scroll_point, 5.0 / 3.0);
