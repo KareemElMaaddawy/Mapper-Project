@@ -22,6 +22,9 @@ void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y);
 
+void loadFeatures();
+void drawFeatures(ezgl::renderer *g);
+
 //variable declarations
 struct intersection_data {
     LatLon position;
@@ -121,23 +124,10 @@ void drawMap() {
         minPoiLong = std::min(minPoiLong, poi[i].position.longitude());
     }
 
-    features.resize(getNumFeatures());
-
-    for (int i = 0; i < getNumFeatures(); ++i) {
-        features[i].name = getFeatureName(i);
-        features[i].type = getFeatureType(i);
-        features[i].numOfPoints = getNumFeaturePoints(i);
-        for (int j = 0; j < features[i].numOfPoints; ++j) {
-            features[i].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
-                                                                 y_from_lat(getFeaturePoint(i, j).latitude())));
-        }
-        if (features[i].positionalPoints[0] == features[i].positionalPoints[features[i].numOfPoints]) {
-            features[i].closed = true;
-        }
-    }
-
     avg_lat = (min_lat + max_lat) / 2;
     avgPoiLat = (minPoiLat + maxPoiLat) / 2;
+
+    loadFeatures();
 
     ezgl::application::settings settings;
     settings.main_ui_resource = "libstreetmap/resources/main.ui";
@@ -155,7 +145,11 @@ void drawMap() {
     application.run(nullptr, act_on_mouse_click, nullptr, nullptr);
 }
 
+
+
 void drawMainCanvas(ezgl::renderer *g) {
+
+    drawFeatures(g);
 
     for (int i = 0; i < intersections.size(); ++i) {
         float x = x_from_lon(intersections[i].position.longitude());
@@ -207,6 +201,30 @@ void drawMainCanvas(ezgl::renderer *g) {
 
         g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
     }
+
+
+
+}
+
+void loadFeatures(){
+    features.resize(getNumFeatures());
+
+    for (int i = 0; i < getNumFeatures(); ++i) {
+        features[i].name = getFeatureName(i);
+        features[i].type = getFeatureType(i);
+        features[i].numOfPoints = getNumFeaturePoints(i);
+        for (int j = 0; j < features[i].numOfPoints; ++j) {
+            features[i].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
+                                                                 y_from_lat(getFeaturePoint(i, j).latitude())));
+        }
+        if (features[i].positionalPoints[0] == features[i].positionalPoints[features[i].numOfPoints-1]) {
+            features[i].closed = true;
+        }
+    }
+}
+
+void drawFeatures(ezgl::renderer *g){
+    g->set_line_width(1);
     for (int i = 0; i < getNumFeatures(); ++i) {
         if (features[i].type == "PARK") {
             g->set_color(ezgl::GREEN);
@@ -227,11 +245,16 @@ void drawMainCanvas(ezgl::renderer *g) {
         } else if (features[i].type == "STREAM") {
             g->set_color(ezgl::LIGHT_SKY_BLUE);
         } else {
-            g->set_color(ezgl::GREY_75);
+            g->set_color(ezgl::PINK);
         }
         if (features[i].closed) {
-            g->fill_poly(features[i].positionalPoints);
+            if(features[i].positionalPoints.size() != 1) {
+                g->fill_poly(features[i].positionalPoints);
+            }
+        }else{
+            for(int j = 0; j < features[i].numOfPoints-1; ++j){
+                g->draw_line(features[i].positionalPoints[j],features[i].positionalPoints[j+1]);
+            }
         }
-
     }
 }

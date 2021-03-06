@@ -9,10 +9,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="commented out fillvector">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021-02-12,_11_39_a_m__[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021-02-12,_12_47_p_m__[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021-02-12,_3_28_p_m__[Default_Changelist]/shelved.patch" beforeDir="false" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="loaded feature info into structs, started drawing">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021-02-12__11_39_a_m___Default_Changelist_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021-02-12__12_47_p_m___Default_Changelist_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2021-02-12__3_28_p_m___Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
     </list>
@@ -62,6 +62,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.first.check.clang-format" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="debugger.stepping" />
   </component>
   <component name="RunManager" selected="Makefile Application.Release">
@@ -115,7 +116,10 @@
       <workItem from="1613602157230" duration="427000" />
       <workItem from="1613602597843" duration="9076000" />
       <workItem from="1613613246576" duration="654000" />
-      <workItem from="1614978816808" duration="9385000" />
+      <workItem from="1614978816808" duration="9755000" />
+      <workItem from="1615047347681" duration="5642000" />
+      <workItem from="1615070108469" duration="1686000" />
+      <workItem from="1615072396774" duration="2087000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -243,7 +247,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613613815300</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="loaded feature info into structs, started drawing">
+      <created>1615002595662</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1615002595662</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,7 +265,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -278,23 +301,23 @@
     <MESSAGE value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
     <MESSAGE value="restructured partialStreetName around multimap, removed trie" />
     <MESSAGE value="commented out fillvector" />
-    <option name="LAST_COMMIT_MESSAGE" value="commented out fillvector" />
+    <MESSAGE value="loaded feature info into structs, started drawing" />
+    <option name="LAST_COMMIT_MESSAGE" value="loaded feature info into structs, started drawing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>130</line>
-          <option name="timeStamp" value="3" />
+          <line>251</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
-        <watch expression="key-&gt;first._M_dataplus._M_p" />
-        <watch expression="street_prefix._M_dataplus._M_p" />
-        <watch expression="key-&gt;second" />
+        <watch expression="features" />
+        <watch expression="features[0].positionalPoints" language="ObjectiveC" />
       </configuration>
     </watches-manager>
   </component>
