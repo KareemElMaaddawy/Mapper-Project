@@ -26,6 +26,7 @@ void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
 void drawPoi(ezgl::renderer *g);
+void drawPoiLabel(ezgl::renderer *g);
 
 //variable declarations
 struct intersection_data {
@@ -138,6 +139,7 @@ void drawMainCanvas(ezgl::renderer *g) {
 
     drawFeatures(g);
     drawPoi(g);
+    drawPoiLabel(g);
 
     for (int i = 0; i < intersections.size(); ++i) {
         float x = x_from_lon(intersections[i].position.longitude());
@@ -257,14 +259,28 @@ void drawPoi(ezgl::renderer *g){
     for (int i = 0; i < poi.size(); i++) {
         double x = xFromLonPoi(poi[i].position.longitude());
         double y = yFromLatPoi(poi[i].position.latitude());
-
+        
         if (poi[i].highlight == false) {
             g->set_color(ezgl::RED);
         }
 
-        double width = 25;
+        double width = 15;
         float height = width;
 
         g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
+    }
+}
+
+void drawPoiLabel(ezgl::renderer *g){
+    g -> set_font_size(20);
+    g -> set_color(ezgl::PURPLE);
+    for(int i = 0; i < poi.size(); i++){
+        std::string poiName = poi[i].name;
+        double x = xFromLonPoi(poi[i].position.longitude());
+        double y = yFromLatPoi(poi[i].position.latitude());
+        ezgl::point2d center(x,y);
+        
+        float poiLen = 200;
+        g -> draw_text(center, poiName, poiLen, poiLen);
     }
 }
