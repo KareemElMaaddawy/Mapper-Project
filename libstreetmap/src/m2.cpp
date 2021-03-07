@@ -40,7 +40,7 @@ struct poiData {
 
 struct featureData {
     std::string name;
-    std::string type;
+    FeatureType type;
     bool closed = false;
     int numOfPoints = 0;
     std::vector<ezgl::point2d> positionalPoints;
@@ -225,24 +225,25 @@ void loadFeatures(){
 
 void drawFeatures(ezgl::renderer *g){
     g->set_line_width(1);
+
     for (int i = 0; i < getNumFeatures(); ++i) {
-        if (features[i].type == "PARK") {
+        if (features[i].type == 1) {
             g->set_color(ezgl::GREEN);
-        } else if (features[i].type == "BEACH") {
+        } else if (features[i].type == 2) {
             g->set_color(ezgl::KHAKI);
-        } else if (features[i].type == "LAKE") {
+        } else if (features[i].type == 3) {
+            g->set_color(ezgl::LIGHT_SKY_BLUE);
+        } else if (features[i].type == 4) {
             g->set_color(ezgl::BLUE);
-        } else if (features[i].type == "RIVER") {
-            g->set_color(ezgl::BLUE);
-        } else if (features[i].type == "ISLAND") {
+        } else if (features[i].type == 5) {
             g->set_color(ezgl::GREEN);
-        } else if (features[i].type == "BUILDING") {
+        } else if (features[i].type == 6) {
             g->set_color(ezgl::GREY_55);
-        } else if (features[i].type == "GREENSPACE") {
+        } else if (features[i].type == 7) {
             g->set_color(ezgl::GREEN);
-        } else if (features[i].type == "GOLFCOURSE") {
+        } else if (features[i].type == 8) {
             g->set_color(ezgl::DARK_GREEN);
-        } else if (features[i].type == "STREAM") {
+        } else if (features[i].type == 9) {
             g->set_color(ezgl::LIGHT_SKY_BLUE);
         } else {
             g->set_color(ezgl::PINK);
