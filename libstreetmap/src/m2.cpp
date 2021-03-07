@@ -272,6 +272,7 @@ void drawPoi(ezgl::renderer *g){
 }
 
 void drawPoiLabel(ezgl::renderer *g){
+    if(aspVar >= 16.666){
     g -> set_font_size(20);
     g -> set_color(ezgl::PURPLE);
     for(int i = 0; i < poi.size(); i++){
@@ -282,5 +283,6 @@ void drawPoiLabel(ezgl::renderer *g){
         
         float poiLen = 200;
         g -> draw_text(center, poiName, poiLen, poiLen);
+    }
     }
 }
