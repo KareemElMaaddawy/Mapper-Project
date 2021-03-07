@@ -24,6 +24,8 @@ void act_on_mouse_click(ezgl::application *app,
 
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
+void loadPoi();
+void drawPoi(ezgl::renderer *g);
 
 //variable declarations
 struct intersection_data {
@@ -93,16 +95,11 @@ void act_on_mouse_click(ezgl::application *app,
 }
 
 void drawMap() {
-    double maxPoiLat = getPOIPosition(0).latitude();
-    double minPoiLat = maxPoiLat;
-    double maxPoiLong = getPOIPosition(0).longitude();
-    double minPoiLong = maxPoiLong;
     double max_lat = getIntersectionPosition(0).latitude();
     double min_lat = max_lat;
     double max_lon = getIntersectionPosition(0).longitude();
     double min_lon = max_lon;
     intersections.resize(getNumIntersections());
-    poi.resize(getNumPointsOfInterest());
 
     for (int id = 0; id < getNumIntersections(); ++id) {
         intersections[id].position = getIntersectionPosition(id);
@@ -114,19 +111,9 @@ void drawMap() {
         min_lon = std::min(min_lon, intersections[id].position.longitude());
     }
 
-    for (int i = 0; i < getNumPointsOfInterest(); i++) {
-        poi[i].position = getPOIPosition(i);
-        poi[i].name = getPOIName(i);
-
-        maxPoiLat = std::max(maxPoiLat, poi[i].position.latitude());
-        minPoiLat = std::max(minPoiLat, poi[i].position.latitude());
-        maxPoiLong = std::max(maxPoiLong, poi[i].position.longitude());
-        minPoiLong = std::min(minPoiLong, poi[i].position.longitude());
-    }
-
     avg_lat = (min_lat + max_lat) / 2;
-    avgPoiLat = (minPoiLat + maxPoiLat) / 2;
-
+    
+    loadPoi();
     loadFeatures();
 
     ezgl::application::settings settings;
@@ -150,6 +137,7 @@ void drawMap() {
 void drawMainCanvas(ezgl::renderer *g) {
 
     drawFeatures(g);
+    drawPoi(g);
 
     for (int i = 0; i < intersections.size(); ++i) {
         float x = x_from_lon(intersections[i].position.longitude());
@@ -161,7 +149,7 @@ void drawMainCanvas(ezgl::renderer *g) {
             g->set_color(ezgl::GREY_55);
         }
 
-        float width = 75;
+        float width = 25;
         float height = width;
 
         g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
@@ -187,22 +175,6 @@ void drawMainCanvas(ezgl::renderer *g) {
             g->draw_line({x, y}, {x_adj, y_adj});
         }
     }
-
-    for (int i = 0; i < poi.size(); i++) {
-        double x = xFromLonPoi(poi[i].position.longitude());
-        double y = yFromLatPoi(poi[i].position.latitude());
-
-        if (poi[i].highlight == false) {
-            g->set_color(ezgl::RED);
-        }
-
-        double width = 100;
-        float height = width;
-
-        g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
-    }
-
-
 
 }
 
@@ -257,5 +229,42 @@ void drawFeatures(ezgl::renderer *g){
                 g->draw_line(features[i].positionalPoints[j],features[i].positionalPoints[j+1]);
             }
         }
+    }
+}
+
+void loadPoi(){
+    poi.resize(getNumPointsOfInterest());
+    double maxPoiLat = getPOIPosition(0).latitude();
+    double minPoiLat = maxPoiLat;
+    double maxPoiLong = getPOIPosition(0).longitude();
+    double minPoiLong = maxPoiLong;
+    
+    
+    
+    for (int i = 0; i < getNumPointsOfInterest(); i++) {
+        poi[i].position = getPOIPosition(i);
+        poi[i].name = getPOIName(i);
+
+        maxPoiLat = std::max(maxPoiLat, poi[i].position.latitude());
+        minPoiLat = std::min(minPoiLat, poi[i].position.latitude());
+        maxPoiLong = std::max(maxPoiLong, poi[i].position.longitude());
+        minPoiLong = std::min(minPoiLong, poi[i].position.longitude());
+    }
+    avgPoiLat = (minPoiLat + maxPoiLat) / 2;
+}
+
+void drawPoi(ezgl::renderer *g){
+    for (int i = 0; i < poi.size(); i++) {
+        double x = xFromLonPoi(poi[i].position.longitude());
+        double y = yFromLatPoi(poi[i].position.latitude());
+
+        if (poi[i].highlight == false) {
+            g->set_color(ezgl::RED);
+        }
+
+        double width = 25;
+        float height = width;
+
+        g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
     }
 }
