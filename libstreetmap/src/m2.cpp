@@ -151,7 +151,7 @@ void drawMainCanvas(ezgl::renderer *g) {
             g->set_color(ezgl::GREY_55);
         }
 
-        float width = 25;
+        float width = 10;
         float height = width;
 
         g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
@@ -261,27 +261,29 @@ void drawPoi(ezgl::renderer *g){
         double y = yFromLatPoi(poi[i].position.latitude());
         
         if (poi[i].highlight == false) {
-            g->set_color(ezgl::RED);
+            g->set_color(ezgl::LIGHT_SKY_BLUE);
         }
 
         double width = 15;
         float height = width;
 
-        g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
+        g->fill_arc({x - width / 2, y - height / 2}, 3.5, 0, 360);
     }
 }
 
 void drawPoiLabel(ezgl::renderer *g){
     if(aspVar >= 16.666){
     g -> set_font_size(20);
-    g -> set_color(ezgl::PURPLE);
+    g -> set_color(ezgl::BLACK);
     for(int i = 0; i < poi.size(); i++){
         std::string poiName = poi[i].name;
         double x = xFromLonPoi(poi[i].position.longitude());
         double y = yFromLatPoi(poi[i].position.latitude());
-        ezgl::point2d center(x,y);
+        double width = 15;
+        double height = width;
+        ezgl::point2d center(x-width/2,y-height/2);
         
-        float poiLen = 200;
+        float poiLen = 100;
         g -> draw_text(center, poiName, poiLen, poiLen);
     }
     }
