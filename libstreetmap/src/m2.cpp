@@ -5,6 +5,7 @@
 #include "globalClasses.h"
 //function declarations
 void drawMainCanvas(ezgl::renderer *g);
+void initial_setup(ezgl::application *application, bool new_window);
 
 double x_from_lon(double lon);
 
@@ -22,6 +23,7 @@ void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y);
 
+void findButton(GtkWidget *widget, ezgl::application *application);
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
@@ -130,7 +132,7 @@ void drawMap() {
     application.add_canvas("MainCanvas", drawMainCanvas, initial_world);
 
 
-    application.run(nullptr, act_on_mouse_click, nullptr, nullptr);
+    application.run(initial_setup, act_on_mouse_click, nullptr, nullptr);
 }
 
 
@@ -287,4 +289,15 @@ void drawPoiLabel(ezgl::renderer *g){
         g -> draw_text(center, poiName, poiLen, poiLen);
     }
     }
+}
+
+void initial_setup(ezgl::application *application, bool){
+    application -> create_button("Find",8,findButton);
+}
+
+void findButton(GtkWidget *, ezgl::application *application){
+    //Tells status bar that find button was pressed
+    application -> update_message("Find Button Pressed");
+    //Redraw Main Canvas
+    application -> refresh_drawing();
 }
