@@ -46,7 +46,8 @@ double xFromLonPoi(double lon);
 double yFromLatPoi(double lat);
 
 GtkEntry* searchEntry = nullptr;
-
+GtkEntry* firstStreetEntry = nullptr;
+GtkEntry* secondStreetEntry = nullptr;
 GtkComboBox* mapBox = nullptr;
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
@@ -310,9 +311,11 @@ void selectButtonClk(GtkWidget *, ezgl::application *application){
 }
 
 void initial_setup(ezgl::application *application, bool){
-    application -> create_button("Find",8,findButton);
+//    application -> create_button("Find",8,findButton);
 
     searchEntry = (GtkEntry*)(application -> get_object("SearchInput"));
+    firstStreetEntry = (GtkEntry*)(application -> get_object("FirstStreet"));
+    secondStreetEntry = (GtkEntry*)(application -> get_object("SecondStreet"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
 //    g_signal_connect(
 //            application->get_object("mapSelectBtn"),
@@ -322,6 +325,7 @@ void initial_setup(ezgl::application *application, bool){
 //            );
 
     g_signal_connect(application -> get_object("testbutton"), "clicked", G_CALLBACK(findButton), application);
+    g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
     g_signal_connect(searchEntry, "icon_press", G_CALLBACK(searchBar), application);
 }
 void searchBar(GtkEntry *, ezgl::application *application){
@@ -330,7 +334,7 @@ void searchBar(GtkEntry *, ezgl::application *application){
   std::cout <<"searched: "<< search_term<<std::endl;
   userInput = search_term;
   gtk_entry_set_text(GTK_ENTRY(searchEntry), "");
-
+  
     
 
 }
@@ -342,5 +346,60 @@ void findButton(GtkWidget *, ezgl::application *application){
     //Redraw Main Canvas
     application -> refresh_drawing();
     
+    
+    std::string firstTerm = gtk_entry_get_text(firstStreetEntry);
+    std::string secondTerm = gtk_entry_get_text(secondStreetEntry);
+    std::cout<< "first street: " << firstTerm << " second street: " << secondTerm << std::endl;
+    
+    
+
+    if (firstTerm != "" && secondTerm != ""){
+        
+        std::vector<StreetIdx> possibleFirstStreets = findStreetIdsFromPartialStreetName(firstTerm);
+        std::vector<StreetIdx> possibleSecondStreets = findStreetIdsFromPartialStreetName(secondTerm);
+        std::string correctFirstStreetName = "";
+        std::string correctSecondStreetName = "";
+        if((possibleFirstStreets.size() == 1) && (possibleSecondStreets.size() == 1)){
+            std::string fullFirstFromPartial = getStreetName(possibleFirstStreets[0]);
+            std::string fullSecondFromPartial = getStreetName(possibleSecondStreets[0]);
+            std::cout << "first full street name: " << fullFirstFromPartial <<std::endl;
+            std::cout << "second full street name: " << fullSecondFromPartial <<std::endl;
+        }else{
+            
+            for (int i = 0; i < possibleFirstStreets.size(); ++i){
+                if (getStreetName(possibleFirstStreets[i]) == firstTerm){
+                    correctFirstStreetName = firstTerm;
+                }
+            }
+            for (int i = 0; i < possibleSecondStreets.size(); ++i){
+                if (getStreetName(possibleSecondStreets[i]) == secondTerm){
+                    correctSecondStreetName = secondTerm;
+                }
+            }
+            if(correctSecondStreetName == "" || correctFirstStreetName == ""){
+                std::cout<<"more info needed"<<std::endl << "first term: " << firstTerm << std::endl<<"second term: "<< secondTerm <<std::endl;
+                std::cout << "all possible names for first: " << std::endl;
+                for (int i = 0; i < possibleFirstStreets.size(); ++i){
+                    std::cout << getStreetName(possibleFirstStreets[i]) << std::endl;
+                }
+                std::cout << "all possible names for second: " << std::endl;
+                for (int i = 0; i < possibleSecondStreets.size(); ++i){
+
+                    std::cout << getStreetName(possibleSecondStreets[i]) << std::endl;
+                }
+            }
+            else{
+                std::string fullFirstFromPartial = correctFirstStreetName;
+                std::string fullSecondFromPartial = correctSecondStreetName;
+                std::cout << "first full street name: " << fullFirstFromPartial <<std::endl;
+                std::cout << "second full street name: " << fullSecondFromPartial <<std::endl;
+            }
+        }
+        
+    }else if (firstTerm == "" && secondTerm != ""){
+        std::cout << "needs a first street" << std::endl << "second entry: " << secondTerm << std::endl;
+    }else if (firstTerm != "" && secondTerm == ""){
+        std::cout << "needs a second street" << std::endl << "first entry: " << firstTerm << std::endl;
+    }
     std::cout << "hello world"<<std::endl;
 }

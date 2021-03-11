@@ -356,6 +356,18 @@ double findFeatureArea(FeatureIdx feature_id) {
     }
 }
 
+// Returns all street ids corresponding to street names that start with the 
+// given prefix 
+// The function should be case-insensitive to the street prefix. 
+// The function should ignore spaces.
+//  For example, both "bloor " and "BloOrst" are prefixes to 
+// "Bloor Street East".
+// If no street names match the given prefix, this routine returns an empty 
+// (length 0) vector.
+// You can choose what to return if the street prefix passed in is an empty 
+// (length 0) string, but your program must not crash if street_prefix is a 
+// length 0 string.
+// Speed Requirement --> high 
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix) {
     street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
     std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(),
