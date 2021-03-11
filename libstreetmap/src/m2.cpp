@@ -185,7 +185,8 @@ void drawMainCanvas(ezgl::renderer *g) {
         
     }
     /*DRAWS THE SEGMENTS*/
-    for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
+    //!!!!!!!!!!segment is a temporary name for street here!!!!!!!!!!!!
+    for (StreetIdx segment = 0; segment < points_on_segments.size(); ++segment) {
         for(int point = 0; point < xy_points_segments[segment].size(); ++point){
             if(point < xy_points_segments[segment].size() - 1){ 
                 g->set_line_width(0);
@@ -193,6 +194,9 @@ void drawMainCanvas(ezgl::renderer *g) {
                 std::pair<float, float> second_point = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
                 g->draw_line({first_point.first, first_point.second}, {second_point.first, second_point.second});
             }
+//            else if(point == xy_points_segments[segment].size() - 1){
+//                if(segment < s)
+//            }
         }
     }
 }

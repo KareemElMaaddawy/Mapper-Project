@@ -24,6 +24,7 @@ extern double aspVar;
 extern double avg_lat;
 extern double avg_lon;
 extern std::string userInput;
+std::vector<LatLon> vectorOfCoord(StreetIdx street_id);
 double x_from_lon(double lon);
 double y_from_lat(double lat);
 
