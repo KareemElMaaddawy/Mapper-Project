@@ -26,7 +26,7 @@
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
 #include <algorithm>
 #include <utility>
-
+#include "globalHeader.h"
 #include <vector>
 #include <map>
 #include <boost/functional/hash.hpp>
@@ -202,9 +202,31 @@ bool loadMap(std::string map_streets_database_filename) {
                 }
             }
         }
-
-
-
+        
+        
+        points_on_segments.resize(getNumStreetSegments());
+        for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); segment++){
+            int total_number_of_points = getStreetSegmentInfo(segment).numCurvePoints;
+            for(int point = 0; point < total_number_of_points; ++point){
+                points_on_segments[segment].push_back(getStreetSegmentCurvePoint(segment, point));
+            }        
+        }
+        xy_points_segments.resize(getNumStreetSegments());
+        
+        for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); segment++){
+            for(int point = 0; point < points_on_segments[segment].size(); ++point){
+                float lon = points_on_segments[segment][point].longitude();
+                float lat = points_on_segments[segment][point].latitude();
+                float x = x_from_lon(lon);
+                float y = y_from_lat(lat);
+                    std::pair<float, float> xy = {x, y};
+                    xy_points_segments[segment].push_back(xy);
+                    
+                
+               
+            }
+        }
+        
     }return load_successful;
 }
 

@@ -2,14 +2,12 @@
 #include "m1.h"
 #include "ezgl/application.hpp"
 #include "ezgl/graphics.hpp"
-#include "globalClasses.h"
+#include "globalHeader.h"
 //function declarations
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
 
-double x_from_lon(double lon);
 
-double y_from_lat(double lat);
 
 double lon_from_x(double x);
 
@@ -54,17 +52,11 @@ struct featureData {
 std::vector<featureData> features;
 std::vector<intersection_data> intersections;
 std::vector<poiData> poi;
-double avg_lat = 0;
+
 double avgPoiLat = 0;
 
 //implementations
-double x_from_lon(double lon) {
-    return lon * kDegreeToRadian * kEarthRadiusInMeters * std::cos(avg_lat * kDegreeToRadian);
-}
 
-double y_from_lat(double lat) {
-    return lat * kDegreeToRadian * kEarthRadiusInMeters;
-}
 
 double lon_from_x(double x) {
     return x / (kDegreeToRadian * kEarthRadiusInMeters * std::cos(avg_lat * kDegreeToRadian));
@@ -157,29 +149,19 @@ void drawMainCanvas(ezgl::renderer *g) {
         float height = width;
 
         g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
-        /*DRAWS THE SEGMENTS OF AN INTERSECTION*/
-
-        //create a vector of adjacent intersections
-        std::vector<IntersectionIdx> adjacent_intersections = findAdjacentIntersections(i);
-
-        //loop through the adjacent intersections
-        for (IntersectionIdx adjacent_ids = 0; adjacent_ids < adjacent_intersections.size(); ++adjacent_ids) {
-            //find the x and y coordinates of those adjacent intersections 
-            LatLon adjacent_latlon = getIntersectionPosition(adjacent_intersections[adjacent_ids]);
-            float x_adj = x_from_lon(adjacent_latlon.longitude());
-            float y_adj = y_from_lat(adjacent_latlon.latitude());
-            
-            if (aspVar >= 0){
-                g->set_line_width(aspVar/2);
-            }else{
-                aspVar = 0;
-                g->set_line_width(aspVar);
+        
+    }
+    /*DRAWS THE SEGMENTS*/
+    for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
+        for(int point = 0; point < xy_points_segments[segment].size(); ++point){
+            if(point < xy_points_segments[segment].size() - 1){ 
+                g->set_line_width(0);
+                std::pair<float, float> first_point = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                std::pair<float, float> second_point = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
+                g->draw_line({first_point.first, first_point.second}, {second_point.first, second_point.second});
             }
-            
-            g->draw_line({x, y}, {x_adj, y_adj});
         }
     }
-
 }
 
 void loadFeatures(){
