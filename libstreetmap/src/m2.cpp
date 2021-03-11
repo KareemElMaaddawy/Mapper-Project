@@ -80,8 +80,15 @@ void drawFeatures(ezgl::renderer *g);
 void loadPoi();
 void drawPoi(ezgl::renderer *g);
 void drawPoiLabel(ezgl::renderer *g);
+void loadStreets();
+void drawStreetLabels(ezgl::renderer *g);
 
 //variable declarations
+struct streetData{
+    std::string name;
+    std::vector<int> segmentsOfStreet;
+};
+
 struct intersection_data {
     LatLon position;
     std::string name;
@@ -102,6 +109,7 @@ struct featureData {
     std::vector<ezgl::point2d> positionalPoints;
 };
 
+std::vector<streetData> streets;
 std::vector<featureData> features;
 std::vector<intersection_data> intersections;
 std::vector<poiData> poi;
@@ -160,10 +168,10 @@ void drawMap() {
     }
 
     
-    
+    loadStreets();
     loadPoi();
     loadFeatures();
-
+    
     ezgl::application::settings settings;
     settings.main_ui_resource = "libstreetmap/resources/main.ui";
     settings.window_identifier = "MainWindow";
@@ -245,6 +253,7 @@ void drawMainCanvas(ezgl::renderer *g) {
             }
         }
     }
+    drawStreetLabels(g);
 }
 
 void loadFeatures(){
@@ -454,4 +463,41 @@ void findButton(GtkWidget *, ezgl::application *application){
         std::cout << "needs a second street" << std::endl << "first entry: " << firstTerm << std::endl;
     }
     std::cout << "hello world"<<std::endl;
+}
+
+void loadStreets(){
+    streets.resize(getNumStreets());
+    for(int i = 0; i < getNumStreets() ; i++){
+        streets[i].name = getStreetName(i);
+        for(int j = 0; j < getNumStreetSegments(); j++){
+            if(getStreetSegmentInfo(j).streetID == i){
+                streets[i].segmentsOfStreet.push_back(j);
+            }
+        }
+    }
+}
+
+void drawStreetLabels(ezgl:: renderer *g){
+    g -> set_color(ezgl:: BLACK);
+    for(int i = 0; i < streets.size(); i++){
+        std::string streetName = streets[i].name;
+        for(int j = 0 ; j < streets[i].segmentsOfStreet.size(); j+=2){
+            double segID = streets[i].segmentsOfStreet[j];
+            double intersecFrom = getStreetSegmentInfo(segID).from;
+            double firstX =  x_from_lon(getIntersectionPosition(intersecFrom).longitude());
+            double firstY =  y_from_lat(getIntersectionPosition(intersecFrom).latitude());
+            double intersecTo = getStreetSegmentInfo(segID).to;
+            double secondX = x_from_lon(getIntersectionPosition(intersecTo).longitude());
+            double secondY = y_from_lat(getIntersectionPosition(intersecTo).latitude());
+            
+            double midPointX = (firstX+secondX)/2;
+            double midPointY = (firstY+secondY)/2;
+            ezgl::point2d  center(midPointX,midPointY);
+            
+            if(streetName != "<unknown>"){
+            g -> draw_text(center, streetName, 100,100);
+            }
+        }
+      
+    }
 }
