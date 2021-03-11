@@ -139,7 +139,7 @@ void drawMap() {
         min_lon = std::min(min_lon, intersections[id].position.longitude());
     }
 
-    avg_lat = (min_lat + max_lat) / 2;
+    
     
     loadPoi();
     loadFeatures();
@@ -185,7 +185,7 @@ void drawMainCanvas(ezgl::renderer *g) {
         
     }
     /*DRAWS THE SEGMENTS*/
-    //!!!!!!!!!!segment is a temporary name for street here!!!!!!!!!!!!
+    
     for (StreetIdx segment = 0; segment < points_on_segments.size(); ++segment) {
         for(int point = 0; point < xy_points_segments[segment].size(); ++point){
             if(point < xy_points_segments[segment].size() - 1){ 

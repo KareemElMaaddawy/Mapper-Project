@@ -202,44 +202,71 @@ bool loadMap(std::string map_streets_database_filename) {
                 }
             }
         }
+        struct intersection_data {
+            LatLon position;
+            std::string name;
+            bool highlight = false;
+        } typedef intersection_data;
+        std::vector<intersection_data> intersections;
+        double max_lat = getIntersectionPosition(0).latitude();
+        double min_lat = max_lat;
+        double max_lon = getIntersectionPosition(0).longitude();
+        double min_lon = max_lon;
+        intersections.resize(getNumIntersections());
+        
+        for (int id = 0; id < getNumIntersections(); ++id) {
+        intersections[id].position = getIntersectionPosition(id);
+        intersections[id].name = getIntersectionName(id);
+
+        max_lat = std::max(max_lat, intersections[id].position.latitude());
+        min_lat = std::min(min_lat, intersections[id].position.latitude());
+        max_lon = std::max(max_lon, intersections[id].position.longitude());
+        min_lon = std::min(min_lon, intersections[id].position.longitude());
+       }
+
+       avg_lat = (min_lat + max_lat) / 2;
         
         
-//        points_on_segments.resize(getNumStreetSegments());
-//        for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); ++segment){
-//            int total_number_of_points = getStreetSegmentInfo(segment).numCurvePoints;
-//            for(int point = 0; point < total_number_of_points; ++point){
-//                points_on_segments[segment].push_back(getStreetSegmentCurvePoint(segment, point));
-//            }        
-//        }
-//        xy_points_segments.resize(getNumStreetSegments());
-//        
-//        for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); segment++){
-//            for(int point = 0; point < points_on_segments[segment].size(); ++point){
-//                float lon = points_on_segments[segment][point].longitude();
-//                float lat = points_on_segments[segment][point].latitude();
-//                float x = x_from_lon(lon);
-//                float y = y_from_lat(lat);
-//                    std::pair<float, float> xy = {x, y};
-//                    xy_points_segments[segment].push_back(xy);
-//                    
-//                
-//               
-//            }
-//        }
-        points_on_segments.resize(numOfStreets);
-        xy_points_segments.resize(numOfStreets);
-        for(int street = 0; street < numOfStreets; ++street){
-            std::vector<LatLon> allStreetPoints = vectorOfCoord(street);
-            int sizeOfStreet = allStreetPoints.size();
-            for(int point = 0; point < sizeOfStreet; ++point){
-                float lon = allStreetPoints[point].longitude();
-                float lat = allStreetPoints[point].latitude();
+        /*TOO FEW CONNECTIONS*/
+        points_on_segments.resize(getNumStreetSegments());
+        for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); ++segment){
+            int total_number_of_points = getStreetSegmentInfo(segment).numCurvePoints;
+            for(int point = 0; point < total_number_of_points; ++point){
+                points_on_segments[segment].push_back(getStreetSegmentCurvePoint(segment, point));
+            }        
+        }
+        xy_points_segments.resize(getNumStreetSegments());
+        
+        for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); segment++){
+            for(int point = 0; point < points_on_segments[segment].size(); ++point){
+                float lon = points_on_segments[segment][point].longitude();
+                float lat = points_on_segments[segment][point].latitude();
                 float x = x_from_lon(lon);
                 float y = y_from_lat(lat);
                     std::pair<float, float> xy = {x, y};
-                    xy_points_segments[street].push_back(xy);
+                    xy_points_segments[segment].push_back(xy);
+                    
+                
+               
             }
         }
+        
+        /*TOO MANY CONNECTIONS*/
+//        points_on_segments.resize(numOfStreets);
+//        xy_points_segments.resize(numOfStreets);
+//        for(int street = 0; street < numOfStreets; ++street){
+//            std::vector<LatLon> allStreetPoints = vectorOfCoord(street);
+//            int sizeOfStreet = allStreetPoints.size();
+//            for(int point = 0; point < sizeOfStreet; ++point){
+//                float lon = allStreetPoints[point].longitude();
+//                float lat = allStreetPoints[point].latitude();
+//                float x = x_from_lon(lon);
+//                float y = y_from_lat(lat);
+//                    std::pair<float, float> xy = {x, y};
+//                    xy_points_segments[street].push_back(xy);
+//            }
+//        }
+//      
         
     }return load_successful;
 }
