@@ -9,9 +9,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="features drawn, need to figure out colors">
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="features drawn, need to figure out colors" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -306,7 +304,8 @@
     <MESSAGE value="commented out fillvector" />
     <MESSAGE value="loaded feature info into structs, started drawing" />
     <MESSAGE value="features drawn, need to figure out colors" />
-    <option name="LAST_COMMIT_MESSAGE" value="features drawn, need to figure out colors" />
+    <MESSAGE value="added support to switch maps" />
+    <option name="LAST_COMMIT_MESSAGE" value="added support to switch maps" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
