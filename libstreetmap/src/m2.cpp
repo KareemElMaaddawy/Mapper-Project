@@ -186,17 +186,43 @@ void drawMainCanvas(ezgl::renderer *g) {
     }
     /*DRAWS THE SEGMENTS*/
     
-    for (StreetIdx segment = 0; segment < points_on_segments.size(); ++segment) {
+    for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
+        //if(points_on_segments.size() <= )
         for(int point = 0; point < xy_points_segments[segment].size(); ++point){
-            if(point < xy_points_segments[segment].size() - 1){ 
+            if (point == 0){
+                std::pair<double, double> secondPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                std::pair<double, double> thirdPoint = {xy_points_segments[segment][point+1].first, xy_points_segments[segment][point+1].second};
+                IntersectionIdx fromIntersection = getStreetSegmentInfo(segment).from;
+                LatLon firstPoint = getIntersectionPosition(fromIntersection);
+                double x = x_from_lon(firstPoint.longitude());
+                double y = y_from_lat(firstPoint.latitude());
+                g->set_color(ezgl::GREEN);
                 g->set_line_width(0);
-                std::pair<float, float> first_point = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
-                std::pair<float, float> second_point = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
-                g->draw_line({first_point.first, first_point.second}, {second_point.first, second_point.second});
+                g->draw_line({x, y}, {secondPoint.first, secondPoint.second});
+                if(xy_points_segments[segment].size() > 1){
+                    g->draw_line({secondPoint.first, secondPoint.second}, {thirdPoint.first, thirdPoint.second});
+                }
+                if(xy_points_segments[segment].size() == 0){
+                    std::cout<<"there is a zero"<<std::endl;
+                }
             }
-//            else if(point == xy_points_segments[segment].size() - 1){
-//                if(segment < s)
-//            }
+            if((point < xy_points_segments[segment].size() - 1) || ((xy_points_segments[segment].size() < 2)&&(point == xy_points_segments[segment].size()))){
+                g->set_line_width(0);
+                std::pair<double, double> formerPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                std::pair<double, double> latterPoint = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
+                g->set_color(ezgl::BLACK);
+                g->draw_line({formerPoint.first, formerPoint.second}, {latterPoint.first, latterPoint.second});
+            }
+            else if(point == xy_points_segments[segment].size() - 1){
+                std::pair<double, double> pointBeforeLast = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                IntersectionIdx toIntersection = getStreetSegmentInfo(segment).to;
+                LatLon lastPoint = getIntersectionPosition(toIntersection);
+                double x = x_from_lon(lastPoint.longitude());
+                double y = y_from_lat(lastPoint.latitude());
+                g->set_color(ezgl::PURPLE);
+                g->set_line_width(0);
+                g->draw_line({pointBeforeLast.first, pointBeforeLast.second}, {x, y});
+            }
         }
     }
 }

@@ -231,6 +231,15 @@ bool loadMap(std::string map_streets_database_filename) {
         points_on_segments.resize(getNumStreetSegments());
         for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); ++segment){
             int total_number_of_points = getStreetSegmentInfo(segment).numCurvePoints;
+            if(total_number_of_points == 0){
+                IntersectionIdx toIntersection = getStreetSegmentInfo(segment).to;
+                IntersectionIdx fromIntersection = getStreetSegmentInfo(segment).from;
+                LatLon toPoint = getIntersectionPosition(toIntersection);
+                LatLon fromPoint = getIntersectionPosition(fromIntersection);
+                
+                points_on_segments[segment].push_back(toPoint);
+                points_on_segments[segment].push_back(fromPoint);
+            }
             for(int point = 0; point < total_number_of_points; ++point){
                 points_on_segments[segment].push_back(getStreetSegmentCurvePoint(segment, point));
             }        

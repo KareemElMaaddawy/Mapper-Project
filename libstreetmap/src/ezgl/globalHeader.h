@@ -19,7 +19,7 @@
 #pragma once
 extern std::vector<std::vector<LatLon>> points_on_segments;
 
-extern std::vector<std::vector<std::pair<float, float>>> xy_points_segments;
+extern std::vector<std::vector<std::pair<double, double>>> xy_points_segments;
 extern double aspVar;
 extern double avg_lat;
 extern double avg_lon;
