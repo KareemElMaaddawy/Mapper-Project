@@ -10,8 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="updated ui to include cities, and select button">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/resources/main.ui" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/resources/main.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -119,6 +118,7 @@
       <workItem from="1615070108469" duration="1686000" />
       <workItem from="1615072396774" duration="2939000" />
       <workItem from="1615426796585" duration="598000" />
+      <workItem from="1615497923537" duration="920000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -325,7 +325,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>261</line>
+          <line>281</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>

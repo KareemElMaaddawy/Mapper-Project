@@ -11,7 +11,7 @@
 #include "m2.h"
 #include <cmath>
 #include <string>
-double aspVar = 0;
+
 double avg_lat = 0;
 double avg_lon = 0;
 std::string userInput = {};

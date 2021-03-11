@@ -7,7 +7,29 @@
 
 //function declarations
 
-std::string MAP_PATHS[] = {
+const std::string MAP_NAMES[] = {
+        "Beijing, China",
+        "Cairo, Egypt",
+        "Cape Town, South Africa",
+        "Golden Horseshoe, Canada",
+        "Hamilton, Canada",
+        "Hong Kong, China",
+        "Iceland",
+        "Interlaken, Switzerland",
+        "London, England",
+        "Moscow, Russia",
+        "New Delhi, India",
+        "New York, USA",
+        "Rio de Janeiro, Brazil",
+        "Saint Helena",
+        "Singapore",
+        "Sydney, Australia",
+        "Tehran, Iran",
+        "Tokyo, Japan",
+        "Toronto, Canada"
+};
+
+const std::string MAP_PATHS[] = {
         "/cad2/ece297s/public/maps/beijing_china.streets.bin",
         "/cad2/ece297s/public/maps/cairo_egypt.streets.bin",
         "/cad2/ece297s/public/maps/cape-town_south-africa.streets.bin",
@@ -30,13 +52,10 @@ std::string MAP_PATHS[] = {
         
 };
 
-void selectButtonClk(GtkWidget *, ezgl::application *application);
+void selectButtonClk();
 
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
-
-
-
 double lon_from_x(double x);
 
 double lat_from_y(double lat);
@@ -49,6 +68,7 @@ GtkEntry* searchEntry = nullptr;
 GtkEntry* firstStreetEntry = nullptr;
 GtkEntry* secondStreetEntry = nullptr;
 GtkComboBox* mapBox = nullptr;
+
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y);
@@ -336,9 +356,7 @@ void drawPoiLabel(ezgl::renderer *g){
     }
 }
 
-void selectButtonClk(GtkWidget *, ezgl::application *application){
 
-}
 
 void initial_setup(ezgl::application *application, bool){
 //    application -> create_button("Find",8,findButton);
@@ -347,16 +365,20 @@ void initial_setup(ezgl::application *application, bool){
     firstStreetEntry = (GtkEntry*)(application -> get_object("FirstStreet"));
     secondStreetEntry = (GtkEntry*)(application -> get_object("SecondStreet"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
-//    g_signal_connect(
-//            application->get_object("mapSelectBtn"),
-//            "clicked",
-//            G_CALLBACK(selectButtonClk(, application)),
-//            application
-//            );
+    g_signal_connect(
+            application->get_object("mapSelectBtn"),
+            "clicked",
+            G_CALLBACK(selectButtonClk),
+            application
+            );
 
     g_signal_connect(application -> get_object("testbutton"), "clicked", G_CALLBACK(findButton), application);
     g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
     g_signal_connect(searchEntry, "icon_press", G_CALLBACK(searchBar), application);
+}
+
+void selectButtonClk(){
+
 }
 void searchBar(GtkEntry *, ezgl::application *application){
  
