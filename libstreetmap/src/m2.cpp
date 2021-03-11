@@ -3,7 +3,33 @@
 #include "ezgl/application.hpp"
 #include "ezgl/graphics.hpp"
 #include "globalHeader.h"
+#include "string"
+
 //function declarations
+
+std::string MAP_PATHS[] = {
+        "/cad2/ece297s/public/maps/beijing_china.streets.bin",
+        "/cad2/ece297s/public/maps/cairo_egypt.streets.bin",
+        "/cad2/ece297s/public/maps/cape-town_south-africa.streets.bin",
+        "/cad2/ece297s/public/maps/golden-horseshoe_canada.streets.bin",
+        "/cad2/ece297s/public/maps/hamilton_canada.streets.bin",
+        "/cad2/ece297s/public/maps/hong-kong_china.streets.bin",
+        "/cad2/ece297s/public/maps/iceland.streets.bin",
+        "/cad2/ece297s/public/maps/interlaken_switzerland.streets.bin",
+        "/cad2/ece297s/public/maps/london_england.streets.bin",
+        "/cad2/ece297s/public/maps/moscow_russia.streets.bin",
+        "/cad2/ece297s/public/maps/new-delhi_india.streets.bin",
+        "/cad2/ece297s/public/maps/new-york_usa.streets.bin",
+        "/cad2/ece297s/public/maps/rio-de-janeiro_brazil.streets.bin",
+        "/cad2/ece297s/public/maps/saint-helena.streets.bin",
+        "/cad2/ece297s/public/maps/singapore.streets.bin",
+        "/cad2/ece297s/public/maps/sydney_australia.streets.bin",
+        "/cad2/ece297s/public/maps/tehran_iran.streets.bin",
+        "/cad2/ece297s/public/maps/tokyo_japan.streets.bin",
+        "/cad2/ece297s/public/maps/toronto_canada.streets.bin"
+        
+};
+
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
 
@@ -273,8 +299,20 @@ void drawPoiLabel(ezgl::renderer *g){
     }
 }
 
+void selectButtonClk(GtkWidget *, ezgl::application *application){
+
+}
+
 void initial_setup(ezgl::application *application, bool){
     application -> create_button("Find",8,findButton);
+    mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
+    g_signal_connect(
+            application->get_object("mapSelectBtn"),
+            "clicked",
+            G_CALLBACK(selectButtonClk(, application)),
+            application
+            );
+
 }
 
 void findButton(GtkWidget *, ezgl::application *application){

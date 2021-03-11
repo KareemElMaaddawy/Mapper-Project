@@ -9,7 +9,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="features drawn, need to figure out colors" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="updated ui to include cities, and select button">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/resources/main.ui" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/resources/main.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,6 +118,7 @@
       <workItem from="1615047347681" duration="5642000" />
       <workItem from="1615070108469" duration="1686000" />
       <workItem from="1615072396774" duration="2939000" />
+      <workItem from="1615426796585" duration="598000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -255,7 +260,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615074501466</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="updated ui to include cities, and select button">
+      <created>1615426336443</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1615426336443</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,14 +317,15 @@
     <MESSAGE value="loaded feature info into structs, started drawing" />
     <MESSAGE value="features drawn, need to figure out colors" />
     <MESSAGE value="added support to switch maps" />
-    <option name="LAST_COMMIT_MESSAGE" value="added support to switch maps" />
+    <MESSAGE value="updated ui to include cities, and select button" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated ui to include cities, and select button" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>252</line>
+          <line>261</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
