@@ -47,7 +47,7 @@ double yFromLatPoi(double lat);
 
 GtkEntry* searchEntry = nullptr;
 
-GtkCoboBox* mapBox = nullptr;
+GtkComboBox* mapBox = nullptr;
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y);
@@ -313,13 +313,13 @@ void initial_setup(ezgl::application *application, bool){
     application -> create_button("Find",8,findButton);
 
     searchEntry = (GtkEntry*)(application -> get_object("SearchInput"));
-    mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
-    g_signal_connect(
-            application->get_object("mapSelectBtn"),
-            "clicked",
-            G_CALLBACK(selectButtonClk(, application)),
-            application
-            );
+//    mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
+//    g_signal_connect(
+//            application->get_object("mapSelectBtn"),
+//            "clicked",
+//            G_CALLBACK(selectButtonClk(, application)),
+//            application
+//            );
 
     g_signal_connect(application -> get_object("testbutton"), "clicked", G_CALLBACK(findButton), application);
     g_signal_connect(searchEntry, "icon_press", G_CALLBACK(searchBar), application);
