@@ -313,7 +313,7 @@ void initial_setup(ezgl::application *application, bool){
     application -> create_button("Find",8,findButton);
 
     searchEntry = (GtkEntry*)(application -> get_object("SearchInput"));
-//    mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
+    mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
 //    g_signal_connect(
 //            application->get_object("mapSelectBtn"),
 //            "clicked",
@@ -329,7 +329,7 @@ void searchBar(GtkEntry *, ezgl::application *application){
   const char* search_term = gtk_entry_get_text(searchEntry);
   std::cout <<"searched: "<< search_term<<std::endl;
   userInput = search_term;
-  
+  gtk_entry_set_text(GTK_ENTRY(searchEntry), "");
 
     
 
