@@ -2,6 +2,23 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkListStore" id="MapListStore">
+    <columns>
+      <!-- column-name ListOfAvailableMapNames -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">map1</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">map2</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">map3</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -206,20 +223,17 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText" id="ChooseMapCombo">
-            <property name="name">choose map</property>
+          <object class="GtkComboBox" id="AvailableMaps">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="tearoff_title" translatable="yes">choose map</property>
+            <property name="model">MapListStore</property>
             <property name="has_entry">True</property>
-            <items>
-              <item translatable="yes">map1</item>
-              <item translatable="yes">map2</item>
-            </items>
+            <property name="entry_text_column">0</property>
             <child internal-child="entry">
-              <object class="GtkEntry" id="ChooseMapText">
+              <object class="GtkEntry" id="MapEntry">
                 <property name="can_focus">False</property>
-                <property name="placeholder_text" translatable="yes">🌍️ Choose Map... </property>
+                <property name="placeholder_text" translatable="yes">🌍️ Choose Map...</property>
+                <signal name="changed" handler="on_MapEntry_changed" swapped="no"/>
               </object>
             </child>
           </object>

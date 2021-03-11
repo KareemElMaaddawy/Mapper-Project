@@ -17,11 +17,13 @@ double xFromLonPoi(double lon);
 
 double yFromLatPoi(double lat);
 
+GtkEntry* searchEntry = nullptr;
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y);
 
 void findButton(GtkWidget *widget, ezgl::application *application);
+void searchBar(GtkEntry *widget, ezgl::application *application);
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
@@ -275,11 +277,25 @@ void drawPoiLabel(ezgl::renderer *g){
 
 void initial_setup(ezgl::application *application, bool){
     application -> create_button("Find",8,findButton);
+    searchEntry = (GtkEntry*)(application -> get_object("SearchInput"));
+    
+    g_signal_connect(application -> get_object("testbutton"), "clicked", G_CALLBACK(findButton), application);
+    g_signal_connect(searchEntry, "icon_press", G_CALLBACK(searchBar), application);
 }
+void searchBar(GtkEntry *, ezgl::application *application){
+ 
+  const char* search_term = gtk_entry_get_text(searchEntry);
+  std::cout <<"searched: "<< search_term<<std::endl;
+  userInput = search_term;
+  
+}
+
 
 void findButton(GtkWidget *, ezgl::application *application){
     //Tells status bar that find button was pressed
     application -> update_message("Find Button Pressed");
     //Redraw Main Canvas
     application -> refresh_drawing();
+    
+    std::cout << "hello world"<<std::endl;
 }
