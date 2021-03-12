@@ -9,7 +9,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="added arrays of map names and map paths">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="progressing on loading new maps">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
@@ -121,7 +121,8 @@
       <workItem from="1615072396774" duration="2939000" />
       <workItem from="1615426796585" duration="598000" />
       <workItem from="1615497923537" duration="3885000" />
-      <workItem from="1615503794009" duration="2102000" />
+      <workItem from="1615503794009" duration="8963000" />
+      <workItem from="1615564500372" duration="1723000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -277,7 +278,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615498859174</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="progressing on loading new maps">
+      <created>1615513850363</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1615513850363</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -329,18 +337,10 @@
     <MESSAGE value="added support to switch maps" />
     <MESSAGE value="updated ui to include cities, and select button" />
     <MESSAGE value="added arrays of map names and map paths" />
-    <option name="LAST_COMMIT_MESSAGE" value="added arrays of map names and map paths" />
+    <MESSAGE value="progressing on loading new maps" />
+    <option name="LAST_COMMIT_MESSAGE" value="progressing on loading new maps" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>425</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
         <watch expression="features" />

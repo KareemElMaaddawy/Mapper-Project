@@ -54,7 +54,7 @@ const std::string MAP_PATHS[] = {
         
 };
 
-void selectButtonClk(ezgl::application *application);
+void selectButtonClk(GtkEntry *,ezgl::application *application);
 
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
@@ -95,7 +95,7 @@ struct intersection_data {
     LatLon position;
     std::string name;
     bool highlight = false;
-} typedef intersection_data;
+};
 
 struct poiData {
     LatLon position;
@@ -152,7 +152,11 @@ void act_on_mouse_click(ezgl::application *app,
     app->refresh_drawing();
 }
 
-/*void drawNewMap(ezgl::application *application){
+void drawNewMap(ezgl::application *application){
+    features.clear();
+    intersections.clear();
+    poi.clear();
+
     double max_lat = getIntersectionPosition(0).latitude();
     double min_lat = max_lat;
     double max_lon = getIntersectionPosition(0).longitude();
@@ -169,17 +173,17 @@ void act_on_mouse_click(ezgl::application *app,
         min_lon = std::min(min_lon, intersections[id].position.longitude());
     }
 
-    loadStreets();
+    features.clear();
+
     loadPoi();
     loadFeatures();
 
 
-    ezgl::rectangle initial_world({x_from_lon(min_lon), y_from_lat(min_lat)},
+    ezgl::rectangle new_world({x_from_lon(min_lon), y_from_lat(min_lat)},
                                   {x_from_lon(max_lon), y_from_lat(max_lat)});
+    application->change_canvas_world_coordinates(application->get_main_canvas_id(), new_world);
 
-    application->change_canvas_world_coordinates("MainCanvas",initial_world);
-
-}*/
+}
 
 void drawMap() {
     double max_lat = getIntersectionPosition(0).latitude();
@@ -198,8 +202,6 @@ void drawMap() {
         min_lon = std::min(min_lon, intersections[id].position.longitude());
     }
 
-    
-    //loadStreets();   
     loadPoi();
     loadFeatures();
     
@@ -309,21 +311,21 @@ void drawFeatures(ezgl::renderer *g){
 
     for (int i = 0; i < getNumFeatures(); ++i) {
         if (features[i].type == 1) {
-            g->set_color(ezgl::GREEN);
+            g->set_color(214,234,214,255);
         } else if (features[i].type == 2) {
-            g->set_color(ezgl::KHAKI);
+            g->set_color(253,249,235,255);
         } else if (features[i].type == 3) {
-            g->set_color(ezgl::LIGHT_SKY_BLUE);
+            g->set_color(166,191,247,255);
         } else if (features[i].type == 4) {
-            g->set_color(ezgl::BLUE);
+            g->set_color(166,191,247,255);
         } else if (features[i].type == 5) {
-            g->set_color(ezgl::GREEN);
+            g->set_color(214,234,214,255);
         } else if (features[i].type == 6) {
-            g->set_color(ezgl::GREY_55);
+            g->set_color(127,143,154,255);
         } else if (features[i].type == 7) {
-            g->set_color(ezgl::GREEN);
+            g->set_color(214,234,214,255);
         } else if (features[i].type == 8) {
-            g->set_color(ezgl::DARK_GREEN);
+            g->set_color(184,217,182,255);
         } else if (features[i].type == 9) {
             g->set_color(ezgl::LIGHT_SKY_BLUE);
         } else {
@@ -417,7 +419,7 @@ void initial_setup(ezgl::application *application, bool){
     g_signal_connect(searchEntry, "icon_press", G_CALLBACK(searchBar), application);
 }
 
-void selectButtonClk(ezgl::application *application){
+void selectButtonClk(GtkEntry *,ezgl::application *application){
     int selectedMap = gtk_combo_box_get_active(mapBox);
 
     if(selectedMap == -1){
@@ -428,12 +430,17 @@ void selectButtonClk(ezgl::application *application){
             std::cout << MAP_NAMES[selectedMap] << " already open" << std::endl;
         }else{
             closeMap();
-            loadMap(MAP_PATHS[selectedMap]);
-            //drawNewMap(application);
+            bool load_success = loadMap(MAP_PATHS[selectedMap]);
+            if(!load_success) {
+                std::cerr << "Failed to load map '" << MAP_PATHS[selectedMap] << "'\n";
+                return;
+            }else{
+                std::cout << "Successfully loaded map '" << MAP_PATHS[selectedMap] << "'\n";
+            }
+            drawNewMap(application);
 
         }
-    }
-    application->refresh_drawing();
+    }application->refresh_drawing();
 }
 void searchBar(GtkEntry *, ezgl::application *application){
  

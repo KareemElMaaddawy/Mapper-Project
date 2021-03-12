@@ -13,7 +13,7 @@
 #include <string>
 double avg_lat = 0;
 double avg_lon = 0;
-double aspVar = 0;
+//double aspVar = 0;
 std::string userInput = {};
 std::vector<std::vector<LatLon>> points_on_segments;
 std::vector<std::vector<std::pair<double, double>>> xy_points_segments;
