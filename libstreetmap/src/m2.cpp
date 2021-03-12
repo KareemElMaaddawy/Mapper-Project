@@ -168,7 +168,7 @@ void drawMap() {
     }
 
     
-    loadStreets();
+    loadStreets();   
     loadPoi();
     loadFeatures();
     
@@ -501,3 +501,4 @@ void drawStreetLabels(ezgl:: renderer *g){
       
     }
 }
+

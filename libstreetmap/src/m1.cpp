@@ -96,7 +96,7 @@ bool loadMap(std::string map_streets_database_filename) {
             double stlength = streetLengthHelper(i);
             stLength[i] = stlength;
         }
-
+        
         numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
 
