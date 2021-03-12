@@ -17,6 +17,52 @@
 #include "m2.h"
 #include <string>
 #pragma once
+
+const std::string MAP_NAMES[] = {
+        "Beijing, China",
+        "Cairo, Egypt",
+        "Cape Town, South Africa",
+        "Golden Horseshoe, Canada",
+        "Hamilton, Canada",
+        "Hong Kong, China",
+        "Iceland",
+        "Interlaken, Switzerland",
+        "London, England",
+        "Moscow, Russia",
+        "New Delhi, India",
+        "New York, USA",
+        "Rio de Janeiro, Brazil",
+        "Saint Helena",
+        "Singapore",
+        "Sydney, Australia",
+        "Tehran, Iran",
+        "Tokyo, Japan",
+        "Toronto, Canada"
+};
+
+const std::string MAP_PATHS[] = {
+        "/cad2/ece297s/public/maps/beijing_china.streets.bin",
+        "/cad2/ece297s/public/maps/cairo_egypt.streets.bin",
+        "/cad2/ece297s/public/maps/cape-town_south-africa.streets.bin",
+        "/cad2/ece297s/public/maps/golden-horseshoe_canada.streets.bin",
+        "/cad2/ece297s/public/maps/hamilton_canada.streets.bin",
+        "/cad2/ece297s/public/maps/hong-kong_china.streets.bin",
+        "/cad2/ece297s/public/maps/iceland.streets.bin",
+        "/cad2/ece297s/public/maps/interlaken_switzerland.streets.bin",
+        "/cad2/ece297s/public/maps/london_england.streets.bin",
+        "/cad2/ece297s/public/maps/moscow_russia.streets.bin",
+        "/cad2/ece297s/public/maps/new-delhi_india.streets.bin",
+        "/cad2/ece297s/public/maps/new-york_usa.streets.bin",
+        "/cad2/ece297s/public/maps/rio-de-janeiro_brazil.streets.bin",
+        "/cad2/ece297s/public/maps/saint-helena.streets.bin",
+        "/cad2/ece297s/public/maps/singapore.streets.bin",
+        "/cad2/ece297s/public/maps/sydney_australia.streets.bin",
+        "/cad2/ece297s/public/maps/tehran_iran.streets.bin",
+        "/cad2/ece297s/public/maps/tokyo_japan.streets.bin",
+        "/cad2/ece297s/public/maps/toronto_canada.streets.bin"
+
+};
+
 struct streetInfo{
     std::string name;
     std::vector<LatLon> positions;

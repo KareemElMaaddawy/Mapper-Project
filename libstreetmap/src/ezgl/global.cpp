@@ -11,6 +11,9 @@
 #include "m2.h"
 #include <cmath>
 #include <string>
+
+
+
 double avg_lat = 0;
 double avg_lon = 0;
 //double aspVar = 0;
