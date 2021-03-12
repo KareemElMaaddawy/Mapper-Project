@@ -82,14 +82,14 @@ void drawFeatures(ezgl::renderer *g);
 void loadPoi();
 void drawPoi(ezgl::renderer *g);
 void drawPoiLabel(ezgl::renderer *g);
-void loadStreets();
+//void loadStreets();
 void drawStreetLabels(ezgl::renderer *g);
 
 //variable declarations
-struct streetData{
+/*struct streetData{
     std::string name;
     std::vector<int> segmentsOfStreet;
-};
+};*/
 
 struct intersection_data {
     LatLon position;
@@ -111,7 +111,7 @@ struct featureData {
     std::vector<ezgl::point2d> positionalPoints;
 };
 
-std::vector<streetData> streets;
+//std::vector<streetData> streets;
 std::vector<featureData> features;
 std::vector<intersection_data> intersections;
 std::vector<poiData> poi;
@@ -152,7 +152,7 @@ void act_on_mouse_click(ezgl::application *app,
     app->refresh_drawing();
 }
 
-void drawNewMap(ezgl::application *application){
+/*void drawNewMap(ezgl::application *application){
     double max_lat = getIntersectionPosition(0).latitude();
     double min_lat = max_lat;
     double max_lon = getIntersectionPosition(0).longitude();
@@ -179,7 +179,7 @@ void drawNewMap(ezgl::application *application){
 
     application->change_canvas_world_coordinates("MainCanvas",initial_world);
 
-}
+}*/
 
 void drawMap() {
     double max_lat = getIntersectionPosition(0).latitude();
@@ -199,7 +199,7 @@ void drawMap() {
     }
 
     
-    loadStreets();   
+    //loadStreets();   
     loadPoi();
     loadFeatures();
     
@@ -429,7 +429,7 @@ void selectButtonClk(ezgl::application *application){
         }else{
             closeMap();
             loadMap(MAP_PATHS[selectedMap]);
-            drawNewMap(application);
+            //drawNewMap(application);
 
         }
     }
@@ -511,7 +511,7 @@ void findButton(GtkWidget *, ezgl::application *application){
     std::cout << "hello world"<<std::endl;
 }
 
-void loadStreets(){
+/*void loadStreets(){
     streets.resize(getNumStreets());
     for(int i = 0; i < getNumStreets() ; i++){
         streets[i].name = getStreetName(i);
@@ -521,9 +521,9 @@ void loadStreets(){
             }
         }
     }
-}
+}*/
 
-void drawStreetLabels(ezgl:: renderer *g){
+/*void drawStreetLabels(ezgl:: renderer *g){
     g -> set_color(ezgl:: BLACK);
     for(int i = 0; i < streets.size(); i++){
         std::string streetName = streets[i].name;
@@ -546,5 +546,25 @@ void drawStreetLabels(ezgl:: renderer *g){
         }
       
     }
+}*/
+void drawStreetLabels(ezgl:: renderer *g){
+    g-> set_color(ezgl::BLACK);
+    for(int i = 0; i < streetPositions.size(); i++){
+        std::string streetName = streetPositions[i].name;
+        for(int j = 0; j < streetPositions[i].positions.size(); j+=5){
+            double firstX = x_from_lon(streetPositions[i].positions[j].longitude());
+            double firstY = y_from_lat(streetPositions[i].positions[j].latitude());
+            double secondX = x_from_lon(streetPositions[i].positions[j+1].longitude());
+            double secondY = y_from_lat(streetPositions[i].positions[j+1].latitude());
+            
+            double midPointX = (firstX+secondX)/2;
+            double midPointY = (firstY+secondY)/2;
+            ezgl::point2d center(midPointX,midPointY);
+            if(streetName != "<unknown>"){
+                g->draw_text(center, streetName, 100, 100);
+            }
+        }
+    }
+            
 }
 

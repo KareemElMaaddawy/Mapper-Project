@@ -96,7 +96,7 @@ bool loadMap(std::string map_streets_database_filename) {
             double stlength = streetLengthHelper(i);
             stLength[i] = stlength;
         }
-        
+          
         numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
 
@@ -275,7 +275,15 @@ bool loadMap(std::string map_streets_database_filename) {
 //                    xy_points_segments[street].push_back(xy);
 //            }
 //        }
-//      
+        //create vector that holds streets and it's positionss
+        streetPositions.resize(getNumStreets());
+        for(int i = 0; i < getNumStreets(); i++){
+            streetPositions[i].name = getStreetName(i);
+            for(int j = 0; j < intersections_of_a_street[i].size() ; j++){
+                
+                streetPositions[i].positions.push_back(getIntersectionPosition(intersections_of_a_street[i][j]));
+            }
+        }
         
     }return load_successful;
 }

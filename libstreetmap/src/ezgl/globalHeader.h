@@ -17,8 +17,12 @@
 #include "m2.h"
 #include <string>
 #pragma once
+struct streetInfo{
+    std::string name;
+    std::vector<LatLon> positions;
+};
 extern std::vector<std::vector<LatLon>> points_on_segments;
-
+extern std::vector<streetInfo> streetPositions;
 extern std::vector<std::vector<std::pair<double, double>>> xy_points_segments;
 extern double aspVar;
 extern double avg_lat;
