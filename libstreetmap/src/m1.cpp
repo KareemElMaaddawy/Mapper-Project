@@ -206,7 +206,7 @@ bool loadMap(std::string map_streets_database_filename) {
             LatLon position;
             std::string name;
             bool highlight = false;
-        } typedef intersection_data;
+        };
         std::vector<intersection_data> intersections;
         double max_lat = getIntersectionPosition(0).latitude();
         double min_lat = max_lat;

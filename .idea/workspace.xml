@@ -9,8 +9,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="updated ui to include cities, and select button">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="added arrays of map names and map paths">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,9 +86,9 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Makefile Application.Release" />
-      <item itemvalue="Makefile Application.Debug_check" />
       <item itemvalue="Makefile Application.Debug" />
+      <item itemvalue="Makefile Application.Debug_check" />
+      <item itemvalue="Makefile Application.Release" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -118,7 +120,8 @@
       <workItem from="1615070108469" duration="1686000" />
       <workItem from="1615072396774" duration="2939000" />
       <workItem from="1615426796585" duration="598000" />
-      <workItem from="1615497923537" duration="920000" />
+      <workItem from="1615497923537" duration="3885000" />
+      <workItem from="1615503794009" duration="2102000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -267,7 +270,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615426336443</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="added arrays of map names and map paths">
+      <created>1615498859173</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1615498859174</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -318,15 +328,16 @@
     <MESSAGE value="features drawn, need to figure out colors" />
     <MESSAGE value="added support to switch maps" />
     <MESSAGE value="updated ui to include cities, and select button" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated ui to include cities, and select button" />
+    <MESSAGE value="added arrays of map names and map paths" />
+    <option name="LAST_COMMIT_MESSAGE" value="added arrays of map names and map paths" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>281</line>
-          <option name="timeStamp" value="11" />
+          <line>425</line>
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

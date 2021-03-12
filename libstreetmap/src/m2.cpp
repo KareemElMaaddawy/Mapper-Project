@@ -7,6 +7,8 @@
 
 //function declarations
 
+std::string openMap = "Toronto, Canada";
+
 const std::string MAP_NAMES[] = {
         "Beijing, China",
         "Cairo, Egypt",
@@ -52,7 +54,7 @@ const std::string MAP_PATHS[] = {
         
 };
 
-void selectButtonClk();
+void selectButtonClk(ezgl::application *application);
 
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
@@ -148,6 +150,35 @@ void act_on_mouse_click(ezgl::application *app,
               << intersections[id].name << "\n";
     intersections[id].highlight = true;
     app->refresh_drawing();
+}
+
+void drawNewMap(ezgl::application *application){
+    double max_lat = getIntersectionPosition(0).latitude();
+    double min_lat = max_lat;
+    double max_lon = getIntersectionPosition(0).longitude();
+    double min_lon = max_lon;
+    intersections.resize(getNumIntersections());
+
+    for (int id = 0; id < getNumIntersections(); ++id) {
+        intersections[id].position = getIntersectionPosition(id);
+        intersections[id].name = getIntersectionName(id);
+
+        max_lat = std::max(max_lat, intersections[id].position.latitude());
+        min_lat = std::min(min_lat, intersections[id].position.latitude());
+        max_lon = std::max(max_lon, intersections[id].position.longitude());
+        min_lon = std::min(min_lon, intersections[id].position.longitude());
+    }
+
+    loadStreets();
+    loadPoi();
+    loadFeatures();
+
+
+    ezgl::rectangle initial_world({x_from_lon(min_lon), y_from_lat(min_lat)},
+                                  {x_from_lon(max_lon), y_from_lat(max_lat)});
+
+    application->change_canvas_world_coordinates("MainCanvas",initial_world);
+
 }
 
 void drawMap() {
@@ -386,8 +417,23 @@ void initial_setup(ezgl::application *application, bool){
     g_signal_connect(searchEntry, "icon_press", G_CALLBACK(searchBar), application);
 }
 
-void selectButtonClk(){
+void selectButtonClk(ezgl::application *application){
+    int selectedMap = gtk_combo_box_get_active(mapBox);
 
+    if(selectedMap == -1){
+        std::cout << "Select Map" << std::endl;
+    }else{
+        std::cout << MAP_NAMES[selectedMap] << " selected" << std::endl;
+        if(MAP_NAMES[selectedMap] == openMap){
+            std::cout << MAP_NAMES[selectedMap] << " already open" << std::endl;
+        }else{
+            closeMap();
+            loadMap(MAP_PATHS[selectedMap]);
+            drawNewMap(application);
+
+        }
+    }
+    application->refresh_drawing();
 }
 void searchBar(GtkEntry *, ezgl::application *application){
  
