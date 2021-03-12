@@ -20,7 +20,7 @@
  */
 #include <iostream>
 #include <string>
-#include "m2.h"
+#include "globalHeader.h"
 #include "m1.h"
 #include "m2.h"
 

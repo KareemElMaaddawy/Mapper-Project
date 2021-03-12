@@ -9,11 +9,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="updated colors, load new maps">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="load new maps finished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +123,7 @@
       <workItem from="1615426796585" duration="598000" />
       <workItem from="1615497923537" duration="3885000" />
       <workItem from="1615503794009" duration="8963000" />
-      <workItem from="1615564500372" duration="4641000" />
+      <workItem from="1615564500372" duration="18283000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -292,7 +293,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615566253217</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="load new maps finished">
+      <created>1615569838826</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1615569838826</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -346,7 +354,8 @@
     <MESSAGE value="added arrays of map names and map paths" />
     <MESSAGE value="progressing on loading new maps" />
     <MESSAGE value="updated colors, load new maps" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated colors, load new maps" />
+    <MESSAGE value="load new maps finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="load new maps finished" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

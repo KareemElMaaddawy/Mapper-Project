@@ -77,7 +77,7 @@ double avgPoiLat = 0;
 
 
 double lon_from_x(double x) {
-    return x / (kDegreeToRadian * kEarthRadiusInMeters * std::cos(avg_lat * kDegreeToRadian));
+    return x / (kDegreeToRadian * kEarthRadiusInMeters * std::cos(mapInfo[selectedMap].avgLat * kDegreeToRadian));
 }
 
 double lat_from_y(double lon) {
@@ -107,55 +107,39 @@ void act_on_mouse_click(ezgl::application *app,
     app->refresh_drawing();
 }
 
-void drawNewMap(ezgl::application *application){
-
-
-    double max_lat = getIntersectionPosition(0).latitude();
-    double min_lat = max_lat;
-    double max_lon = getIntersectionPosition(0).longitude();
-    double min_lon = max_lon;
-    intersections.resize(getNumIntersections());
-
-    for (int id = 0; id < getNumIntersections(); ++id) {
-        intersections[id].position = getIntersectionPosition(id);
-        intersections[id].name = getIntersectionName(id);
-
-        max_lat = std::max(max_lat, intersections[id].position.latitude());
-        min_lat = std::min(min_lat, intersections[id].position.latitude());
-        max_lon = std::max(max_lon, intersections[id].position.longitude());
-        min_lon = std::min(min_lon, intersections[id].position.longitude());
-    }
+void drawNewMap(ezgl::application *application, int selectedMap){
 
     loadPoi();
     loadFeatures();
 
 
-    ezgl::rectangle new_world({x_from_lon(min_lon), y_from_lat(min_lat)},
-                                  {x_from_lon(max_lon), y_from_lat(max_lat)});
+    ezgl::rectangle new_world({x_from_lon(mapInfo[selectedMap].minLon), y_from_lat(mapInfo[selectedMap].minLat)},
+                                  {x_from_lon(mapInfo[selectedMap].maxLon), y_from_lat(mapInfo[selectedMap].maxLat)});
     application->change_canvas_world_coordinates(application->get_main_canvas_id(), new_world);
 
 }
 
 void drawMap() {
-    double max_lat = getIntersectionPosition(0).latitude();
-    double min_lat = max_lat;
-    double max_lon = getIntersectionPosition(0).longitude();
-    double min_lon = max_lon;
-    intersections.resize(getNumIntersections());
 
-    for (int id = 0; id < getNumIntersections(); ++id) {
-        intersections[id].position = getIntersectionPosition(id);
-        intersections[id].name = getIntersectionName(id);
-
-        max_lat = std::max(max_lat, intersections[id].position.latitude());
-        min_lat = std::min(min_lat, intersections[id].position.latitude());
-        max_lon = std::max(max_lon, intersections[id].position.longitude());
-        min_lon = std::min(min_lon, intersections[id].position.longitude());
-    }
+//    double max_latInt = getIntersectionPosition(0).latitude();
+//    double min_latInt = max_latInt;
+//    double max_lonInt = getIntersectionPosition(0).longitude();
+//    double min_lonInt = max_lonInt;
+//    intersections.resize(getNumIntersections());
+//
+//    for (int id = 0; id < getNumIntersections(); ++id) {
+//        intersections[id].position = getIntersectionPosition(id);
+//        intersections[id].name = getIntersectionName(id);
+//
+//        max_latInt = std::max(max_latInt, intersections[id].position.latitude());
+//        min_latInt = std::min(min_latInt, intersections[id].position.latitude());
+//        max_lonInt = std::max(max_lonInt, intersections[id].position.longitude());
+//        min_lonInt = std::min(min_lonInt, intersections[id].position.longitude());
+//    }
 
     loadPoi();
     loadFeatures();
-    
+
     ezgl::application::settings settings;
     settings.main_ui_resource = "libstreetmap/resources/main.ui";
     settings.window_identifier = "MainWindow";
@@ -164,8 +148,8 @@ void drawMap() {
     ezgl::application application(settings);
 
 
-    ezgl::rectangle initial_world({x_from_lon(min_lon), y_from_lat(min_lat)},
-                                  {x_from_lon(max_lon), y_from_lat(max_lat)});
+    ezgl::rectangle initial_world({x_from_lon(mapInfo[selectedMap].minLon), y_from_lat(mapInfo[selectedMap].minLat)},
+                                  {x_from_lon(mapInfo[selectedMap].maxLon), y_from_lat(mapInfo[selectedMap].maxLat)});
     application.add_canvas("MainCanvas", drawMainCanvas, initial_world);
 
 
@@ -371,15 +355,16 @@ void initial_setup(ezgl::application *application, bool){
 }
 
 void selectButtonClk(GtkEntry *,ezgl::application *application){
-    int selectedMap = gtk_combo_box_get_active(mapBox);
+    selectedMap = gtk_combo_box_get_active(mapBox);
 
     if(selectedMap == -1){
-        std::cout << "Select Map" << std::endl;
+        application -> update_message("Select Map");
     }else{
-        std::cout << MAP_NAMES[selectedMap] << " selected" << std::endl;
-        if(MAP_NAMES[selectedMap] == openMap){
-            std::cout << MAP_NAMES[selectedMap] << " already open" << std::endl;
+        std::cout << mapInfo[selectedMap].name << " selected" << std::endl;
+        if(mapInfo[selectedMap].name == openMap){
+            application -> update_message(mapInfo[selectedMap].name + " already open");
         }else{
+            openMap = mapInfo[selectedMap].name;
             closeMap();
             features.clear();
             intersections.clear();
@@ -387,14 +372,14 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){
             streetPositions.clear();
             points_on_segments.clear();
             xy_points_segments.clear();
-            bool load_success = loadMap(MAP_PATHS[selectedMap]);
+            bool load_success = loadMap(mapInfo[selectedMap].path);
             if(!load_success) {
-                std::cerr << "Failed to load map '" << MAP_PATHS[selectedMap] << "'\n";
+                std::cerr << "Failed to load map '" << mapInfo[selectedMap].name << "'\n";
                 return;
             }else{
-                std::cout << "Successfully loaded map '" << MAP_PATHS[selectedMap] << "'\n";
+                application -> update_message(mapInfo[selectedMap].name + " loaded");
             }
-            drawNewMap(application);
+            drawNewMap(application, selectedMap);
 
         }
     }application->refresh_drawing();
