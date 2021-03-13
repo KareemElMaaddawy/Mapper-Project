@@ -125,9 +125,10 @@ void drawNewMap(ezgl::application *application){
 
 }
 
+//draws initial map
 void drawMap() {
 
-    loadIntersections();
+    loadIntersections();//loads data
     loadFeatures();
 
     ezgl::application::settings settings;
@@ -247,25 +248,25 @@ void drawMainCanvas(ezgl::renderer *g) {
     drawStreetLabels(g);
 }
 
-void loadFeatures(){
-    features.resize(10);
-    for (int i = 0; i < getNumFeatures(); ++i) {
-        int type = getFeatureType(i);
-        features[type].resize(features[type].size()+1);
-        int index = features[type].size() - 1;
-        features[type][index].name = getFeatureName(i);
+void loadFeatures(){//loads features and their associated properties
+    features.resize(10);//ten types of different features
+    for (int i = 0; i < getNumFeatures(); ++i) {//loops through all features
+        int type = getFeatureType(i);//gets what type of feature it is
+        features[type].resize(features[type].size()+1);//increments the associated feature type vector
+        int index = features[type].size() - 1;//gets next open slot in vector
+        features[type][index].name = getFeatureName(i);//fetches data
         features[type][index].numOfPoints = getNumFeaturePoints(i);
-        for (int j = 0; j < features[type][index].numOfPoints; ++j) {
+        for (int j = 0; j < features[type][index].numOfPoints; ++j) {//fetches coords and converts to xy
             features[type][index].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
                                                                  y_from_lat(getFeaturePoint(i, j).latitude())));
         }
-        if (features[type][index].positionalPoints[0] == features[type][index].positionalPoints[features[type][index].numOfPoints-1]) {
+        if (features[type][index].positionalPoints[0] == features[type][index].positionalPoints[features[type][index].numOfPoints-1]) {//checks if closed or not
             features[type][index].closed = true;
         }
     }
 }
 
-void setColor(ezgl::renderer *g, int type){
+void setColor(ezgl::renderer *g, int type){//sets drawing based on feature type
     if (type == 1) {
         g->set_color(183, 217, 181, 255);
     } else if (type == 2) {
@@ -285,24 +286,24 @@ void setColor(ezgl::renderer *g, int type){
     } else if (type == 9) {
         g->set_color(ezgl::LIGHT_SKY_BLUE);
     } else {
-        g->set_color(ezgl::PINK);
+        g->set_color(ezgl::PINK);//bright colour to stand out
     }
 }
 
-void drawFeatures(ezgl::renderer *g){
-    int order[] = {3,5,1,2,7,8,4,9,6,0};
+void drawFeatures(ezgl::renderer *g){//draws features
+    int order[] = {3,5,1,2,7,8,4,9,6,0};//order of feature types to draw
 
-    g->set_line_width(1);
+    g->set_line_width(0);
 
-    for(int i = 0; i < 10; ++i){
-        int type = order[i];
-        setColor(g, type);
-        for(int z = 0; z < features[type].size(); ++z){
-            if (features[type][z].closed) {
+    for(int i = 0; i < 10; ++i){//looping through array of feature types
+        int type = order[i];//fetching what the feature type is
+        setColor(g, type);//setting color based on feature type
+        for(int z = 0; z < features[type].size(); ++z){//looping through all the features of the specified type
+            if (features[type][z].closed) {//if its closed draw as polygon
                 if (features[type][z].positionalPoints.size() != 1) {
                     g->fill_poly(features[type][z].positionalPoints);
                 }
-            } else {
+            } else {//not closed draw as line
                 for (int j = 0; j < features[type][z].numOfPoints - 1; ++j) {
                     g->draw_line(features[type][z].positionalPoints[j], features[type][z].positionalPoints[j + 1]);
                 }
@@ -348,13 +349,11 @@ void drawPoiLabel(ezgl::renderer *g){
 
 
 void initial_setup(ezgl::application *application, bool){
-//    application -> create_button("Find",8,findButton);
-
-    searchEntry = (GtkEntry*)(application -> get_object("SearchInput"));
+    searchEntry = (GtkEntry*)(application -> get_object("SearchInput"));//connect signals to obejects
     firstStreetEntry = (GtkEntry*)(application -> get_object("FirstStreet"));
     secondStreetEntry = (GtkEntry*)(application -> get_object("SecondStreet"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
-    g_signal_connect(
+    g_signal_connect(//connecting map select button to callback function
             application->get_object("mapSelectBtn"),
             "clicked",
             G_CALLBACK(selectButtonClk),
@@ -363,35 +362,35 @@ void initial_setup(ezgl::application *application, bool){
     g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
 }
 
-void selectButtonClk(GtkEntry *,ezgl::application *application){
-    selectedMap = gtk_combo_box_get_active(mapBox);
+void selectButtonClk(GtkEntry *,ezgl::application *application){//callback function when map select button is pressed
+    selectedMap = gtk_combo_box_get_active(mapBox);//fetching selection
 
-    if(selectedMap == -1){
+    if(selectedMap == -1){//if nothing selected and button pressed, prompt selection
         application -> update_message("Select Map");
     }else{
-        if(mapInfo[selectedMap].name == openMap){
+        if(mapInfo[selectedMap].name == openMap){//if selected map is already open, prompt another selection
             application -> update_message(mapInfo[selectedMap].name + " already open");
         }else{
             application -> update_message("Loading...");
-            openMap = mapInfo[selectedMap].name;
+            openMap = mapInfo[selectedMap].name;//sets open map to selected map
             closeMap();
             features.clear();
             intersections.clear();
             poi.clear();
             streetPositions.clear();
             points_on_segments.clear();
-            xy_points_segments.clear();
-            bool load_success = loadMap(mapInfo[selectedMap].path);
+            xy_points_segments.clear();//clears data structures
+            bool load_success = loadMap(mapInfo[selectedMap].path);//loads map
             if(!load_success) {
-                std::cerr << "Failed to load map '" << mapInfo[selectedMap].name << "'\n";
+                std::cerr << "Failed to load map '" << mapInfo[selectedMap].name << "'\n";//error catch
                 return;
             }else{
                 application -> update_message(mapInfo[selectedMap].name + " loaded");
             }
-            drawNewMap(application);
+            drawNewMap(application);//draws new map
 
         }
-        application->refresh_drawing();
+        application->refresh_drawing(); //refreshes
     }
 }
 
