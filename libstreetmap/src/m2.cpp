@@ -236,7 +236,7 @@ void loadFeatures(){
 
 void setColor(ezgl::renderer *g, int type){
     if (type == 1) {
-        g->set_color(214, 234, 214, 255);
+        g->set_color(183, 217, 181, 255);
     } else if (type == 2) {
         g->set_color(253, 249, 235, 255);
     } else if (type == 3) {

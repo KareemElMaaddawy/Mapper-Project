@@ -9,7 +9,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="added order to feature drawing">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="feature drawing done">
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -303,7 +303,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615596824531</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="feature drawing done">
+      <created>1615599645170</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1615599645170</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -334,7 +341,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="build was broken, necessary functions were commented out and braces were not closed" />
     <MESSAGE value="rewrote streetsegment length, fixed indentation" />
     <MESSAGE value="fixed indentation" />
     <MESSAGE value="rewrote strtseglen" />
@@ -359,7 +365,8 @@
     <MESSAGE value="updated colors, load new maps" />
     <MESSAGE value="load new maps finished" />
     <MESSAGE value="added order to feature drawing" />
-    <option name="LAST_COMMIT_MESSAGE" value="added order to feature drawing" />
+    <MESSAGE value="feature drawing done" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature drawing done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
