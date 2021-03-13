@@ -220,15 +220,16 @@ void loadFeatures(){
     features.resize(10);
     for (int i = 0; i < getNumFeatures(); ++i) {
         int type = getFeatureType(i);
-        features[type].resize(features.size()+1);
-        features[type][i].name = getFeatureName(i);
-        features[type][i].numOfPoints = getNumFeaturePoints(i);
-        for (int j = 0; j < features[type][i].numOfPoints; ++j) {
-            features[type][i].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
+        features[type].resize(features[type].size()+1);
+        int index = features[type].size() - 1;
+        features[type][index].name = getFeatureName(i);
+        features[type][index].numOfPoints = getNumFeaturePoints(i);
+        for (int j = 0; j < features[type][index].numOfPoints; ++j) {
+            features[type][index].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
                                                                  y_from_lat(getFeaturePoint(i, j).latitude())));
         }
-        if (features[type][i].positionalPoints[0] == features[type][i].positionalPoints[features[type][i].numOfPoints-1]) {
-            features[type][i].closed = true;
+        if (features[type][index].positionalPoints[0] == features[type][index].positionalPoints[features[type][index].numOfPoints-1]) {
+            features[type][index].closed = true;
         }
     }
 }
