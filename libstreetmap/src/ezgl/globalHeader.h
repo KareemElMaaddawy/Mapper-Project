@@ -1,15 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   globalClasses.h
- * Author: saeedgha
- *
- * Created on March 6, 2021, 1:50 AM
- */
 #include <vector>
 #include "LatLon.h" 
 #include "OSMID.h"
@@ -36,7 +24,7 @@ const std::vector<map> mapInfo = {
                 40.18,
                 39.68,
                 116.77,
-                16.08,
+                116.08,
                 39.93
         },
         {"Cairo, Egypt",
@@ -48,7 +36,7 @@ const std::vector<map> mapInfo = {
                 30.04
         },
         {"Cape Town, South Africa",
-                "/cad2/ece297s/public/maps/cairo_egypt.streets.bin",
+                "/cad2/ece297s/public/maps/cape-town_south-africa.streets.bin",
                 -33.471,
                 -34.363,
                 19.004,

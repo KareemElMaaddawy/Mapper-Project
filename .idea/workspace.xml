@@ -9,7 +9,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="feature drawing done">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="seperated color for parks">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -310,7 +314,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615599645170</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="seperated color for parks">
+      <created>1615599892433</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1615599892433</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -341,7 +352,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="rewrote streetsegment length, fixed indentation" />
     <MESSAGE value="fixed indentation" />
     <MESSAGE value="rewrote strtseglen" />
     <MESSAGE value="rewrote and debugged streetSegmentLength" />
@@ -366,14 +376,15 @@
     <MESSAGE value="load new maps finished" />
     <MESSAGE value="added order to feature drawing" />
     <MESSAGE value="feature drawing done" />
-    <option name="LAST_COMMIT_MESSAGE" value="feature drawing done" />
+    <MESSAGE value="seperated color for parks" />
+    <option name="LAST_COMMIT_MESSAGE" value="seperated color for parks" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>261</line>
+          <line>298</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>

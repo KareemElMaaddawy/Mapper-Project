@@ -6,10 +6,9 @@
 #include "string"
 
 //function declarations
+std::string openMap = "Toronto, Canada"; //holds name of map open, default is toronto
 
-std::string openMap = "Toronto, Canada";
-
-void selectButtonClk(GtkEntry *,ezgl::application *application);
+void selectButtonClk(GtkEntry *,ezgl::application *application); //widgit to hold btn for select map
 
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
@@ -29,7 +28,7 @@ GtkComboBox* mapBox = nullptr;
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y);
-
+void drawNewMap(ezgl::application *application);
 void findButton(GtkWidget *widget, ezgl::application *application);
 void searchBar(GtkEntry *widget, ezgl::application *application);
 void loadFeatures();
@@ -37,14 +36,10 @@ void drawFeatures(ezgl::renderer *g);
 void loadPoi();
 void drawPoi(ezgl::renderer *g);
 void drawPoiLabel(ezgl::renderer *g);
-//void loadStreets();
+void loadIntersections();
 void drawStreetLabels(ezgl::renderer *g);
+void setColor(ezgl::renderer *g, int type);
 
-//variable declarations
-/*struct streetData{
-    std::string name;
-    std::vector<int> segmentsOfStreet;
-};*/
 
 struct intersection_data {
     LatLon position;
@@ -65,7 +60,6 @@ struct featureData {
     std::vector<ezgl::point2d> positionalPoints;
 };
 
-//std::vector<streetData> streets;
 std::vector<std::vector<featureData>> features;
 std::vector<intersection_data> intersections;
 std::vector<poiData> poi;
@@ -120,16 +114,14 @@ void act_on_mouse_click(ezgl::application *app,
     intersections[id].highlight = true;
     app->refresh_drawing();
 }
-
-void drawNewMap(ezgl::application *application, int selectedMap){
-
-    loadIntersections();
+//loads information for when when map is selected
+void drawNewMap(ezgl::application *application){
+    loadIntersections();//loads data
     loadFeatures();
 
-
-    ezgl::rectangle new_world({x_from_lon(mapInfo[selectedMap].minLon), y_from_lat(mapInfo[selectedMap].minLat)},
+    ezgl::rectangle new_world({x_from_lon(mapInfo[selectedMap].minLon), y_from_lat(mapInfo[selectedMap].minLat)}, //creates new world rectangle
                                   {x_from_lon(mapInfo[selectedMap].maxLon), y_from_lat(mapInfo[selectedMap].maxLat)});
-    application->change_canvas_world_coordinates(application->get_main_canvas_id(), new_world);
+    application->change_canvas_world_coordinates(application->get_main_canvas_id(), new_world); //changes world coords to rectangle
 
 }
 
@@ -201,7 +193,7 @@ void drawMainCanvas(ezgl::renderer *g) {
                 LatLon firstPoint = getIntersectionPosition(fromIntersection);
                 double x = x_from_lon(firstPoint.longitude());
                 double y = y_from_lat(firstPoint.latitude());
-                g->set_color(ezgl::GREEN);
+                g->set_color(234,191,75,255);
                 g->set_line_width(0);
                 g->draw_line({x, y}, {secondPoint.first, secondPoint.second});
                 if(xy_points_segments[segment].size() > 1){
@@ -216,7 +208,7 @@ void drawMainCanvas(ezgl::renderer *g) {
                 
                 std::pair<double, double> formerPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
                 std::pair<double, double> latterPoint = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
-                g->set_color(ezgl::BLACK);
+                g->set_color(234,191,75,255);
                 double m = slope (formerPoint.first, formerPoint.second, latterPoint.first, latterPoint.second);
                 double perpM = perpSlope(m);
                 std::pair<double, double> por;
@@ -246,7 +238,7 @@ void drawMainCanvas(ezgl::renderer *g) {
                 LatLon lastPoint = getIntersectionPosition(toIntersection);
                 double x = x_from_lon(lastPoint.longitude());
                 double y = y_from_lat(lastPoint.latitude());
-                g->set_color(ezgl::PURPLE);
+                g->set_color(234,191,75,255);
                 g->set_line_width(0);
                 g->draw_line({pointBeforeLast.first, pointBeforeLast.second}, {x, y});
             }
@@ -319,27 +311,6 @@ void drawFeatures(ezgl::renderer *g){
     }
 }
 
-void loadPoi(){
-    poi.resize(getNumPointsOfInterest());
-    double maxPoiLat = getPOIPosition(0).latitude();
-    double minPoiLat = maxPoiLat;
-    double maxPoiLong = getPOIPosition(0).longitude();
-    double minPoiLong = maxPoiLong;
-    
-    
-    
-    for (int i = 0; i < getNumPointsOfInterest(); i++) {
-        poi[i].position = getPOIPosition(i);
-        poi[i].name = getPOIName(i);
-
-        maxPoiLat = std::max(maxPoiLat, poi[i].position.latitude());
-        minPoiLat = std::min(minPoiLat, poi[i].position.latitude());
-        maxPoiLong = std::max(maxPoiLong, poi[i].position.longitude());
-        minPoiLong = std::min(minPoiLong, poi[i].position.longitude());
-    }
-    avgPoiLat = (minPoiLat + maxPoiLat) / 2;
-}
-
 void drawPoi(ezgl::renderer *g){
     for (int i = 0; i < poi.size(); i++) {
         double x = xFromLonPoi(poi[i].position.longitude());
@@ -389,10 +360,7 @@ void initial_setup(ezgl::application *application, bool){
             G_CALLBACK(selectButtonClk),
             application
             );
-
-    g_signal_connect(application -> get_object("testbutton"), "clicked", G_CALLBACK(findButton), application);
     g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
-    g_signal_connect(searchEntry, "icon_press", G_CALLBACK(searchBar), application);
 }
 
 void selectButtonClk(GtkEntry *,ezgl::application *application){
@@ -401,10 +369,10 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){
     if(selectedMap == -1){
         application -> update_message("Select Map");
     }else{
-        std::cout << mapInfo[selectedMap].name << " selected" << std::endl;
         if(mapInfo[selectedMap].name == openMap){
             application -> update_message(mapInfo[selectedMap].name + " already open");
         }else{
+            application -> update_message("Loading...");
             openMap = mapInfo[selectedMap].name;
             closeMap();
             features.clear();
@@ -420,20 +388,11 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){
             }else{
                 application -> update_message(mapInfo[selectedMap].name + " loaded");
             }
-            drawNewMap(application, selectedMap);
+            drawNewMap(application);
 
         }
-    }application->refresh_drawing();
-}
-void searchBar(GtkEntry *, ezgl::application *application){
- 
-  const char* search_term = gtk_entry_get_text(searchEntry);
-  std::cout <<"searched: "<< search_term<<std::endl;
-  userInput = search_term;
-  gtk_entry_set_text(GTK_ENTRY(searchEntry), "");
-  
-    
-
+        application->refresh_drawing();
+    }
 }
 
 
@@ -523,42 +482,6 @@ void findButton(GtkWidget *, ezgl::application *application){
     application->refresh_drawing();
 }
 
-/*void loadStreets(){
-    streets.resize(getNumStreets());
-    for(int i = 0; i < getNumStreets() ; i++){
-        streets[i].name = getStreetName(i);
-        for(int j = 0; j < getNumStreetSegments(); j++){
-            if(getStreetSegmentInfo(j).streetID == i){
-                streets[i].segmentsOfStreet.push_back(j);
-            }
-        }
-    }
-}*/
-
-/*void drawStreetLabels(ezgl:: renderer *g){
-    g -> set_color(ezgl:: BLACK);
-    for(int i = 0; i < streets.size(); i++){
-        std::string streetName = streets[i].name;
-        for(int j = 0 ; j < streets[i].segmentsOfStreet.size(); j+=2){
-            double segID = streets[i].segmentsOfStreet[j];
-            double intersecFrom = getStreetSegmentInfo(segID).from;
-            double firstX =  x_from_lon(getIntersectionPosition(intersecFrom).longitude());
-            double firstY =  y_from_lat(getIntersectionPosition(intersecFrom).latitude());
-            double intersecTo = getStreetSegmentInfo(segID).to;
-            double secondX = x_from_lon(getIntersectionPosition(intersecTo).longitude());
-            double secondY = y_from_lat(getIntersectionPosition(intersecTo).latitude());
-            
-            double midPointX = (firstX+secondX)/2;
-            double midPointY = (firstY+secondY)/2;
-            ezgl::point2d  center(midPointX,midPointY);
-            
-            if(streetName != "<unknown>"){
-            g -> draw_text(center, streetName, 100,100);
-            }
-        }
-      
-    }
-}*/
 void drawStreetLabels(ezgl:: renderer *g){
     g-> set_color(ezgl::BLACK);
     for(int i = 0; i < streetPositions.size(); i++){

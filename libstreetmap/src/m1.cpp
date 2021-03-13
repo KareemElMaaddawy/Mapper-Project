@@ -74,7 +74,7 @@ std::unordered_map<std::pair<StreetIdx, StreetIdx>, std::vector<IntersectionIdx>
 double lengthHelper(StreetSegmentIdx street_segment_id);
 double streetLengthHelper(StreetIdx street_id);
 std::vector<double> fillVector(StreetIdx street_id);
-/// std::vector<LatLon> vectorOfCoord(StreetIdx street_id); ///defined in global declared in globalHeader
+// std::vector<LatLon> vectorOfCoord(StreetIdx street_id); ///defined in global declared in globalHeader
 
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
@@ -83,19 +83,19 @@ bool loadMap(std::string map_streets_database_filename) {
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
     if (load_successful) {
-        numOfStreetSegments = getNumStreetSegments();
-        segLength = new double[numOfStreetSegments];
-        segTime = new double[numOfStreetSegments];
-        for(int i = 0; i < numOfStreetSegments; i++){
-            double length = lengthHelper(i);
-            segLength[i] = length;
-            segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
-        }
-        stLength = new double[numOfStreets];
-        for(int i = 0; i < numOfStreets; i++){
-            double stlength = streetLengthHelper(i);
-            stLength[i] = stlength;
-        }
+//        numOfStreetSegments = getNumStreetSegments();
+//        segLength = new double[numOfStreetSegments];
+//        segTime = new double[numOfStreetSegments];
+//        for(int i = 0; i < numOfStreetSegments; i++){
+//            double length = lengthHelper(i);
+//            segLength[i] = length;
+//            segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
+//        }
+//        stLength = new double[numOfStreets];
+//        for(int i = 0; i < numOfStreets; i++){
+//            double stlength = streetLengthHelper(i);
+//            stLength[i] = stlength;
+//        }
           
         numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
@@ -133,17 +133,17 @@ bool loadMap(std::string map_streets_database_filename) {
         for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
             for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++) {
 
-                /*SEGMENTS OF AN INTERSECTION*/
-                //get the index of the segment you're on
+//                /*SEGMENTS OF AN INTERSECTION*/
+//                //get the index of the segment you're on
                 int streetSeg_id = getIntersectionStreetSegment(intersection, segment);
-                //for each intersection add each segment id to that intersection's associated sub vector
-                segments_of_an_intersection[intersection].push_back(streetSeg_id);
-
-                /*FINDING THE STREET NAMES THAT PASS THROUGH AN INTERSECTION*/
-                //gets the street id of a specific segment
+//                //for each intersection add each segment id to that intersection's associated sub vector
+//                segments_of_an_intersection[intersection].push_back(streetSeg_id);
+//
+//                /*FINDING THE STREET NAMES THAT PASS THROUGH AN INTERSECTION*/
+//                //gets the street id of a specific segment
                 StreetIdx street_ID_of_segment = getStreetSegmentInfo(streetSeg_id).streetID;
-                //stores the name at specified street id in the street names function
-                street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
+//                //stores the name at specified street id in the street names function
+//                street_names_of_intersection[intersection].push_back(getStreetName(street_ID_of_segment));
 
                 /*FINDING INTERSECTIONS OF A STREET*/
                 ///if the intersection does not exists on the list of intersections of a street, then add it
@@ -170,38 +170,38 @@ bool loadMap(std::string map_streets_database_filename) {
          if we are not on the from intersection but the street is a 2 way street then also add the intersection to the vector*/
 
         // loop through intersections
-        for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
-            //create a vector to store the segment id of each segment on the intersection
-            const std::vector<StreetSegmentIdx> segments_of_current_intersection = findStreetSegmentsOfIntersection(intersection);
-            //loop through the segments
-            for (int segment = 0; segment < segments_of_current_intersection.size(); segment++){
-                //assign the segments "to" intersection id to a variable called to, do the same for "from"
-                IntersectionIdx to = getStreetSegmentInfo(segments_of_current_intersection[segment]).to;
-                IntersectionIdx from = getStreetSegmentInfo(segments_of_current_intersection[segment]).from;
-
-                //check if the vecor of adjacent intersection doesn't have to and from
-                if(!(std::find(std::begin(adjacent_intersections[intersection]), std::end(adjacent_intersections[intersection]), to) != std::end(adjacent_intersections[intersection]))){
-                    if(!(std::find(std::begin(adjacent_intersections[intersection]), std::end(adjacent_intersections[intersection]), from) != std::end(adjacent_intersections[intersection]))) {
-
-                        //check if the current intersection is the "from" intersection
-                        if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).from)) {
-                            //add the "to" intersection to the adjacent intersections of the current intersection
-                            adjacent_intersections[intersection].push_back(
-                                    getStreetSegmentInfo(segments_of_current_intersection[segment]).to);
-                        }
-                        //check if the segment is not a one way segment
-                        if (!getStreetSegmentInfo(segments_of_current_intersection[segment]).oneWay) {
-                            //check if the current intersection is the "to" intersection
-                            if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).to)) {
-                                //add the "from" intersection to the adjacent intersections of the current intersection
-                                adjacent_intersections[intersection].push_back(
-                                        getStreetSegmentInfo(segments_of_current_intersection[segment]).from);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+//        for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
+//            //create a vector to store the segment id of each segment on the intersection
+//            const std::vector<StreetSegmentIdx> segments_of_current_intersection = findStreetSegmentsOfIntersection(intersection);
+//            //loop through the segments
+//            for (int segment = 0; segment < segments_of_current_intersection.size(); segment++){
+//                //assign the segments "to" intersection id to a variable called to, do the same for "from"
+//                IntersectionIdx to = getStreetSegmentInfo(segments_of_current_intersection[segment]).to;
+//                IntersectionIdx from = getStreetSegmentInfo(segments_of_current_intersection[segment]).from;
+//
+//                //check if the vecor of adjacent intersection doesn't have to and from
+//                if(!(std::find(std::begin(adjacent_intersections[intersection]), std::end(adjacent_intersections[intersection]), to) != std::end(adjacent_intersections[intersection]))){
+//                    if(!(std::find(std::begin(adjacent_intersections[intersection]), std::end(adjacent_intersections[intersection]), from) != std::end(adjacent_intersections[intersection]))) {
+//
+//                        //check if the current intersection is the "from" intersection
+//                        if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).from)) {
+//                            //add the "to" intersection to the adjacent intersections of the current intersection
+//                            adjacent_intersections[intersection].push_back(
+//                                    getStreetSegmentInfo(segments_of_current_intersection[segment]).to);
+//                        }
+//                        //check if the segment is not a one way segment
+//                        if (!getStreetSegmentInfo(segments_of_current_intersection[segment]).oneWay) {
+//                            //check if the current intersection is the "to" intersection
+//                            if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).to)) {
+//                                //add the "from" intersection to the adjacent intersections of the current intersection
+//                                adjacent_intersections[intersection].push_back(
+//                                        getStreetSegmentInfo(segments_of_current_intersection[segment]).from);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
 
         
@@ -215,13 +215,13 @@ bool loadMap(std::string map_streets_database_filename) {
                 IntersectionIdx fromIntersection = getStreetSegmentInfo(segment).from;
                 LatLon toPoint = getIntersectionPosition(toIntersection);
                 LatLon fromPoint = getIntersectionPosition(fromIntersection);
-                
+
                 points_on_segments[segment].push_back(toPoint);
                 points_on_segments[segment].push_back(fromPoint);
             }
             for(int point = 0; point < total_number_of_points; ++point){
                 points_on_segments[segment].push_back(getStreetSegmentCurvePoint(segment, point));
-            }        
+            }
         }
         xy_points_segments.resize(getNumStreetSegments());
         
