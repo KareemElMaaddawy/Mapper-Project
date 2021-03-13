@@ -6,9 +6,9 @@
 #include <string>
 #pragma once
 
-extern int selectedMap;
+extern int selectedMap;//stores selected map
 
-struct map{
+struct map{ //struct for maps
     std::string name;
     std::string path;
     double maxLat;
@@ -18,7 +18,7 @@ struct map{
     double avgLat;
 };
 
-const std::vector<map> mapInfo = {
+const std::vector<map> mapInfo = { //all the map data, and their associated coord systems
         {"Beijing, China",
                 "/cad2/ece297s/public/maps/beijing_china.streets.bin",
                 40.18,
