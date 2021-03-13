@@ -20,7 +20,6 @@ double xFromLonPoi(double lon);
 
 double yFromLatPoi(double lat);
 
-GtkEntry* searchEntry = nullptr;
 GtkEntry* firstStreetEntry = nullptr;
 GtkEntry* secondStreetEntry = nullptr;
 GtkComboBox* mapBox = nullptr;
@@ -354,7 +353,6 @@ void drawPoiLabel(ezgl::renderer *g){
 
 
 void initial_setup(ezgl::application *application, bool){
-    searchEntry = (GtkEntry*)(application -> get_object("SearchInput"));//connect signals to obejects
     firstStreetEntry = (GtkEntry*)(application -> get_object("FirstStreet"));
     secondStreetEntry = (GtkEntry*)(application -> get_object("SecondStreet"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
