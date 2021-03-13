@@ -39,6 +39,11 @@ void drawPoiLabel(ezgl::renderer *g);
 void loadIntersections();
 void drawStreetLabels(ezgl::renderer *g);
 void setColor(ezgl::renderer *g, int type);
+double slope(double x1, double y1, double x2, double y2);
+double perpSlope(double m);
+std::pair<double, double> findPointOfReference(double m, double distance, double x, double y);
+
+
 
 
 struct intersection_data {
