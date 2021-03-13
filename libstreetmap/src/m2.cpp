@@ -224,7 +224,7 @@ void drawMainCanvas(ezgl::renderer *g) {
                     posSidePoint =  {por.first + 0.5, por.second};
                     negSidePoint = { por.first - 0.5, por.second};
                 }else{
-                    por = findPointOfReference( m, 1, latterPoint.first, latterPoint.second);
+                    por = findPointOfReference( m, -1, latterPoint.first, latterPoint.second);
                     posSidePoint = findPointOfReference( perpM, 0.5, por.first, por.second);
                     negSidePoint = findPointOfReference( perpM, -0.5, por.first, por.second);
                 }

@@ -9,7 +9,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="changed road colors" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="commented">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -322,7 +326,21 @@
       <option name="project" value="LOCAL" />
       <updated>1615609442221</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="commented">
+      <created>1615610224581</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1615610224581</updated>
+    </task>
+    <task id="LOCAL-00031" summary="commented">
+      <created>1615610449982</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1615610449982</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,7 +371,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="rewrote strtseglen" />
     <MESSAGE value="rewrote and debugged streetSegmentLength" />
     <MESSAGE value="bug fixes from merge" />
     <MESSAGE value="built data struc for segments" />
@@ -378,14 +395,15 @@
     <MESSAGE value="feature drawing done" />
     <MESSAGE value="seperated color for parks" />
     <MESSAGE value="changed road colors" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed road colors" />
+    <MESSAGE value="commented" />
+    <option name="LAST_COMMIT_MESSAGE" value="commented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>298</line>
+          <line>299</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
