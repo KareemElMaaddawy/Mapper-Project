@@ -50,6 +50,7 @@ struct intersection_data {
     LatLon position;
     std::string name;
     bool highlight = false;
+    
 };
 
 struct poiData {
@@ -60,13 +61,14 @@ struct poiData {
 
 struct featureData {
     std::string name;
+    FeatureType type;
     bool closed = false;
     int numOfPoints = 0;
     std::vector<ezgl::point2d> positionalPoints;
 };
 
 //std::vector<streetData> streets;
-std::vector<std::vector<featureData>> features;
+std::vector<featureData> features;
 std::vector<intersection_data> intersections;
 std::vector<poiData> poi;
 
@@ -76,7 +78,7 @@ double avgPoiLat = 0;
 
 
 double lon_from_x(double x) {
-    return x / (kDegreeToRadian * kEarthRadiusInMeters * std::cos(mapInfo[selectedMap].avgLat * kDegreeToRadian));
+    return x / (kDegreeToRadian * kEarthRadiusInMeters * std::cos(avg_lat * kDegreeToRadian));
 }
 
 double lat_from_y(double lon) {
@@ -89,15 +91,6 @@ double xFromLonPoi(double lon) {
 
 double yFromLatPoi(double lat) {
     return lat * kDegreeToRadian * kEarthRadiusInMeters;
-}
-
-void loadIntersections(){
-    intersections.resize(getNumIntersections());
-
-    for (int id = 0; id < getNumIntersections(); ++id) {
-        intersections[id].position = getIntersectionPosition(id);
-        intersections[id].name = getIntersectionName(id);
-    }
 }
 
 
@@ -120,23 +113,55 @@ void act_on_mouse_click(ezgl::application *app,
     app->refresh_drawing();
 }
 
-void drawNewMap(ezgl::application *application, int selectedMap){
+void drawNewMap(ezgl::application *application){
 
-    loadIntersections();
+
+    double max_lat = getIntersectionPosition(0).latitude();
+    double min_lat = max_lat;
+    double max_lon = getIntersectionPosition(0).longitude();
+    double min_lon = max_lon;
+    intersections.resize(getNumIntersections());
+
+    for (int id = 0; id < getNumIntersections(); ++id) {
+        intersections[id].position = getIntersectionPosition(id);
+        intersections[id].name = getIntersectionName(id);
+        
+        max_lat = std::max(max_lat, intersections[id].position.latitude());
+        min_lat = std::min(min_lat, intersections[id].position.latitude());
+        max_lon = std::max(max_lon, intersections[id].position.longitude());
+        min_lon = std::min(min_lon, intersections[id].position.longitude());
+    }
+
+    loadPoi();
     loadFeatures();
 
 
-    ezgl::rectangle new_world({x_from_lon(mapInfo[selectedMap].minLon), y_from_lat(mapInfo[selectedMap].minLat)},
-                                  {x_from_lon(mapInfo[selectedMap].maxLon), y_from_lat(mapInfo[selectedMap].maxLat)});
+    ezgl::rectangle new_world({x_from_lon(min_lon), y_from_lat(min_lat)},
+                                  {x_from_lon(max_lon), y_from_lat(max_lat)});
     application->change_canvas_world_coordinates(application->get_main_canvas_id(), new_world);
 
 }
 
 void drawMap() {
+    double max_lat = getIntersectionPosition(0).latitude();
+    double min_lat = max_lat;
+    double max_lon = getIntersectionPosition(0).longitude();
+    double min_lon = max_lon;
+    intersections.resize(getNumIntersections());
 
-    loadIntersections();
+    for (int id = 0; id < getNumIntersections(); ++id) {
+        intersections[id].position = getIntersectionPosition(id);
+        intersections[id].name = getIntersectionName(id);
+
+        max_lat = std::max(max_lat, intersections[id].position.latitude());
+        min_lat = std::min(min_lat, intersections[id].position.latitude());
+        max_lon = std::max(max_lon, intersections[id].position.longitude());
+        min_lon = std::min(min_lon, intersections[id].position.longitude());
+    }
+
+    loadPoi();
     loadFeatures();
-
+    
     ezgl::application::settings settings;
     settings.main_ui_resource = "libstreetmap/resources/main.ui";
     settings.window_identifier = "MainWindow";
@@ -145,8 +170,8 @@ void drawMap() {
     ezgl::application application(settings);
 
 
-    ezgl::rectangle initial_world({x_from_lon(mapInfo[selectedMap].minLon), y_from_lat(mapInfo[selectedMap].minLat)},
-                                  {x_from_lon(mapInfo[selectedMap].maxLon), y_from_lat(mapInfo[selectedMap].maxLat)});
+    ezgl::rectangle initial_world({x_from_lon(min_lon), y_from_lat(min_lat)},
+                                  {x_from_lon(max_lon), y_from_lat(max_lat)});
     application.add_canvas("MainCanvas", drawMainCanvas, initial_world);
 
 
@@ -222,64 +247,54 @@ void drawMainCanvas(ezgl::renderer *g) {
 }
 
 void loadFeatures(){
-    features.resize(10);
+    features.resize(getNumFeatures());
+
     for (int i = 0; i < getNumFeatures(); ++i) {
-        int type = getFeatureType(i);
-        features[type].resize(features[type].size()+1);
-        int index = features[type].size() - 1;
-        features[type][index].name = getFeatureName(i);
-        features[type][index].numOfPoints = getNumFeaturePoints(i);
-        for (int j = 0; j < features[type][index].numOfPoints; ++j) {
-            features[type][index].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
+        features[i].name = getFeatureName(i);
+        features[i].type = getFeatureType(i);
+        features[i].numOfPoints = getNumFeaturePoints(i);
+        for (int j = 0; j < features[i].numOfPoints; ++j) {
+            features[i].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
                                                                  y_from_lat(getFeaturePoint(i, j).latitude())));
         }
-        if (features[type][index].positionalPoints[0] == features[type][index].positionalPoints[features[type][index].numOfPoints-1]) {
-            features[type][index].closed = true;
+        if (features[i].positionalPoints[0] == features[i].positionalPoints[features[i].numOfPoints-1]) {
+            features[i].closed = true;
         }
-    }
-}
-
-void setColor(ezgl::renderer *g, int type){
-    if (type == 1) {
-        g->set_color(183, 217, 181, 255);
-    } else if (type == 2) {
-        g->set_color(253, 249, 235, 255);
-    } else if (type == 3) {
-        g->set_color(166, 191, 247, 255);
-    } else if (type == 4) {
-        g->set_color(166, 191, 247, 255);
-    } else if (type == 5) {
-        g->set_color(214, 234, 214, 255);
-    } else if (type == 6) {
-        g->set_color(127, 143, 154, 255);
-    } else if (type == 7) {
-        g->set_color(214, 234, 214, 255);
-    } else if (type == 8) {
-        g->set_color(184, 217, 182, 255);
-    } else if (type == 9) {
-        g->set_color(ezgl::LIGHT_SKY_BLUE);
-    } else {
-        g->set_color(ezgl::PINK);
     }
 }
 
 void drawFeatures(ezgl::renderer *g){
-    int order[] = {3,5,1,2,7,8,4,9,6,0};
-
     g->set_line_width(1);
 
-    for(int i = 0; i < 10; ++i){
-        int type = order[i];
-        setColor(g, type);
-        for(int z = 0; z < features[type].size(); ++z){
-            if (features[type][z].closed) {
-                if (features[type][z].positionalPoints.size() != 1) {
-                    g->fill_poly(features[type][z].positionalPoints);
-                }
-            } else {
-                for (int j = 0; j < features[type][z].numOfPoints - 1; ++j) {
-                    g->draw_line(features[type][z].positionalPoints[j], features[type][z].positionalPoints[j + 1]);
-                }
+    for (int i = 0; i < getNumFeatures(); ++i) {
+        if (features[i].type == 1) {
+            g->set_color(214,234,214,255);
+        } else if (features[i].type == 2) {
+            g->set_color(253,249,235,255);
+        } else if (features[i].type == 3) {
+            g->set_color(166,191,247,255);
+        } else if (features[i].type == 4) {
+            g->set_color(166,191,247,255);
+        } else if (features[i].type == 5) {
+            g->set_color(214,234,214,255);
+        } else if (features[i].type == 6) {
+            g->set_color(127,143,154,255);
+        } else if (features[i].type == 7) {
+            g->set_color(214,234,214,255);
+        } else if (features[i].type == 8) {
+            g->set_color(184,217,182,255);
+        } else if (features[i].type == 9) {
+            g->set_color(ezgl::LIGHT_SKY_BLUE);
+        } else {
+            g->set_color(ezgl::PINK);
+        }
+        if (features[i].closed) {
+            if(features[i].positionalPoints.size() != 1) {
+                g->fill_poly(features[i].positionalPoints);
+            }
+        }else{
+            for(int j = 0; j < features[i].numOfPoints-1; ++j){
+                g->draw_line(features[i].positionalPoints[j],features[i].positionalPoints[j+1]);
             }
         }
     }
@@ -362,16 +377,15 @@ void initial_setup(ezgl::application *application, bool){
 }
 
 void selectButtonClk(GtkEntry *,ezgl::application *application){
-    selectedMap = gtk_combo_box_get_active(mapBox);
+    int selectedMap = gtk_combo_box_get_active(mapBox);
 
     if(selectedMap == -1){
-        application -> update_message("Select Map");
+        std::cout << "Select Map" << std::endl;
     }else{
-        std::cout << mapInfo[selectedMap].name << " selected" << std::endl;
-        if(mapInfo[selectedMap].name == openMap){
-            application -> update_message(mapInfo[selectedMap].name + " already open");
+        std::cout << MAP_NAMES[selectedMap] << " selected" << std::endl;
+        if(MAP_NAMES[selectedMap] == openMap){
+            std::cout << MAP_NAMES[selectedMap] << " already open" << std::endl;
         }else{
-            openMap = mapInfo[selectedMap].name;
             closeMap();
             features.clear();
             intersections.clear();
@@ -379,14 +393,14 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){
             streetPositions.clear();
             points_on_segments.clear();
             xy_points_segments.clear();
-            bool load_success = loadMap(mapInfo[selectedMap].path);
+            bool load_success = loadMap(MAP_PATHS[selectedMap]);
             if(!load_success) {
-                std::cerr << "Failed to load map '" << mapInfo[selectedMap].name << "'\n";
+                std::cerr << "Failed to load map '" << MAP_PATHS[selectedMap] << "'\n";
                 return;
             }else{
-                application -> update_message(mapInfo[selectedMap].name + " loaded");
+                std::cout << "Successfully loaded map '" << MAP_PATHS[selectedMap] << "'\n";
             }
-            drawNewMap(application, selectedMap);
+            drawNewMap(application);
 
         }
     }application->refresh_drawing();
