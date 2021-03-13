@@ -101,6 +101,7 @@ void loadIntersections(){
 }
 
 
+
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y) {
@@ -153,7 +154,18 @@ void drawMap() {
     application.run(initial_setup, act_on_mouse_click, nullptr, nullptr);
 }
 
-
+double slope(double x1, double y1, double x2, double y2){
+    return((y2-y1)/(x2-x1));
+}
+double perpSlope(double m){
+    return (-(1/m));
+}
+std::pair<double, double> findPointOfReference(double m, double distance, double x, double y){
+    double a = distance/(sqrt(1+(m*m)));
+    double b = a*m;
+    std::pair <double, double> returnPair = {x-a, y-b};
+    return(returnPair);
+}
 
 void drawMainCanvas(ezgl::renderer *g) {
 
@@ -201,10 +213,32 @@ void drawMainCanvas(ezgl::renderer *g) {
             }
             if((point < xy_points_segments[segment].size() - 1) || ((xy_points_segments[segment].size() < 2)&&(point == xy_points_segments[segment].size()))){
                 g->set_line_width(0);
+                
                 std::pair<double, double> formerPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
                 std::pair<double, double> latterPoint = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
                 g->set_color(ezgl::BLACK);
+                double m = slope (formerPoint.first, formerPoint.second, latterPoint.first, latterPoint.second);
+                double perpM = perpSlope(m);
+                std::pair<double, double> por;
+                std::pair<double, double> posSidePoint;
+                std::pair<double, double> negSidePoint;
+                if(m == 0){
+                    por = std::make_pair(latterPoint.first - 1, latterPoint.second); 
+                    posSidePoint =  {por.first, por.second + 0.5};
+                    negSidePoint = { por.first, por.second - 0.5};
+                }else if(perpM == 0){
+                    por = std::make_pair(latterPoint.first, latterPoint.second - 1); 
+                    posSidePoint =  {por.first + 0.5, por.second};
+                    negSidePoint = { por.first - 0.5, por.second};
+                }else{
+                    por = findPointOfReference( m, 1, latterPoint.first, latterPoint.second);
+                    posSidePoint = findPointOfReference( perpM, 0.5, por.first, por.second);
+                    negSidePoint = findPointOfReference( perpM, -0.5, por.first, por.second);
+                }
+                
+                
                 g->draw_line({formerPoint.first, formerPoint.second}, {latterPoint.first, latterPoint.second});
+                g->fill_poly({{latterPoint.first, latterPoint.second}, {posSidePoint.first, posSidePoint.second}, {negSidePoint.first, negSidePoint.second}});
             }
             else if(point == xy_points_segments[segment].size() - 1){
                 std::pair<double, double> pointBeforeLast = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
