@@ -11,8 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="load new maps finished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main.cpp" afterDir="false" />
     </list>
@@ -32,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="2585731eca995a2547b786f05ddb76acf5705756" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -358,10 +357,20 @@
     <option name="LAST_COMMIT_MESSAGE" value="load new maps finished" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
+          <line>260</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
         <watch expression="features" />
         <watch expression="features[0].positionalPoints" language="ObjectiveC" />
+        <watch expression="intersections.size()" language="ObjectiveC" />
       </configuration>
     </watches-manager>
   </component>

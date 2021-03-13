@@ -60,14 +60,13 @@ struct poiData {
 
 struct featureData {
     std::string name;
-    FeatureType type;
     bool closed = false;
     int numOfPoints = 0;
     std::vector<ezgl::point2d> positionalPoints;
 };
 
 //std::vector<streetData> streets;
-std::vector<featureData> features;
+std::vector<std::vector<featureData>> features;
 std::vector<intersection_data> intersections;
 std::vector<poiData> poi;
 
@@ -92,6 +91,15 @@ double yFromLatPoi(double lat) {
     return lat * kDegreeToRadian * kEarthRadiusInMeters;
 }
 
+void loadIntersections(){
+    intersections.resize(getNumIntersections());
+
+    for (int id = 0; id < getNumIntersections(); ++id) {
+        intersections[id].position = getIntersectionPosition(id);
+        intersections[id].name = getIntersectionName(id);
+    }
+}
+
 
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
@@ -109,7 +117,7 @@ void act_on_mouse_click(ezgl::application *app,
 
 void drawNewMap(ezgl::application *application, int selectedMap){
 
-    loadPoi();
+    loadIntersections();
     loadFeatures();
 
 
@@ -121,23 +129,7 @@ void drawNewMap(ezgl::application *application, int selectedMap){
 
 void drawMap() {
 
-//    double max_latInt = getIntersectionPosition(0).latitude();
-//    double min_latInt = max_latInt;
-//    double max_lonInt = getIntersectionPosition(0).longitude();
-//    double min_lonInt = max_lonInt;
-//    intersections.resize(getNumIntersections());
-//
-//    for (int id = 0; id < getNumIntersections(); ++id) {
-//        intersections[id].position = getIntersectionPosition(id);
-//        intersections[id].name = getIntersectionName(id);
-//
-//        max_latInt = std::max(max_latInt, intersections[id].position.latitude());
-//        min_latInt = std::min(min_latInt, intersections[id].position.latitude());
-//        max_lonInt = std::max(max_lonInt, intersections[id].position.longitude());
-//        min_lonInt = std::min(min_lonInt, intersections[id].position.longitude());
-//    }
-
-    loadPoi();
+    loadIntersections();
     loadFeatures();
 
     ezgl::application::settings settings;
@@ -225,54 +217,63 @@ void drawMainCanvas(ezgl::renderer *g) {
 }
 
 void loadFeatures(){
-    features.resize(getNumFeatures());
-
+    features.resize(10);
     for (int i = 0; i < getNumFeatures(); ++i) {
-        features[i].name = getFeatureName(i);
-        features[i].type = getFeatureType(i);
-        features[i].numOfPoints = getNumFeaturePoints(i);
-        for (int j = 0; j < features[i].numOfPoints; ++j) {
-            features[i].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
+        int type = getFeatureType(i);
+        features[type].resize(features.size()+1);
+        features[type][i].name = getFeatureName(i);
+        features[type][i].numOfPoints = getNumFeaturePoints(i);
+        for (int j = 0; j < features[type][i].numOfPoints; ++j) {
+            features[type][i].positionalPoints.push_back(ezgl::point2d(x_from_lon(getFeaturePoint(i, j).longitude()),
                                                                  y_from_lat(getFeaturePoint(i, j).latitude())));
         }
-        if (features[i].positionalPoints[0] == features[i].positionalPoints[features[i].numOfPoints-1]) {
-            features[i].closed = true;
+        if (features[type][i].positionalPoints[0] == features[type][i].positionalPoints[features[type][i].numOfPoints-1]) {
+            features[type][i].closed = true;
         }
     }
 }
 
+void setColor(ezgl::renderer *g, int type){
+    if (type == 1) {
+        g->set_color(214, 234, 214, 255);
+    } else if (type == 2) {
+        g->set_color(253, 249, 235, 255);
+    } else if (type == 3) {
+        g->set_color(166, 191, 247, 255);
+    } else if (type == 4) {
+        g->set_color(166, 191, 247, 255);
+    } else if (type == 5) {
+        g->set_color(214, 234, 214, 255);
+    } else if (type == 6) {
+        g->set_color(127, 143, 154, 255);
+    } else if (type == 7) {
+        g->set_color(214, 234, 214, 255);
+    } else if (type == 8) {
+        g->set_color(184, 217, 182, 255);
+    } else if (type == 9) {
+        g->set_color(ezgl::LIGHT_SKY_BLUE);
+    } else {
+        g->set_color(ezgl::PINK);
+    }
+}
+
 void drawFeatures(ezgl::renderer *g){
+    int order[] = {3,5,1,2,7,8,4,9,6,0};
+
     g->set_line_width(1);
 
-    for (int i = 0; i < getNumFeatures(); ++i) {
-        if (features[i].type == 1) {
-            g->set_color(214,234,214,255);
-        } else if (features[i].type == 2) {
-            g->set_color(253,249,235,255);
-        } else if (features[i].type == 3) {
-            g->set_color(166,191,247,255);
-        } else if (features[i].type == 4) {
-            g->set_color(166,191,247,255);
-        } else if (features[i].type == 5) {
-            g->set_color(214,234,214,255);
-        } else if (features[i].type == 6) {
-            g->set_color(127,143,154,255);
-        } else if (features[i].type == 7) {
-            g->set_color(214,234,214,255);
-        } else if (features[i].type == 8) {
-            g->set_color(184,217,182,255);
-        } else if (features[i].type == 9) {
-            g->set_color(ezgl::LIGHT_SKY_BLUE);
-        } else {
-            g->set_color(ezgl::PINK);
-        }
-        if (features[i].closed) {
-            if(features[i].positionalPoints.size() != 1) {
-                g->fill_poly(features[i].positionalPoints);
-            }
-        }else{
-            for(int j = 0; j < features[i].numOfPoints-1; ++j){
-                g->draw_line(features[i].positionalPoints[j],features[i].positionalPoints[j+1]);
+    for(int i = 0; i < 10; ++i){
+        int type = order[i];
+        setColor(g, type);
+        for(int z = 0; z < features[type].size(); ++z){
+            if (features[type][z].closed) {
+                if (features[type][z].positionalPoints.size() != 1) {
+                    g->fill_poly(features[type][z].positionalPoints);
+                }
+            } else {
+                for (int j = 0; j < features[type][z].numOfPoints - 1; ++j) {
+                    g->draw_line(features[type][z].positionalPoints[j], features[type][z].positionalPoints[j + 1]);
+                }
             }
         }
     }

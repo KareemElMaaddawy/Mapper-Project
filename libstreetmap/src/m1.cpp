@@ -202,29 +202,8 @@ bool loadMap(std::string map_streets_database_filename) {
                 }
             }
         }
-//        struct intersection_data {
-//            LatLon position;
-//            std::string name;
-//            bool highlight = false;
-//        };
-//        std::vector<intersection_data> intersections;
-//        double max_lat = getIntersectionPosition(0).latitude();
-//        double min_lat = max_lat;
-//        double max_lon = getIntersectionPosition(0).longitude();
-//        double min_lon = max_lon;
-//        intersections.resize(getNumIntersections());
-//
-//        for (int id = 0; id < getNumIntersections(); ++id) {
-//        intersections[id].position = getIntersectionPosition(id);
-//        intersections[id].name = getIntersectionName(id);
-//
-//        max_lat = std::max(max_lat, intersections[id].position.latitude());
-//        min_lat = std::min(min_lat, intersections[id].position.latitude());
-//        max_lon = std::max(max_lon, intersections[id].position.longitude());
-//        min_lon = std::min(min_lon, intersections[id].position.longitude());
-//       }
-//
-//       avg_lat = (min_lat + max_lat) / 2;
+
+
         
         
         /*TOO FEW CONNECTIONS*/
