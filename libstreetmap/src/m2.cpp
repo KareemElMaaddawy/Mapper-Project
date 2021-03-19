@@ -120,6 +120,7 @@ void act_on_mouse_click(ezgl::application *app,
 }
 //loads information for when when map is selected
 void drawNewMap(ezgl::application *application){
+    loadPoi();
     loadIntersections();//loads data
     loadFeatures();
 
@@ -131,7 +132,7 @@ void drawNewMap(ezgl::application *application){
 
 //draws initial map
 void drawMap() {
-
+    loadPoi();
     loadIntersections();//loads data
     loadFeatures();
 
@@ -294,6 +295,15 @@ void setColor(ezgl::renderer *g, int type){//sets drawing based on feature type
     }
 }
 
+void loadPoi(){
+    poi.resize(getNumPointsOfInterest());
+
+    for (int i = 0; i < getNumPointsOfInterest(); i++) {
+        poi[i].position = getPOIPosition(i);
+        poi[i].name = getPOIName(i);
+    }
+}
+
 void drawFeatures(ezgl::renderer *g){//draws features
     int order[] = {3,5,1,2,7,8,4,9,6,0};//order of feature types to draw
 
@@ -318,8 +328,8 @@ void drawFeatures(ezgl::renderer *g){//draws features
 
 void drawPoi(ezgl::renderer *g){
     for (int i = 0; i < poi.size(); i++) {
-        double x = xFromLonPoi(poi[i].position.longitude());
-        double y = yFromLatPoi(poi[i].position.latitude());
+        double x = x_from_lon(poi[i].position.longitude());
+        double y = y_from_lat(poi[i].position.latitude());
         
         if (poi[i].highlight == false) {
             g->set_color(ezgl::LIGHT_SKY_BLUE);

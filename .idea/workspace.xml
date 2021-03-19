@@ -9,7 +9,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="commented" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="commented">
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,7 +53,6 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="OCFindUsagesOptions.isSearchForTextOccurrences" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -402,15 +404,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="commented" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>299</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
         <watch expression="features" />
