@@ -2,10 +2,75 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkListStore" id="MapListStore">
+    <columns>
+      <!-- column-name ListOfAvailableMapNames -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Beijing, China</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Cairo, Egypt</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Cape Town, South Africa</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Golden Horseshoe, Canada</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Hamilton, Canada</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Hong Kong, China</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Iceland</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Interlaken, Switzerland</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">London, England</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Moscow, Russia</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">New Delhi, India</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">New York, USA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Rio de Janerio, Brazil</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Saint Helena</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Singapore</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sydney, Australia</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Tehran, Iran</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Tokyo, Japan</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Toronto, Canada</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="title">EZGL Example Application</property>
+    <property name="title">MAP83</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
     <child type="titlebar">
@@ -24,31 +89,15 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="top_attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkGrid" id="InnerGrid">
+            <property name="width_request">20</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkButton" id="UpButton">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">True</property>
-                <child>
-                  <object class="GtkArrow" id="UpArrow">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="arrow_type">up</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
+            <property name="margin_left">48</property>
             <child>
               <object class="GtkButton" id="DownButton">
                 <property name="visible">True</property>
@@ -104,10 +153,11 @@
             </child>
             <child>
               <object class="GtkButton" id="ZoomInButton">
-                <property name="label" translatable="yes">Zoom In</property>
+                <property name="label" translatable="yes">➕️</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">zoom in</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -117,10 +167,11 @@
             </child>
             <child>
               <object class="GtkButton" id="ZoomOutButton">
-                <property name="label" translatable="yes">Zoom Out</property>
+                <property name="label" translatable="yes">➖️</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">zoom out</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -155,6 +206,63 @@
               </packing>
             </child>
             <child>
+              <object class="GtkButton" id="UpButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <child>
+                  <object class="GtkArrow" id="UpArrow">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="arrow_type">up</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="Find">
+                <property name="label">gtk-find</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Enter street names below</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">7</property>
+                <property name="width">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="FirstStreet">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="placeholder_text" translatable="yes">First street</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">8</property>
+                <property name="width">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="SecondStreet">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="placeholder_text" translatable="yes">Second street</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">9</property>
+                <property name="width">3</property>
+              </packing>
+            </child>
+            <child>
               <placeholder/>
             </child>
             <child>
@@ -172,7 +280,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="top_attach">1</property>
           </packing>
         </child>
         <child>
@@ -184,9 +292,71 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="top_attach">2</property>
             <property name="width">2</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkComboBox" id="MapSelectBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">MapListStore</property>
+                <property name="has_entry">True</property>
+                <property name="entry_text_column">0</property>
+                <child internal-child="entry">
+                  <object class="GtkEntry">
+                    <property name="can_focus">True</property>
+                    <property name="placeholder_text" translatable="yes">🌍️ Choose Map...</property>
+                    <signal name="changed" handler="on_MapEntry_changed" swapped="no"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="mapSelectBtn">
+                <property name="label" translatable="yes">Select</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="colorToggle">
+            <property name="label" translatable="yes">Color Blind Mode</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>
