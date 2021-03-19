@@ -169,7 +169,7 @@ void drawMainCanvas(ezgl::renderer *g) {
 
     drawFeatures(g);
     drawPoi(g);
-    drawPoiLabel(g);
+    
 
     for (int i = 0; i < intersections.size(); ++i) {
         float x = x_from_lon(intersections[i].position.longitude());
@@ -251,6 +251,7 @@ void drawMainCanvas(ezgl::renderer *g) {
         }
     }
     drawStreetLabels(g);
+    drawPoiLabel(g);
 }
 
 void loadFeatures(){//loads features and their associated properties
@@ -344,12 +345,12 @@ void drawPoi(ezgl::renderer *g){
 
 void drawPoiLabel(ezgl::renderer *g){
     if(aspVar >= 16.666){
-    g -> set_font_size(20);
+    g -> set_font_size(10);
     g -> set_color(ezgl::BLACK);
     for(int i = 0; i < poi.size(); i++){
         std::string poiName = poi[i].name;
-        double x = xFromLonPoi(poi[i].position.longitude());
-        double y = yFromLatPoi(poi[i].position.latitude());
+        double x = x_from_lon(poi[i].position.longitude());
+        double y = y_from_lat(poi[i].position.latitude());
         double width = 15;
         double height = width;
         ezgl::point2d center(x-width/2,y-height/2);
