@@ -284,11 +284,11 @@ void setColor(ezgl::renderer *g, int type){//sets drawing based on feature type
         } else if (type == 4) {
             g->set_color(49, 86, 249, 255);
         } else if (type == 5) {
-            g->set_color(167, 159, 66, 255);
+            g->set_color(191, 179, 42, 255);
         } else if (type == 6) {
             g->set_color(127, 143, 154, 255);
         } else if (type == 7) {
-            g->set_color(167, 159, 66, 255);
+            g->set_color(253, 248, 80, 255);//
         } else if (type == 8) {
             g->set_color(235, 222, 73, 255);
         } else if (type == 9) {
