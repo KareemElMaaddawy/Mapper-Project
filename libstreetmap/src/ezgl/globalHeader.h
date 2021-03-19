@@ -7,6 +7,7 @@
 #pragma once
 
 extern int selectedMap;//stores selected map
+extern bool colorBlind;
 
 struct map{ //struct for maps
     std::string name;

@@ -9,6 +9,7 @@
 std::string openMap = "Toronto, Canada"; //holds name of map open, default is toronto
 
 void selectButtonClk(GtkEntry *,ezgl::application *application); //widgit to hold btn for select map
+void colorBlindToggle(GtkEntry *,ezgl::application *application);
 
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
@@ -273,26 +274,50 @@ void loadFeatures(){//loads features and their associated properties
 }
 
 void setColor(ezgl::renderer *g, int type){//sets drawing based on feature type
-    if (type == 1) {
-        g->set_color(183, 217, 181, 255);
-    } else if (type == 2) {
-        g->set_color(253, 249, 235, 255);
-    } else if (type == 3) {
-        g->set_color(166, 191, 247, 255);
-    } else if (type == 4) {
-        g->set_color(166, 191, 247, 255);
-    } else if (type == 5) {
-        g->set_color(214, 234, 214, 255);
-    } else if (type == 6) {
-        g->set_color(127, 143, 154, 255);
-    } else if (type == 7) {
-        g->set_color(214, 234, 214, 255);
-    } else if (type == 8) {
-        g->set_color(184, 217, 182, 255);
-    } else if (type == 9) {
-        g->set_color(ezgl::LIGHT_SKY_BLUE);
-    } else {
-        g->set_color(ezgl::PINK);//bright colour to stand out
+    if(colorBlind){
+        if (type == 1) {
+            g->set_color(167, 159, 66, 255);
+        } else if (type == 2) {
+            g->set_color(214, 200, 48, 255);
+        } else if (type == 3) {
+            g->set_color(49, 86, 249, 255);
+        } else if (type == 4) {
+            g->set_color(49, 86, 249, 255);
+        } else if (type == 5) {
+            g->set_color(167, 159, 66, 255);
+        } else if (type == 6) {
+            g->set_color(127, 143, 154, 255);
+        } else if (type == 7) {
+            g->set_color(167, 159, 66, 255);
+        } else if (type == 8) {
+            g->set_color(235, 222, 73, 255);
+        } else if (type == 9) {
+            g->set_color(ezgl::LIGHT_SKY_BLUE);
+        } else {
+            g->set_color(ezgl::PINK);//bright colour to stand out
+        }
+    }else{
+        if (type == 1) {
+            g->set_color(183, 217, 181, 255);
+        } else if (type == 2) {
+            g->set_color(253, 249, 235, 255);
+        } else if (type == 3) {
+            g->set_color(166, 191, 247, 255);
+        } else if (type == 4) {
+            g->set_color(166, 191, 247, 255);
+        } else if (type == 5) {
+            g->set_color(214, 234, 214, 255);
+        } else if (type == 6) {
+            g->set_color(127, 143, 154, 255);
+        } else if (type == 7) {
+            g->set_color(214, 234, 214, 255);
+        } else if (type == 8) {
+            g->set_color(184, 217, 182, 255);
+        } else if (type == 9) {
+            g->set_color(ezgl::LIGHT_SKY_BLUE);
+        } else {
+            g->set_color(ezgl::PINK);//bright colour to stand out
+        }
     }
 }
 
@@ -373,7 +398,18 @@ void initial_setup(ezgl::application *application, bool){
             G_CALLBACK(selectButtonClk),
             application
             );
+    g_signal_connect(//connecting map select button to callback function
+            application->get_object("colorToggle"),
+            "clicked",
+            G_CALLBACK(colorBlindToggle),
+            application
+    );
     g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
+}
+
+void colorBlindToggle(GtkEntry *,ezgl::application *application){
+    colorBlind = !colorBlind;
+    application->refresh_drawing();
 }
 
 void selectButtonClk(GtkEntry *,ezgl::application *application){//callback function when map select button is pressed
