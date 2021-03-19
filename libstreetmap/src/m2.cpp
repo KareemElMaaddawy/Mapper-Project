@@ -357,8 +357,10 @@ void drawPoi(ezgl::renderer *g){
         double x = x_from_lon(poi[i].position.longitude());
         double y = y_from_lat(poi[i].position.latitude());
         
-        if (poi[i].highlight == false) {
-            g->set_color(ezgl::LIGHT_SKY_BLUE);
+        if (colorBlind) {
+            g->set_color(96,92,75,255);
+        }else{
+            g->set_color(ezgl:: RED);
         }
 
         double width = 15;
