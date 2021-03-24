@@ -178,8 +178,6 @@ const std::vector<map> mapInfo = { //all the map data, and their associated coor
         }
 };
 
-const std::vector<std::string>
-
 struct streetInfo{
     std::string name;
     std::vector<LatLon> positions;
