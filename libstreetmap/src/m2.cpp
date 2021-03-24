@@ -388,6 +388,49 @@ void drawPoiLabel(ezgl::renderer *g){
     }
 }
 
+
+
+void docButtonClk(GtkEntry *,ezgl::application *application){
+    poiFilterActive = true;
+    poiFilter = "healthcare";
+    application->refresh_drawing(); //refreshes
+}
+
+void bkButtonClk(GtkEntry *,ezgl::application *application){
+    poiFilterActive = true;
+    poiFilter = "education";
+    application->refresh_drawing(); //refreshes
+}
+
+void carButtonClk(GtkEntry *,ezgl::application *application){
+    poiFilterActive = true;
+    poiFilter = "transportation";
+    application->refresh_drawing(); //refreshes
+}
+
+void artButtonClk(GtkEntry *,ezgl::application *application){
+    poiFilterActive = true;
+    poiFilter = "art";
+    application->refresh_drawing(); //refreshes
+}
+
+void foodButtonClk(GtkEntry *,ezgl::application *application){
+    poiFilterActive = true;
+    poiFilter = "food";
+    application->refresh_drawing(); //refreshes
+}
+
+void monButtonClk(GtkEntry *,ezgl::application *application){
+    poiFilterActive = true;
+    poiFilter = "finance";
+    application->refresh_drawing(); //refreshes
+}
+
+void filClrClk(GtkEntry *,ezgl::application *application){
+    poiFilterActive = false;
+    application->refresh_drawing(); //refreshes
+}
+
 void loadFilterButtons(ezgl::application *application){
     g_signal_connect(//connecting map select button to callback function
             application->get_object("doctorFilterBtn"),
@@ -431,47 +474,6 @@ void loadFilterButtons(ezgl::application *application){
             G_CALLBACK(filClrClk),
             application
     );
-}
-
-void docButtonClk(GtkEntry *,ezgl::application *application){
-    poiFilterActive = true;
-    poiFilter = "healthcare";
-    application->refresh_drawing(); //refreshes
-}
-
-void bkButtonClk(GtkEntry *,ezgl::application *application){
-    poiFilterActive = true;
-    poiFilter = "education";
-    application->refresh_drawing(); //refreshes
-}
-
-void carButtonClk(GtkEntry *,ezgl::application *application){
-    poiFilterActive = true;
-    poiFilter = "transportation";
-    application->refresh_drawing(); //refreshes
-}
-
-void artButtonClk(GtkEntry *,ezgl::application *application){
-    poiFilterActive = true;
-    poiFilter = "art";
-    application->refresh_drawing(); //refreshes
-}
-
-void foodButtonClk(GtkEntry *,ezgl::application *application){
-    poiFilterActive = true;
-    poiFilter = "food";
-    application->refresh_drawing(); //refreshes
-}
-
-void monButtonClk(GtkEntry *,ezgl::application *application){
-    poiFilterActive = true;
-    poiFilter = "finance";
-    application->refresh_drawing(); //refreshes
-}
-
-void filClrClk(GtkEntry *,ezgl::application *application){
-    poiFilterActive = false;
-    application->refresh_drawing(); //refreshes
 }
 
 void initial_setup(ezgl::application *application, bool){
