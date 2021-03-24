@@ -8,6 +8,8 @@
 
 extern int selectedMap;//stores selected map
 extern bool colorBlind;
+extern bool poiFilterActive;
+extern std::string poiFilter;
 
 struct map{ //struct for maps
     std::string name;
@@ -175,6 +177,8 @@ const std::vector<map> mapInfo = { //all the map data, and their associated coor
                 43.7
         }
 };
+
+const std::vector<std::string>
 
 struct streetInfo{
     std::string name;
