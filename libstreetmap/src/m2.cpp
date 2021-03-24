@@ -466,19 +466,37 @@ void findButton(GtkWidget *, ezgl::application *application){
         std::vector<StreetIdx> possibleSecondStreets = findStreetIdsFromPartialStreetName(secondTerm);
         std::string correctFirstStreetName = "";
         std::string correctSecondStreetName = "";
-        if((possibleFirstStreets.size() == 1) && (possibleSecondStreets.size() == 1)){
-            std::string fullFirstFromPartial = getStreetName(possibleFirstStreets[0]);
-            std::string fullSecondFromPartial = getStreetName(possibleSecondStreets[0]);
+        std::vector<std::string> possibleFirstStreetsNames;
+        std::vector<std::string> possibleSecondStreetsNames;
+        
+        for(int i = 0; i< possibleFirstStreets.size();i++){
+           possibleFirstStreetsNames.push_back( getStreetName(possibleFirstStreets[i]));
+        }
+        
+        for(int i = 0; i< possibleSecondStreets.size();i++){
+           possibleSecondStreetsNames.push_back( getStreetName(possibleSecondStreets[i]));
+        }
+        std::sort( possibleFirstStreetsNames.begin(), possibleFirstStreetsNames.end() );
+            possibleFirstStreetsNames.erase( std::unique( possibleFirstStreetsNames.begin(), possibleFirstStreetsNames.end() ), possibleFirstStreetsNames.end() );
+            
+        std::sort( possibleSecondStreetsNames.begin(), possibleSecondStreetsNames.end() );
+            possibleSecondStreetsNames.erase( std::unique( possibleSecondStreetsNames.begin(), possibleSecondStreetsNames.end() ), possibleSecondStreetsNames.end() );   
+            
+        if((possibleFirstStreetsNames.size() == 1) && (possibleSecondStreetsNames.size() == 1)){
+            std::string fullFirstFromPartial = possibleFirstStreetsNames[0];
+            std::string fullSecondFromPartial = possibleSecondStreetsNames[0];
+
             std::cout << "first street name: " << fullFirstFromPartial <<std::endl;
             std::cout << "second street name: " << fullSecondFromPartial <<std::endl;
+            
             std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({possibleFirstStreets[0], possibleSecondStreets[0]}); 
             std::cout << "names of common intersections are:" << std::endl;
             for(int i = 0; i < intersectionsOfStreets.size(); ++i){
-            //    std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
-            //    std::cout << "   " << intersections[intersectionsOfStreets[i]].name;
+                std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
+                std::cout << "   " << intersections[intersectionsOfStreets[i]].name;
                 intersections[intersectionsOfStreets[i]].highlight = true;
             }
-            std::cout << "if "<<std::endl;
+//            std::cout << "if "<<std::endl;
         }else{
             
             for (int i = 0; i < possibleFirstStreets.size(); ++i){
@@ -494,13 +512,13 @@ void findButton(GtkWidget *, ezgl::application *application){
             if(correctSecondStreetName == "" || correctFirstStreetName == ""){
                 std::cout<<"more info needed"<<std::endl << "first term: " << firstTerm << std::endl<<"second term: "<< secondTerm <<std::endl;
                 std::cout << "all possible names for first: " << std::endl;
-                for (int i = 0; i < possibleFirstStreets.size(); ++i){
-                    std::cout << getStreetName(possibleFirstStreets[i]) << std::endl;
+                for (int i = 0; i < possibleFirstStreetsNames.size(); ++i){
+                    std::cout << possibleFirstStreetsNames[i] << std::endl;
                 }
                 std::cout << "all possible names for second: " << std::endl;
-                for (int i = 0; i < possibleSecondStreets.size(); ++i){
+                for (int i = 0; i < possibleSecondStreetsNames.size(); ++i){
 
-                    std::cout << getStreetName(possibleSecondStreets[i]) << std::endl;
+                    std::cout << possibleSecondStreetsNames[i] << std::endl;
                 }
             }
             else{
