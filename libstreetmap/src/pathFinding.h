@@ -7,6 +7,17 @@
 #include "m3.h"
 #include "globalHeader.h"
 
+struct prioElem{
+    IntersectionIdx intersection;
+    double priority = 0;
+};
+
+struct compare{
+    bool operator()(const prioElem & a, const prioElem & b){
+        return a.priority > b.priority;
+    }
+};
+
 //helper to check if a left turn occurs, takes the previous street and the current street as parameters, and returns true if a left turn occurs
 bool checkForLeftTurn(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
 
