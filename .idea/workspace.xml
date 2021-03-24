@@ -9,10 +9,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="restored load poi">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="finished pathFinding, need to test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +32,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="2585731eca995a2547b786f05ddb76acf5705756" />
+        <entry key="$PROJECT_DIR$" value="0c17662b9a84382aec0bf786d2398614bd1aaa55" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -122,6 +123,9 @@
       <workItem from="1615497923537" duration="3885000" />
       <workItem from="1615503794009" duration="8963000" />
       <workItem from="1615564500372" duration="18283000" />
+      <workItem from="1616372068267" duration="828000" />
+      <workItem from="1616448598349" duration="1943000" />
+      <workItem from="1616602435073" duration="11151000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -354,7 +358,63 @@
       <option name="project" value="LOCAL" />
       <updated>1616178721426</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="updated colorblind colors">
+      <created>1616184948838</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1616184948838</updated>
+    </task>
+    <task id="LOCAL-00035" summary="updated colorblind colors">
+      <created>1616185188081</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1616185188081</updated>
+    </task>
+    <task id="LOCAL-00036" summary="updated colorblind colors">
+      <created>1616185325008</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1616185325008</updated>
+    </task>
+    <task id="LOCAL-00037" summary="progress on A* algorithm, heurisitic is based on euclidean distance">
+      <created>1616377122786</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1616377122786</updated>
+    </task>
+    <task id="LOCAL-00038" summary="finished pathfinding, need to test and comment">
+      <created>1616448650250</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1616448650250</updated>
+    </task>
+    <task id="LOCAL-00039" summary="finished pathfinding logic, need to fix errors">
+      <created>1616450536966</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1616450536966</updated>
+    </task>
+    <task id="LOCAL-00040" summary="commented feature colours">
+      <created>1616603551226</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1616603551226</updated>
+    </task>
+    <task id="LOCAL-00041" summary="finished pathFinding, need to test">
+      <created>1616623302859</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1616623302859</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -385,12 +445,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="bug fixes from merge" />
-    <MESSAGE value="built data struc for segments" />
-    <MESSAGE value="finished travel time" />
-    <MESSAGE value="fixed mem leaks" />
-    <MESSAGE value="making data structure for streetlength" />
-    <MESSAGE value="merging ghamr's branch" />
     <MESSAGE value="data structure to relate streetsegments to streets" />
     <MESSAGE value="building streetlength" />
     <MESSAGE value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
@@ -410,7 +464,13 @@
     <MESSAGE value="changed road colors" />
     <MESSAGE value="commented" />
     <MESSAGE value="restored load poi" />
-    <option name="LAST_COMMIT_MESSAGE" value="restored load poi" />
+    <MESSAGE value="updated colorblind colors" />
+    <MESSAGE value="progress on A* algorithm, heurisitic is based on euclidean distance" />
+    <MESSAGE value="finished pathfinding, need to test and comment" />
+    <MESSAGE value="finished pathfinding logic, need to fix errors" />
+    <MESSAGE value="commented feature colours" />
+    <MESSAGE value="finished pathFinding, need to test" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished pathFinding, need to test" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
