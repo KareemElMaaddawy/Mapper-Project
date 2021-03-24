@@ -297,23 +297,23 @@ void setColor(ezgl::renderer *g, int type){//sets drawing based on feature type
             g->set_color(ezgl::PINK);//bright colour to stand out
         }
     }else{
-        if (type == 1) {
-            g->set_color(183, 217, 181, 255);
-        } else if (type == 2) {
+        if (type == 1) {//park = darker green
+            g->set_color(83, 217, 181, 255);
+        } else if (type == 2) {//beach = beige
             g->set_color(253, 249, 235, 255);
-        } else if (type == 3) {
+        } else if (type == 3) {//lake = blue
             g->set_color(166, 191, 247, 255);
-        } else if (type == 4) {
+        } else if (type == 4) {//river = blue
             g->set_color(166, 191, 247, 255);
-        } else if (type == 5) {
+        } else if (type == 5) {//island = green
             g->set_color(214, 234, 214, 255);
-        } else if (type == 6) {
+        } else if (type == 6) {//building = grey
             g->set_color(127, 143, 154, 255);
-        } else if (type == 7) {
+        } else if (type == 7) {//greenspace = light green
             g->set_color(214, 234, 214, 255);
-        } else if (type == 8) {
+        } else if (type == 8) {//golfcourse = dark green
             g->set_color(184, 217, 182, 255);
-        } else if (type == 9) {
+        } else if (type == 9) {//stream
             g->set_color(ezgl::LIGHT_SKY_BLUE);
         } else {
             g->set_color(ezgl::PINK);//bright colour to stand out
