@@ -105,7 +105,7 @@ void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y) {
     for(int i = 0; i < intersections.size(); i++){
-        if(intersections[i].highlight == true ){
+        if(intersections[i].highlight){
             intersections[i].highlight = false;
         }
     }
@@ -352,21 +352,29 @@ void drawFeatures(ezgl::renderer *g){//draws features
     }
 }
 
+bool checkPOIFilter(std::string poiType){
+    if(std::find(poiFilter.begin(), poiFilter.end(), poiType) != poiFilter.end()){
+        return true;
+    }return false;
+}
+
 void drawPoi(ezgl::renderer *g){
     for (int i = 0; i < poi.size(); i++) {
-        double x = x_from_lon(poi[i].position.longitude());
-        double y = y_from_lat(poi[i].position.latitude());
-        
-        if (colorBlind) {
-            g->set_color(96,92,75,255);
-        }else{
-            g->set_color(ezgl:: RED);
+        if(!poiFilterActive||checkPOIFilter(getPOIType(i))){
+            double x = x_from_lon(poi[i].position.longitude());
+            double y = y_from_lat(poi[i].position.latitude());
+
+            if (colorBlind) {
+                g->set_color(96,92,75,255);
+            }else{
+                g->set_color(ezgl:: RED);
+            }
+
+            double width = 15;
+            float height = width;
+
+            g->fill_arc({x - width / 2, y - height / 2}, 3.5, 0, 360);
         }
-
-        double width = 15;
-        float height = width;
-
-        g->fill_arc({x - width / 2, y - height / 2}, 3.5, 0, 360);
     }
 }
 
@@ -375,15 +383,17 @@ void drawPoiLabel(ezgl::renderer *g){
     g -> set_font_size(10);
     g -> set_color(ezgl::BLACK);
     for(int i = 0; i < poi.size(); i++){
-        std::string poiName = poi[i].name;
-        double x = x_from_lon(poi[i].position.longitude());
-        double y = y_from_lat(poi[i].position.latitude());
-        double width = 15;
-        double height = width;
-        ezgl::point2d center(x-width/2,y-height/2);
-        
-        float poiLen = 100;
-        g -> draw_text(center, poiName, poiLen, poiLen);
+        if(!poiFilterActive||checkPOIFilter(getPOIType(i))) {
+            std::string poiName = poi[i].name;
+            double x = x_from_lon(poi[i].position.longitude());
+            double y = y_from_lat(poi[i].position.latitude());
+            double width = 15;
+            double height = width;
+            ezgl::point2d center(x - width / 2, y - height / 2);
+
+            float poiLen = 100;
+            g->draw_text(center, poiName, poiLen, poiLen);
+        }
     }
     }
 }
@@ -392,37 +402,37 @@ void drawPoiLabel(ezgl::renderer *g){
 
 void docButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
-    poiFilter = "healthcare";
+    poiFilter = poiFilterHealthcare;
     application->refresh_drawing(); //refreshes
 }
 
 void bkButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
-    poiFilter = "education";
+    poiFilter = poiFilterEducation;
     application->refresh_drawing(); //refreshes
 }
 
 void carButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
-    poiFilter = "transportation";
+    poiFilter = poiFilterTransportation;
     application->refresh_drawing(); //refreshes
 }
 
 void artButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
-    poiFilter = "art";
+    poiFilter = poiFilterArt;
     application->refresh_drawing(); //refreshes
 }
 
 void foodButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
-    poiFilter = "food";
+    poiFilter = poiFilterFood;
     application->refresh_drawing(); //refreshes
 }
 
 void monButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
-    poiFilter = "finance";
+    poiFilter = poiFilterFinance;
     application->refresh_drawing(); //refreshes
 }
 

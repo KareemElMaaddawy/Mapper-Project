@@ -9,11 +9,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="finished pathFinding, need to test">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="fixed image paths">
+      <change afterPath="$PROJECT_DIR$/libstreetmap/resources/poiFilterImages/art.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libstreetmap/resources/poiFilterImages/book.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libstreetmap/resources/poiFilterImages/car.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libstreetmap/resources/poiFilterImages/doctor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libstreetmap/resources/poiFilterImages/eye.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libstreetmap/resources/poiFilterImages/food.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libstreetmap/resources/poiFilterImages/money.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,11 +56,15 @@
     <option name="configuration" value="/nfs/ug/homes-0/a/ahmadda4/ece297/work/mapper/libstreetmap/src/m1.cpp" />
   </component>
   <component name="ProjectId" id="1od3Mfrhm3mWgMvzqKwuymNC8BU" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -125,7 +135,7 @@
       <workItem from="1615564500372" duration="18283000" />
       <workItem from="1616372068267" duration="828000" />
       <workItem from="1616448598349" duration="1943000" />
-      <workItem from="1616602435073" duration="11151000" />
+      <workItem from="1616602435073" duration="15496000" />
     </task>
     <task id="LOCAL-00001" summary="build was broken, necessary functions were commented out and braces were not closed">
       <created>1613135102171</created>
@@ -414,7 +424,42 @@
       <option name="project" value="LOCAL" />
       <updated>1616623302859</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="created poi filter buttons">
+      <created>1616628255399</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1616628255399</updated>
+    </task>
+    <task id="LOCAL-00043" summary="created poi filter buttons">
+      <created>1616628266218</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1616628266218</updated>
+    </task>
+    <task id="LOCAL-00044" summary="created poi filter buttons">
+      <created>1616628277190</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1616628277190</updated>
+    </task>
+    <task id="LOCAL-00045" summary="created poi filter buttons">
+      <created>1616628317292</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1616628317292</updated>
+    </task>
+    <task id="LOCAL-00046" summary="fixed image paths">
+      <created>1616630265352</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1616630265352</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -445,8 +490,7 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="data structure to relate streetsegments to streets" />
-    <MESSAGE value="building streetlength" />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543" />
     <MESSAGE value="restructured partialStreetName around multimap, removed trie" />
     <MESSAGE value="commented out fillvector" />
@@ -470,7 +514,9 @@
     <MESSAGE value="finished pathfinding logic, need to fix errors" />
     <MESSAGE value="commented feature colours" />
     <MESSAGE value="finished pathFinding, need to test" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished pathFinding, need to test" />
+    <MESSAGE value="created poi filter buttons" />
+    <MESSAGE value="fixed image paths" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed image paths" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

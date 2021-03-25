@@ -9,7 +9,7 @@
 extern int selectedMap;//stores selected map
 extern bool colorBlind;
 extern bool poiFilterActive;
-extern std::string poiFilter;
+extern std::vector<std::string> poiFilter;
 
 struct map{ //struct for maps
     std::string name;
@@ -19,6 +19,88 @@ struct map{ //struct for maps
     double maxLon;
     double minLon;
     double avgLat;
+};
+
+const std::vector<std::string> poiFilterFood = {
+        "bar",
+        "bbq",
+        "biergarten",
+        "cafe",
+        "drinking_water",
+        "fast_food",
+        "food_court",
+        "ice_cream",
+        "pub",
+        "restaurant"
+};
+
+const std::vector<std::string> poiFilterEducation = {
+        "college",
+        "driving_school",
+        "kindergarten",
+        "language_school",
+        "toy_library",
+        "music_school",
+        "school",
+        "university"
+};
+
+const std::vector<std::string> poiFilterTransportation = {
+        "bicycle_parking",
+        "bicycle_repair_station",
+        "bicycle_rental",
+        "boat_rental",
+        "boat_sharing",
+        "bus_station",
+        "car_rental",
+        "car_sharing",
+        "car_wash",
+        "vehicle_inspection",
+        "charging_station",
+        "ferry_terminal",
+        "fuel","grit_bin",
+        "motorcycle_parking",
+        "parking",
+        "parking_entrance",
+        "parking_space",
+        "taxi"
+};
+
+const std::vector<std::string> poiFilterFinance = {
+        "atm",
+        "bank",
+        "bureau_de_charge"
+};
+
+const std::vector<std::string> poiFilterHealthcare = {
+        "baby_hatch",
+        "clinic",
+        "dentist",
+        "doctors",
+        "hospital",
+        "nursing_home",
+        "pharmacy",
+        "social_facility",
+        "veterinary"
+};
+
+const std::vector<std::string> poiFilterArt = {
+        "arts_centre",
+        "brothel",
+        "casino",
+        "cinema",
+        "community_centre",
+        "fountain",
+        "gambling",
+        "love_hotel",
+        "nightclub",
+        "planetarium",
+        "public_bookcase",
+        "social_centre",
+        "stripclub",
+        "studio",
+        "swingerclub",
+        "theatre"
 };
 
 const std::vector<map> mapInfo = { //all the map data, and their associated coord systems

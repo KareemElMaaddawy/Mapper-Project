@@ -14,7 +14,7 @@
 int selectedMap = 18;
 bool colorBlind  = false;
 bool poiFilterActive = false;
-std::string poiFilter = "null";
+std::vector<std::string> poiFilter;
 
 //double aspVar = 0;
 std::string userInput = {};
