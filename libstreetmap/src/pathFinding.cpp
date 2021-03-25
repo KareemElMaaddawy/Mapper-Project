@@ -20,7 +20,7 @@ bool checkForLeftTurn(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet
 }
 
 double computePathTravelTime(const std::vector <StreetSegmentIdx>& path, const double turn_penalty){
-	double travelTime = 0;
+    double travelTime = 0;
 	bool leftTurn = false;
 	for(int i = 0; i < path.size(); ++i){
 		if(i == 0){//no need to check for left turn for the initial street segment

@@ -516,12 +516,12 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
     selectedMap = gtk_combo_box_get_active(mapBox);//fetching selection
 
     if(selectedMap == -1){//if nothing selected and button pressed, prompt selection
-        application -> update_message("Select Map");
+        //application -> update_message("Select Map");
     }else{
         if(mapInfo[selectedMap].name == openMap){//if selected map is already open, prompt another selection
-            application -> update_message(mapInfo[selectedMap].name + " already open");
+            //application -> update_message(mapInfo[selectedMap].name + " already open");
         }else{
-            application -> update_message("Loading...");
+            //application -> update_message("Loading...");
             openMap = mapInfo[selectedMap].name;//sets open map to selected map
             closeMap();
             features.clear();
@@ -535,7 +535,7 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
                 std::cerr << "Failed to load map '" << mapInfo[selectedMap].name << "'\n";//error catch
                 return;
             }else{
-                application -> update_message(mapInfo[selectedMap].name + " loaded");
+                //application -> update_message(mapInfo[selectedMap].name + " loaded");
             }
             drawNewMap(application);//draws new map
 
@@ -546,8 +546,6 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
 
 
 void findButton(GtkWidget *, ezgl::application *application){
-    //Tells status bar that find button was pressed
-    application -> update_message("Find Button Pressed");
     //Redraw Main Canvas
     application -> refresh_drawing();
     
@@ -645,7 +643,6 @@ void findButton(GtkWidget *, ezgl::application *application){
     }else if (firstTerm != "" && secondTerm == ""){
         std::cout << "needs a second street" << std::endl << "first entry: " << firstTerm << std::endl;
     }
-    std::cout << "hello world"<<std::endl;
     application->refresh_drawing();
 }
 

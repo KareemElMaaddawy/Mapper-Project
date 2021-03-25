@@ -23,6 +23,7 @@
 #include "globalHeader.h"
 #include "m1.h"
 #include "m2.h"
+#include "m3.h"
 
 //Program exit codes
 constexpr int SUCCESS_EXIT_CODE = 0;        //Everyting went OK
@@ -30,7 +31,7 @@ constexpr int ERROR_EXIT_CODE = 1;          //An error occured
 constexpr int BAD_ARGUMENTS_EXIT_CODE = 2;  //Invalid command-line usage
 
 //The default map to load if none is specified
-std::string default_map_path = "/cad2/ece297s/public/maps/toronto_canada.streets.bin";
+std::string default_map_path = "/cad2/ece297s/public/maps/interlaken_switzerland.streets.bin";
 
 
 // The start routine of your program (main) when you are running your standalone
@@ -66,6 +67,7 @@ int main(int argc, char** argv) {
 
     //You can now do something with the map data
     drawMap();
+    double actual = computePathTravelTime({568, 567, 566, 565, 564, 563, 398},25.16084927376740765);
     //Clean-up the map data and related data structures
     std::cout << "Closing map\n";
     closeMap(); 

@@ -76,6 +76,39 @@ double streetLengthHelper(StreetIdx street_id);
 std::vector<double> fillVector(StreetIdx street_id);
 /// std::vector<LatLon> vectorOfCoord(StreetIdx street_id); ///defined in global declared in globalHeader
 
+void loadStreetSegments(){
+    numOfStreetSegments = getNumStreetSegments();
+    segLength = new double[numOfStreetSegments];
+    segTime = new double[numOfStreetSegments];
+    for(int i = 0; i < numOfStreetSegments; i++){
+        double length = lengthHelper(i);
+        segLength[i] = length;
+        segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
+    }
+}
+
+void loadStreetLengths(){
+    numOfStreets = getNumStreets();
+    stLength = new double[numOfStreets];
+    for(int i = 0; i < numOfStreets; i++){
+        double stlength = streetLengthHelper(i);
+        stLength[i] = stlength;
+    }
+}
+
+void loadStreetNames(){
+    numOfStreets = getNumStreets();
+    streetNames = new std::string[numOfStreets]; //container to store streetnames
+
+    for (int i = 0; i < numOfStreets; i++) { //formatting and storing street names w/o spaces and all lowercase
+        streetNames[i] = getStreetName(i);
+        streetNames[i].erase(std::remove(streetNames[i].begin(), streetNames[i].end(), ' '), streetNames[i].end());
+        std::transform(streetNames[i].begin(), streetNames[i].end(), streetNames[i].begin(),
+                       [](unsigned char c) { return std::tolower(c); });
+        streetNameMap.insert(std::make_pair(streetNames[i], i));
+    }
+}
+
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
             map_streets_database_filename); //Indicates whether the map has loaded successfully
@@ -83,34 +116,9 @@ bool loadMap(std::string map_streets_database_filename) {
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
     if (load_successful) {
-        numOfStreetSegments = getNumStreetSegments();
-        segLength = new double[numOfStreetSegments];
-        segTime = new double[numOfStreetSegments];
-        for(int i = 0; i < numOfStreetSegments; i++){
-            double length = lengthHelper(i);
-            segLength[i] = length;
-            segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
-        }
-        stLength = new double[numOfStreets];
-        for(int i = 0; i < numOfStreets; i++){
-            double stlength = streetLengthHelper(i);
-            stLength[i] = stlength;
-        }
-          
-        numOfStreets = getNumStreets();
-        streetNames = new std::string[numOfStreets]; //container to store streetnames
-
-        for (int i = 0; i < numOfStreets; i++) { //formatting and storing street names w/o spaces and all lowercase
-            streetNames[i] = getStreetName(i);
-            streetNames[i].erase(std::remove(streetNames[i].begin(), streetNames[i].end(), ' '), streetNames[i].end());
-            std::transform(streetNames[i].begin(), streetNames[i].end(), streetNames[i].begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-            streetNameMap.insert(std::make_pair(streetNames[i], i));
-        }
-
-//        for(auto it = streetNameMap.cbegin(); it != streetNameMap.cend(); ++it){
-//            std::cout << it->first << " " << it->second << std::endl;
-//        }
+        loadStreetSegments();
+        loadStreetNames();
+        loadStreetLengths();
 
         segments_of_an_intersection.resize(getNumIntersections());
 
@@ -118,15 +126,9 @@ bool loadMap(std::string map_streets_database_filename) {
 
         intersections_of_a_street.resize(getNumStreets());
 
-
-
         adjacent_intersections.resize(getNumIntersections());
 
-
-
-
         for (int i = 0; i < getNumStreetSegments(); i++) {
-
             street_segment_info.push_back(getStreetSegmentInfo(i)); // vector is filled with struct of info
         }
 

@@ -360,24 +360,11 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="doctorFilterBtn">
-                    <property name="label" translatable="yes">
-</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">doctorPOI</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkButton" id="bookFilterBtn">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Education</property>
                     <property name="image">bookPOI</property>
                   </object>
                   <packing>
@@ -390,6 +377,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Transportation</property>
                     <property name="image">carPOI</property>
                   </object>
                   <packing>
@@ -398,10 +386,11 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="arFilterBtn">
+                  <object class="GtkButton" id="artFilterBtn">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Entertainment</property>
                     <property name="image">artPOI</property>
                   </object>
                   <packing>
@@ -414,6 +403,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Food</property>
                     <property name="image">foodPOI</property>
                   </object>
                   <packing>
@@ -426,6 +416,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Finance</property>
                     <property name="image">moneyPOI</property>
                   </object>
                   <packing>
@@ -444,6 +435,19 @@
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
                     <property name="width">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="doctorFilterBtn">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Healthcare</property>
+                    <property name="image">doctorPOI</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
               </object>
