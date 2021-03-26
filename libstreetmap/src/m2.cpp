@@ -109,8 +109,8 @@ void act_on_mouse_click(ezgl::application *app,
             intersections[i].highlight = false;
         }
     }
-    std::cout << "Mouse clicked at (" << x << "," << y << ")\n";
-    std::cout << "Button clicked is " << event->button << std::endl;
+//    std::cout << "Mouse clicked at (" << x << "," << y << ")\n";
+//    std::cout << "Button clicked is " << event->button << std::endl;
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x));
     int id = findClosestIntersection(pos);
     

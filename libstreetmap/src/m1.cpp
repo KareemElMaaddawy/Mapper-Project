@@ -33,15 +33,15 @@
 #include <unordered_map>
 #include <bits/stdc++.h>
 // loadMap will be called with the name of the file that stores the "layer-2"
-// map data accessed through StreetsDatabaseAPI: the street and intersection 
-// data that is higher-level than the raw OSM data). 
-// This file name will always end in ".streets.bin" and you 
+// map data accessed through StreetsDatabaseAPI: the street and intersection
+// data that is higher-level than the raw OSM data).
+// This file name will always end in ".streets.bin" and you
 // can call loadStreetsDatabaseBIN with this filename to initialize the
 // layer 2 (StreetsDatabase) API.
 // If you need data from the lower level, layer 1, API that provides raw OSM
-// data (nodes, ways, etc.) you will also need to initialize the layer 1 
-// OSMDatabaseAPI by calling loadOSMDatabaseBIN. That function needs the 
-// name of the ".osm.bin" file that matches your map -- just change 
+// data (nodes, ways, etc.) you will also need to initialize the layer 1
+// OSMDatabaseAPI by calling loadOSMDatabaseBIN. That function needs the
+// name of the ".osm.bin" file that matches your map -- just change
 // ".streets" to ".osm" in the map_streets_database_filename to get the proper
 // name.
 
@@ -96,7 +96,7 @@ bool loadMap(std::string map_streets_database_filename) {
 //            double stlength = streetLengthHelper(i);
 //            stLength[i] = stlength;
 //        }
-          
+
         numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
 
@@ -204,8 +204,8 @@ bool loadMap(std::string map_streets_database_filename) {
 //        }
 
 
-        
-        
+
+
         /*TOO FEW CONNECTIONS*/
         points_on_segments.resize(getNumStreetSegments());
         for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); ++segment){
@@ -224,7 +224,7 @@ bool loadMap(std::string map_streets_database_filename) {
             }
         }
         xy_points_segments.resize(getNumStreetSegments());
-        
+
         for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); segment++){
             for(int point = 0; point < points_on_segments[segment].size(); ++point){
                 float lon = points_on_segments[segment][point].longitude();
@@ -233,12 +233,12 @@ bool loadMap(std::string map_streets_database_filename) {
                 float y = y_from_lat(lat);
                     std::pair<float, float> xy = {x, y};
                     xy_points_segments[segment].push_back(xy);
-                    
-                
-               
+
+
+
             }
         }
-        
+
         /*TOO MANY CONNECTIONS*/
 //        points_on_segments.resize(numOfStreets);
 //        xy_points_segments.resize(numOfStreets);
@@ -259,11 +259,11 @@ bool loadMap(std::string map_streets_database_filename) {
         for(int i = 0; i < getNumStreets(); i++){
             streetPositions[i].name = getStreetName(i);
             for(int j = 0; j < intersections_of_a_street[i].size() ; j++){
-                
+
                 streetPositions[i].positions.push_back(getIntersectionPosition(intersections_of_a_street[i][j]));
             }
         }
-        
+
     }return load_successful;
 }
 
@@ -393,18 +393,18 @@ double findFeatureArea(FeatureIdx feature_id) {
     }
 }
 
-// Returns all street ids corresponding to street names that start with the 
-// given prefix 
-// The function should be case-insensitive to the street prefix. 
+// Returns all street ids corresponding to street names that start with the
+// given prefix
+// The function should be case-insensitive to the street prefix.
 // The function should ignore spaces.
-//  For example, both "bloor " and "BloOrst" are prefixes to 
+//  For example, both "bloor " and "BloOrst" are prefixes to
 // "Bloor Street East".
-// If no street names match the given prefix, this routine returns an empty 
+// If no street names match the given prefix, this routine returns an empty
 // (length 0) vector.
-// You can choose what to return if the street prefix passed in is an empty 
-// (length 0) string, but your program must not crash if street_prefix is a 
+// You can choose what to return if the street prefix passed in is an empty
+// (length 0) string, but your program must not crash if street_prefix is a
 // length 0 string.
-// Speed Requirement --> high 
+// Speed Requirement --> high
 std::vector<StreetIdx> findStreetIdsFromPartialStreetName(std::string street_prefix) {
     street_prefix.erase(std::remove(street_prefix.begin(), street_prefix.end(), ' '), street_prefix.end());
     std::transform(street_prefix.begin(), street_prefix.end(), street_prefix.begin(),
@@ -437,7 +437,7 @@ double findDistanceBetweenTwoPoints(std::pair<LatLon, LatLon> points) {
 //LatLonBounds findStreetBoundingBox(StreetIdx street_id) {
   //  return 0;
 //}
- 
+
 
 
 double streetLengthHelper(StreetIdx street_id){
@@ -518,7 +518,7 @@ double findStreetSegmentTravelTime(StreetSegmentIdx street_segment_id) {
 // Speed Requirement --> high
 std::vector<IntersectionIdx> findIntersectionsOfTwoStreets(std::pair<StreetIdx, StreetIdx> street_ids){
      IntersectionIdx first_street_idx = street_ids.first;
-    IntersectionIdx second_street_idx = street_ids.second;    
+    IntersectionIdx second_street_idx = street_ids.second;
     if(first_street_idx != second_street_idx) {
         //get a vector of the intersections of the first street
         std::vector<IntersectionIdx> intersections_of_first_street = intersections_of_a_street[first_street_idx];
