@@ -10,6 +10,7 @@ extern int selectedMap;//stores selected map
 extern bool colorBlind;
 extern bool poiFilterActive;
 extern std::vector<std::string> poiFilter;
+extern std::string osmFilePath;
 
 struct map{ //struct for maps
     std::string name;

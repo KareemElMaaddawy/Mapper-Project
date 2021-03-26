@@ -23,6 +23,7 @@
 #include <cmath> // gain access to math constants and functions such as M_PI
 #include "m1.h"
 #include "StreetsDatabaseAPI.h"
+#include "OSMDatabaseAPI.h"
 #include "LatLon.h" // required to use the Latlon parameters (Latitude and longitdue)
 #include <algorithm>
 #include <utility>
@@ -98,7 +99,7 @@ void loadStreetLengths(){
 
 void loadStreetNames(){
     numOfStreets = getNumStreets();
-    streetNames = new std::string[numOfStreets]; //container to store streetnames
+    streetNames = new std::string[numOfStreets]; //container to store street names
 
     for (int i = 0; i < numOfStreets; i++) { //formatting and storing street names w/o spaces and all lowercase
         streetNames[i] = getStreetName(i);
@@ -109,16 +110,49 @@ void loadStreetNames(){
     }
 }
 
+std::string fetchHighwayType(StreetSegmentInfo segInfo){
+    const OSMWay *segment = getWayByIndex[segInfo.wayOSMID];
+    for(int i = 0; i < getTagCount(segment); ++i){
+        std::pair<std::string, std::string> tagPair;
+        if(tagPair->first == "highway"){
+            std::cout << tagPair->second << std::endl;
+            return tagPair->second;
+        }
+    }
+    std::cout << "never" << std::endl;
+    return "unclassified";
+}
+
+void loadHighwayTypes(){
+    for(int i = 0; i < getNumOfStreetSegments(); ++i){
+        streetSegInfo = getStreetSegmentInfo(i);
+        std::cout << "test" << std::endl;
+        if(streetTypes.find(streetSegInfo.streetID) == getWayByIndex.end()){
+            streetTypes[streetSegInfo.streetID] = fetchHighwayType(streetSegInfo);
+        }
+    }
+}
+
+void loadOSMIDToOSMWay(){
+    for(int i = 0; i < getNumberOfWays(); ++i){
+        const OSMWay *currentWay = getWayByIndex(i);
+        idToWay[currentWay->id()] = currentWay;
+    }
+}
+
 bool loadMap(std::string map_streets_database_filename) {
-    bool load_successful = loadStreetsDatabaseBIN(
-            map_streets_database_filename); //Indicates whether the map has loaded successfully
+    bool loadSuccessful = loadStreetsDatabaseBIN(
+            map_streets_database_filename);
+    bool testLoad = loadOSMDatabaseBIN(osmFilePath); //Indicates whether the map has loaded successfully
 
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
-    if (load_successful) {
+    if (loadSuccessful) {
         loadStreetSegments();
         loadStreetNames();
         loadStreetLengths();
+        loadOSMIDToOSMWay();
+        loadHighwayTypes();
 
         segments_of_an_intersection.resize(getNumIntersections());
 
@@ -134,7 +168,6 @@ bool loadMap(std::string map_streets_database_filename) {
 
         for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
             for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++) {
-
                 /*SEGMENTS OF AN INTERSECTION*/
                 //get the index of the segment you're on
                 int streetSeg_id = getIntersectionStreetSegment(intersection, segment);
@@ -154,11 +187,7 @@ bool loadMap(std::string map_streets_database_filename) {
                       intersections_of_a_street[street_ID_of_segment].end())) {
                     intersections_of_a_street[street_ID_of_segment].push_back(intersection);
                 }
-
-
-
             }
-
         }
         /*FINDING ADJACENT INTERSECTIONS*/
         //Helpers: findStreetSegmentsOfIntersection
@@ -204,31 +233,7 @@ bool loadMap(std::string map_streets_database_filename) {
                 }
             }
         }
-//        struct intersection_data {
-//            LatLon position;
-//            std::string name;
-//            bool highlight = false;
-//        };
-//        std::vector<intersection_data> intersections;
-//        double max_lat = getIntersectionPosition(0).latitude();
-//        double min_lat = max_lat;
-//        double max_lon = getIntersectionPosition(0).longitude();
-//        double min_lon = max_lon;
-//        intersections.resize(getNumIntersections());
-//
-//        for (int id = 0; id < getNumIntersections(); ++id) {
-//        intersections[id].position = getIntersectionPosition(id);
-//        intersections[id].name = getIntersectionName(id);
-//
-//        max_lat = std::max(max_lat, intersections[id].position.latitude());
-//        min_lat = std::min(min_lat, intersections[id].position.latitude());
-//        max_lon = std::max(max_lon, intersections[id].position.longitude());
-//        min_lon = std::min(min_lon, intersections[id].position.longitude());
-//       }
-//
-//       avg_lat = (min_lat + max_lat) / 2;
-        
-        
+
         /*works*/
         points_on_segments.resize(getNumStreetSegments());
         for (StreetSegmentIdx segment = 0; segment < getNumStreetSegments(); ++segment){
@@ -256,9 +261,6 @@ bool loadMap(std::string map_streets_database_filename) {
                 float y = y_from_lat(lat);
                     std::pair<float, float> xy = {x, y};
                     xy_points_segments[segment].push_back(xy);
-                    
-                
-               
             }
         }
         
@@ -282,17 +284,16 @@ bool loadMap(std::string map_streets_database_filename) {
         for(int i = 0; i < getNumStreets(); i++){
             streetPositions[i].name = getStreetName(i);
             for(int j = 0; j < intersections_of_a_street[i].size() ; j++){
-                
                 streetPositions[i].positions.push_back(getIntersectionPosition(intersections_of_a_street[i][j]));
             }
         }
-        
     }return load_successful;
 }
 
 void closeMap() {
     //Clean-up your map related data structures here
     closeStreetDatabase();
+    closeOSMDatabase();
 
     street_names_of_intersection.clear();
     intersections_of_a_street.clear();

@@ -6,6 +6,7 @@
 
 #include "globalHeader.h"
 #include <vector>
+#include <unordered_map>
 #include "StreetsDatabaseAPI.h"
 #include "m1.h"
 #include "m2.h"
@@ -15,6 +16,9 @@ int selectedMap = 18;
 bool colorBlind  = false;
 bool poiFilterActive = false;
 std::vector<std::string> poiFilter;
+std::string osmFilePath = "/cad2/ece297s/public/maps/toronto_canada.osm.bin";
+std::unordered_map<OSMID, OSMWay*> idToWay;
+std::unordered_map<StreetSegmentIdx, std::string> streetTypes;
 
 //double aspVar = 0;
 std::string userInput = {};
