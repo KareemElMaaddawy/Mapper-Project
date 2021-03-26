@@ -87,6 +87,11 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/doctor.png</property>
   </object>
+  <object class="GtkImage" id="eye">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/output-onlinepngtools (1).png</property>
+  </object>
   <object class="GtkImage" id="foodPOI">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -96,6 +101,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/money.png</property>
+  </object>
+  <object class="GtkImage" id="tree">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/output-onlinepngtools (2).png</property>
   </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
@@ -272,25 +282,10 @@
                 <property name="placeholder_text" translatable="yes">Second street</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">17</property>
-                <property name="width">5</property>
-                <property name="height">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="colorToggle">
-                <property name="label" translatable="yes">Color Blind Mode</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_top">468</property>
-              </object>
-              <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">24</property>
+                <property name="top_attach">17</property>
                 <property name="width">3</property>
-                <property name="height">4</property>
+                <property name="height">3</property>
               </packing>
             </child>
             <child>
@@ -300,9 +295,9 @@
                 <property name="placeholder_text" translatable="yes">First street</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
+                <property name="left_attach">1</property>
                 <property name="top_attach">14</property>
-                <property name="width">5</property>
+                <property name="width">3</property>
                 <property name="height">3</property>
               </packing>
             </child>
@@ -457,6 +452,129 @@
                 <property name="width">3</property>
                 <property name="height">2</property>
               </packing>
+            </child>
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkButton" id="colorToggle">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">eye</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="natureToggle">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">tree</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">26</property>
+                <property name="width">3</property>
+                <property name="height">4</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <placeholder/>
