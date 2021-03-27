@@ -20,9 +20,9 @@
 
 namespace ezgl {
 
-// File wide static variables to track whether the left mouse
+// File wide static variables to track whether the middle mouse
 // button is currently pressed AND the old x and y positions of the mouse pointer
-bool left_mouse_button_pressed = false;
+bool middle_mouse_button_pressed = false;
 int last_panning_event_time = 0;
 double prev_x = 0, prev_y = 0;
 
@@ -51,9 +51,9 @@ gboolean press_mouse(GtkWidget *, GdkEventButton *event, gpointer data)
 
   if(event->type == GDK_BUTTON_PRESS) {
 
-    // Check for left mouse press to support dragging
-    if(event->button == 1) {
-      left_mouse_button_pressed = true;
+    // Check for Middle mouse press to support dragging
+    if(event->button == 2) {
+      middle_mouse_button_pressed = true;
       prev_x = event->x;
       prev_y = event->y;
     }
@@ -76,9 +76,9 @@ gboolean press_mouse(GtkWidget *, GdkEventButton *event, gpointer data)
 gboolean release_mouse(GtkWidget *, GdkEventButton *event, gpointer )
 {
   if(event->type == GDK_BUTTON_RELEASE) {
-    // Check for left mouse release to support dragging
-    if(event->button == 1) {
-      left_mouse_button_pressed = false;
+    // Check for Middle mouse release to support dragging
+    if(event->button == 2) {
+      middle_mouse_button_pressed = false;
     }
   }
 
@@ -91,8 +91,8 @@ gboolean move_mouse(GtkWidget *, GdkEventButton *event, gpointer data)
 
   if(event->type == GDK_MOTION_NOTIFY) {
 
-    // Check if the left mouse is pressed to support dragging
-    if(left_mouse_button_pressed) {
+    // Check if the middle mouse is pressed to support dragging
+    if(middle_mouse_button_pressed) {
       // drop this panning event if we have just served another one
       if(gtk_get_current_event_time() - last_panning_event_time < 100)
         return true;
@@ -147,7 +147,6 @@ gboolean scroll_mouse(GtkWidget *, GdkEvent *event, gpointer data)
     if(scroll_event->direction == GDK_SCROLL_UP) {
       // Zoom in at the scroll point
       ezgl::zoom_in(canvas, scroll_point, 5.0 / 3.0);
-      
     } else if(scroll_event->direction == GDK_SCROLL_DOWN) {
       // Zoom out at the scroll point
       ezgl::zoom_out(canvas, scroll_point, 5.0 / 3.0);
