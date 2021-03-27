@@ -102,11 +102,6 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/money.png</property>
   </object>
-  <object class="GtkImage" id="tree">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">poiFilterImages/output-onlinepngtools (2).png</property>
-  </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -470,16 +465,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="natureToggle">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">tree</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">4</property>
-                  </packing>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>

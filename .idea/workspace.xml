@@ -9,7 +9,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="changed filter buttons" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="updated ui">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -126,13 +128,7 @@
       <workItem from="1616448598349" duration="1943000" />
       <workItem from="1616602435073" duration="15671000" />
       <workItem from="1616697711763" duration="8594000" />
-    </task>
-    <task id="LOCAL-00002" summary="rewrote streetsegment length, fixed indentation">
-      <created>1613142538301</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1613142538301</updated>
+      <workItem from="1616864963734" duration="769000" />
     </task>
     <task id="LOCAL-00003" summary="fixed indentation">
       <created>1613143215105</created>
@@ -470,7 +466,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616725458041</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="updated ui">
+      <created>1616727721671</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1616727721671</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -502,7 +505,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="features drawn, need to figure out colors" />
     <MESSAGE value="added support to switch maps" />
     <MESSAGE value="updated ui to include cities, and select button" />
     <MESSAGE value="added arrays of map names and map paths" />
@@ -527,7 +529,8 @@
     <MESSAGE value="cleaned up code" />
     <MESSAGE value="restoring m1.cpp" />
     <MESSAGE value="changed filter buttons" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed filter buttons" />
+    <MESSAGE value="updated ui" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated ui" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
