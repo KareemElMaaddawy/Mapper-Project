@@ -25,7 +25,7 @@ struct map{ //struct for maps
 const std::vector<std::vector<int>> featureDrawOrder = {
         {2,3,5,7,1},
         {4,2,3,8,5,7,1},
-        {4,6,2,3,8,9,5,7,1},
+        {4,2,3,8,9,5,7,1},
         {4,6,2,3,8,9,5,0,7,1}
 };
 

@@ -332,7 +332,7 @@ void loadPoi(){
 
 void drawFeatures(ezgl::renderer *g){//draws features
     int zoomLevel;
-    if(aspVar >= 10){
+    if(aspVar >= 13){
         zoomLevel = 3;
     }else if(aspVar >= 6.66){
         zoomLevel = 2;
