@@ -108,10 +108,6 @@ bool loadMap(std::string map_streets_database_filename) {
             streetNameMap.insert(std::make_pair(streetNames[i], i));
         }
 
-//        for(auto it = streetNameMap.cbegin(); it != streetNameMap.cend(); ++it){
-//            std::cout << it->first << " " << it->second << std::endl;
-//        }
-
         segments_of_an_intersection.resize(getNumIntersections());
 
         street_names_of_intersection.resize(getNumIntersections());

@@ -31,7 +31,7 @@ constexpr int ERROR_EXIT_CODE = 1;          //An error occured
 constexpr int BAD_ARGUMENTS_EXIT_CODE = 2;  //Invalid command-line usage
 
 //The default map to load if none is specified
-std::string default_map_path = "/cad2/ece297s/public/maps/interlaken_switzerland.streets.bin";
+std::string default_map_path = "/cad2/ece297s/public/maps/toronto_canada.streets.bin";
 std::string defaultOSMFilePath = "/cad2/ece297s/public/maps/interlaken_switzerland.osm.bin";
 
 void testPathTimeFunc(){
@@ -266,7 +266,6 @@ int main(int argc, char** argv) {
     if(argc == 1) {
         //Use a default map
         map_path = default_map_path;
-        osm_path = defaultOSMFilePath;
     } else if (argc == 2) {
         //Get the map from the command line
         map_path = argv[1];
@@ -288,7 +287,7 @@ int main(int argc, char** argv) {
 
     //You can now do something with the map data
     drawMap();
-    testPathTimeFunc();
+    //testPathTimeFunc();
     //Clean-up the map data and related data structures
     std::cout << "Closing map\n";
     closeMap(); 
