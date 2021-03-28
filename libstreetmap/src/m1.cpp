@@ -232,8 +232,9 @@ bool loadMap(std::string map_streets_database_filename) {
                 float x = x_from_lon(lon);
                 float y = y_from_lat(lat);
                     std::pair<float, float> xy = {x, y};
-                    xy_points_segments[segment].push_back(xy);
-
+                    xy_points_segments[segment].resize(xy_points_segments[segment].size() + 1);
+                    xy_points_segments[segment][point].first = xy;
+                    xy_points_segments[segment][point].second = false;
 
 
             }
