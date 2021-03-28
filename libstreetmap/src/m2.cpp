@@ -341,18 +341,11 @@ void drawFeatures(ezgl::renderer *g){//draws features
     }else{
         zoomLevel = 0;
     }
-    for(int i = 0; i < featureDrawOrder[zoomLevel].size(); ++i) {
-        std::cout << featureDrawOrder[zoomLevel][i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    int order[] = {3,5,1,2,7,8,4,9,6,0};
 
     g->set_line_width(0);
 
-    for(int i = 0; i < 10; ++i){//looping through array of feature types
-        int type = order[i];//fetching what the feature type is
+    for(int i = 0; i < featureDrawOrder[zoomLevel].size(); ++i){//looping through array of feature types
+        int type = featureDrawOrder[zoomLevel][i];//fetching what the feature type is
         setColor(g, type);//setting color based on feature type
         for(int z = 0; z < features[type].size(); ++z){//looping through all the features of the specified type
             if (features[type][z].closed) {//if its closed draw as polygon
