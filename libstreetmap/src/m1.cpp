@@ -83,19 +83,19 @@ bool loadMap(std::string map_streets_database_filename) {
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
     if (load_successful) {
-//        numOfStreetSegments = getNumStreetSegments();
-//        segLength = new double[numOfStreetSegments];
-//        segTime = new double[numOfStreetSegments];
-//        for(int i = 0; i < numOfStreetSegments; i++){
-//            double length = lengthHelper(i);
-//            segLength[i] = length;
-//            segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
-//        }
-//        stLength = new double[numOfStreets];
-//        for(int i = 0; i < numOfStreets; i++){
-//            double stlength = streetLengthHelper(i);
-//            stLength[i] = stlength;
-//        }
+        numOfStreetSegments = getNumStreetSegments();
+        segLength = new double[numOfStreetSegments];
+        segTime = new double[numOfStreetSegments];
+        for(int i = 0; i < numOfStreetSegments; i++){
+            double length = lengthHelper(i);
+            segLength[i] = length;
+            segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
+        }
+        stLength = new double[numOfStreets];
+        for(int i = 0; i < numOfStreets; i++){
+            double stlength = streetLengthHelper(i);
+            stLength[i] = stlength;
+        }
 
         numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
