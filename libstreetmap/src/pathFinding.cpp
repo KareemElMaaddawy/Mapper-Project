@@ -1,7 +1,7 @@
 #include "pathFinding.h"
 
 //helper to check if a left turn occurs, takes the previous street and the current street as parameters, and returns true if a left turn occurs
-bool checkForLeftTurn(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet){
+std::string movementDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet){
     LatLon sourceStreetStartPosition = getIntersectionPosition(getStreetSegmentInfo(sourceStreet).from);
     LatLon sourceStreetEndPosition = getIntersectionPosition(getStreetSegmentInfo(sourceStreet).to);
     LatLon destStreetStartPosition = getIntersectionPosition(getStreetSegmentInfo(destStreet).from);
@@ -12,10 +12,14 @@ bool checkForLeftTurn(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet
 	double vectorTwoX = y_from_lat(destStreetEndPosition.latitude()) - y_from_lat(destStreetStartPosition.latitude());
 	double vectorTwoY = x_from_lon(destStreetEndPosition.longitude()) - x_from_lon(destStreetStartPosition.longitude());
 
-	if(((vectorOneX * vectorTwoY) - (vectorOneY * vectorTwoX)) > 0){//if cross product greater than zero, left turn occurs
-		return true;
+	double result = (vectorOneX * vectorTwoY) - (vectorOneY * vectorTwoX);
+
+	if(result > 0){//if cross product greater than zero, left turn occurs
+		return "L";
+	}else if (result < 0){
+		return "R";
 	}else{
-		return false;
+	    return "S";
 	}
 }
 
@@ -25,13 +29,13 @@ double calcTurnPenalty(std::vector<StreetSegmentIdx> path){
 
 double computePathTravelTime(const std::vector <StreetSegmentIdx>& path, const double turn_penalty){
     double travelTime = 0;
-	bool leftTurn = false;
+	std::string direction;
 	for(int i = 0; i < path.size(); ++i){
 		if(i == 0){//no need to check for left turn for the initial street segment
 			travelTime += findStreetSegmentTravelTime(path[i]);
 		}else{
-			leftTurn = checkForLeftTurn(path[i - 1], path[i]);
-			if(leftTurn){
+			direction = movementDirection(path[i - 1], path[i]);
+			if(direction == "L"){
 				travelTime += findStreetSegmentTravelTime(path[i]) + turn_penalty;
 			}else{
 				travelTime += findStreetSegmentTravelTime(path[i]);

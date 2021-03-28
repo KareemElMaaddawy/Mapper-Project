@@ -20,7 +20,7 @@ struct compare{
 };
 
 //helper to check if a left turn occurs, takes the previous street and the current street as parameters, and returns true if a left turn occurs
-bool checkForLeftTurn(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
+std::string movementDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
 
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to);
 
