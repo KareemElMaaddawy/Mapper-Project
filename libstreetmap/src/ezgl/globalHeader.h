@@ -22,6 +22,13 @@ struct map{ //struct for maps
     double avgLat;
 };
 
+const std::vector<std::vector<int>> featureDrawOrder = {
+        {1,2,4,6,0},
+        {3,1,2,7,4,6,0},
+        {3,5,1,2,7,8,4,6,0},
+        {3,5,1,2,7,8,4,9,6,0}
+};
+
 const std::vector<std::string> poiFilterFood = {
         "bar",
         "bbq",

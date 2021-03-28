@@ -331,7 +331,23 @@ void loadPoi(){
 }
 
 void drawFeatures(ezgl::renderer *g){//draws features
-    int order[] = {3,5,1,2,7,8,4,9,6,0};//order of feature types to draw
+    int zoomLevel;
+    if(aspVar >= 10){
+        zoomLevel = 3;
+    }else if(aspVar >= 6.66){
+        zoomLevel = 2;
+    }else if(aspVar >= 3.33){
+        zoomLevel = 1;
+    }else{
+        zoomLevel = 0;
+    }
+    for(int i = 0; i < featureDrawOrder[zoomLevel].size(); ++i) {
+        std::cout << featureDrawOrder[zoomLevel][i] << " ";
+    }
+
+    std::cout << std::endl;
+
+    int order[] = {3,5,1,2,7,8,4,9,6,0};
 
     g->set_line_width(0);
 
