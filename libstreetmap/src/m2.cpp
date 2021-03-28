@@ -42,7 +42,8 @@ void setColor(ezgl::renderer *g, int type);
 double slope(double x1, double y1, double x2, double y2);
 double perpSlope(double m);
 std::pair<double, double> findPointOfReference(double m, double distance, double x, double y);
-
+std::vector<int> tempID;
+double highlightCount = 0;
 
 
 
@@ -104,19 +105,25 @@ void loadIntersections(){
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y) {
-    for(int i = 0; i < intersections.size(); i++){
+     highlightCount += 1;
+    /*for(int i = 0; i < intersections.size(); i++){
         if(intersections[i].highlight){
-            intersections[i].highlight = false;
+            count = count + 1;
+            //intersections[i].highlight = false;
         }
-    }
+    }*/
 //    std::cout << "Mouse clicked at (" << x << "," << y << ")\n";
 //    std::cout << "Button clicked is " << event->button << std::endl;
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x));
     int id = findClosestIntersection(pos);
+    tempID.push_back(id);
     
-    std::cout << "Closest Intersection: "
-              << intersections[id].name << "\n";
+    /*std::cout << "Closest Intersection: "
+              << intersections[id].name << "\n";*/
+    std:: cout << highlightCount << "\n";
+    if(highlightCount <= 2){
     intersections[id].highlight = true;
+    }
     app->refresh_drawing();
 }
 //loads information for when when map is selected
