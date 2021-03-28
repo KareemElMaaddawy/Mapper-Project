@@ -4,6 +4,7 @@
 #include <functional>
 #include <queue>
 #include <unordered_map>
+#include "StreetsDatabaseAPI.h"
 #include "m3.h"
 #include "globalHeader.h"
 
@@ -26,6 +27,8 @@ StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, con
 double calculateCost(const double turnPenalty,const IntersectionIdx soruceIntersection,const IntersectionIdx destinationIntersection);
 
 double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection);
+
+double calcTurnPenalty(std::vector<StreetSegmentIdx> path);
 
 std::vector<StreetSegmentIdx> reconstructPath(
         const std::unordered_map<IntersectionIdx,

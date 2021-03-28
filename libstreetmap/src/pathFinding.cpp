@@ -19,6 +19,10 @@ bool checkForLeftTurn(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet
 	}
 }
 
+double calcTurnPenalty(std::vector<StreetSegmentIdx> path){
+    return 0.0;
+}
+
 double computePathTravelTime(const std::vector <StreetSegmentIdx>& path, const double turn_penalty){
     double travelTime = 0;
 	bool leftTurn = false;
