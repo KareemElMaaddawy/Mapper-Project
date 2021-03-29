@@ -25,6 +25,10 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
 
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to);
 
+double dot(double oneX, double oneY, double twoX, double twoY);
+
+double mag(double x, double y);
+
 double calculateCost(const double turnPenalty,const IntersectionIdx soruceIntersection,const IntersectionIdx destinationIntersection);
 
 double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection);
