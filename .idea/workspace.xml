@@ -12,8 +12,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="fixed turn detection, passes all tests">
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" afterDir="false" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="formatting">
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,13 +132,6 @@
       <workItem from="1616602435073" duration="15671000" />
       <workItem from="1616697711763" duration="8594000" />
       <workItem from="1616864963734" duration="769000" />
-    </task>
-    <task id="LOCAL-00007" summary="rewrote and debugged streetSegmentLength">
-      <created>1613152432302</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1613152432302</updated>
     </task>
     <task id="LOCAL-00008" summary="bug fixes from merge">
       <created>1613152778629</created>
@@ -476,7 +469,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616987790424</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="formatting">
+      <created>1616988116559</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1616988116559</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -508,7 +508,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="updated colors, load new maps" />
     <MESSAGE value="load new maps finished" />
     <MESSAGE value="added order to feature drawing" />
     <MESSAGE value="feature drawing done" />
@@ -533,7 +532,8 @@
     <MESSAGE value="added prototype for calcTurnPenalty" />
     <MESSAGE value="fixed findStreetSegmentBetweenIntersections" />
     <MESSAGE value="fixed turn detection, passes all tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed turn detection, passes all tests" />
+    <MESSAGE value="formatting" />
+    <option name="LAST_COMMIT_MESSAGE" value="formatting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -64,7 +64,18 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
 }
 
 double calcTurnPenalty(std::vector<StreetSegmentIdx> path) {
-    return 0.0;
+    double totalLength = 0;
+    double num = 0;
+    for(int i = 0; i < path.size(); ++i){
+        StreetSegmentInfo segInfo = getStreetSegmentInfo(path[i]);
+        double speed  = segInfo.speedLimit;
+        double length = findStreetSegmentLength(path[i]);
+
+        totalLength += length;
+        num += length * speed;
+    }
+
+    return num/totalLength;
 }
 
 double computePathTravelTime(const std::vector<StreetSegmentIdx> &path, const double turn_penalty) {
@@ -99,10 +110,10 @@ StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, con
 
 double calculateCost(const double turnPenalty, const IntersectionIdx soruceIntersection,
                      const IntersectionIdx destinationIntersection) {
-    double score = 0;
+    double cost = 0;
     std::vector<StreetSegmentIdx> path = {findSegmentBetweenIntersections(soruceIntersection, destinationIntersection)};
-    score += computePathTravelTime(path, turnPenalty);
-    return score;
+    cost += computePathTravelTime(path, turnPenalty);
+    return cost;
 }
 
 double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection) {
