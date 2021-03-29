@@ -21,6 +21,7 @@
 #include <iostream>
 #include <string>
 #include "globalHeader.h"
+#include "pathFinding.h"
 #include "m1.h"
 #include "m2.h"
 #include "m3.h"
@@ -287,6 +288,7 @@ int main(int argc, char** argv) {
 
     //You can now do something with the map data
     drawMap();
+
     //testPathTimeFunc();
     //Clean-up the map data and related data structures
     std::cout << "Closing map\n";

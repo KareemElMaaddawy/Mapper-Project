@@ -49,7 +49,8 @@ StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, con
 	int numOfStreetSegments = getNumIntersectionStreetSegment(from);
 	for(int i = 0; i < numOfStreetSegments; ++i){
 		StreetSegmentIdx streetSeg = getIntersectionStreetSegment(from, i);
-		if(streetSeg == to){
+		StreetSegmentInfo streetSegInfo = getStreetSegmentInfo(streetSeg);
+		if(streetSegInfo.to == to || streetSegInfo.from == to){
 			return streetSeg;
 		}
 	}

@@ -12,9 +12,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="added prototype for calcTurnPenalty">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="changed zoom thresholds for feature drawing, restored left click drag">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
