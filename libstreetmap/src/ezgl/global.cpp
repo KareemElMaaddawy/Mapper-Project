@@ -19,12 +19,12 @@ std::vector<std::string> poiFilter;
 std::string osmFilePath = "/cad2/ece297s/public/maps/toronto_canada.osm.bin";
 std::unordered_map<OSMID, OSMWay*> idToWay;
 std::unordered_map<StreetSegmentIdx, std::string> streetTypes;
+std::vector<streetInfo> streetPositions;
 
 double aspVar = 0;
 std::string userInput = {};
 std::vector<std::vector<LatLon>> points_on_segments;
-std::vector<std::vector<std::pair<std::pair<double, double>, bool>>> xy_points_segments;
-std::vector<streetInfo> streetPositions;
+std::vector<std::vector<std::pair<double, double>>> xy_points_segments;
 
 double x_from_lon(double lon) {
     return lon * kDegreeToRadian * kEarthRadiusInMeters * std::cos(mapInfo[selectedMap].avgLat * kDegreeToRadian);
