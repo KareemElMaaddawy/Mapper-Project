@@ -2,6 +2,7 @@
 #define MAPPER_PATHFINDING_H
 
 #include <functional>
+#include <math.h>
 #include <queue>
 #include <unordered_map>
 #include "StreetsDatabaseAPI.h"
@@ -20,7 +21,7 @@ struct compare{
 };
 
 //helper to check if a left turn occurs, takes the previous street and the current street as parameters, and returns true if a left turn occurs
-std::string movementDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
+std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
 
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to);
 

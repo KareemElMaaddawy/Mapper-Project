@@ -116,6 +116,8 @@ void act_on_mouse_click(ezgl::application *app,
 //    std::cout << "Button clicked is " << event->button << std::endl;
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x));
     int id = findClosestIntersection(pos);
+    std::cout << id << std::endl;
+
     tempID.push_back(id);
     
     /*std::cout << "Closest Intersection: "
