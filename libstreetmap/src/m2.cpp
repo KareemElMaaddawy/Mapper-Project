@@ -3,13 +3,13 @@
 #include "ezgl/application.hpp"
 #include "ezgl/graphics.hpp"
 #include "globalHeader.h"
+#include "buttons.h"
 #include "string"
 
 //function declarations
 std::string openMap = "Toronto, Canada"; //holds name of map open, default is toronto
 
-void selectButtonClk(GtkEntry *,ezgl::application *application); //widgit to hold btn for select map
-void colorBlindToggle(GtkEntry *,ezgl::application *application);
+
 
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
