@@ -121,15 +121,13 @@ void act_on_mouse_click(ezgl::application *app,
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x));
     int id = findClosestIntersection(pos);
     std::cout << id << std::endl;
-
+    if(highlightCount <=2){
     tempID.push_back(id);
-    
+    intersections[id].highlight = true;
+    }
     /*std::cout << "Closest Intersection: "
               << intersections[id].name << "\n";*/
-    std:: cout << highlightCount << "\n";
-    //if(highlightCount <= 2){
-    intersections[id].highlight = true;
-    
+    std:: cout << highlightCount << "\n";  
     app->refresh_drawing();
 }
 //loads information for when when map is selected
@@ -533,9 +531,10 @@ void initial_setup(ezgl::application *application, bool){
 void clearHighlightButton(GtkEntry *,ezgl::application *application){
     for(int i = 0; i < intersections.size(); i++){
         if(intersections[i].highlight){
-            intersections[i].highlight == false;
+            intersections[i].highlight = false;
         }
     }
+    highlightCount = 0;
     std::cout << "button pressed \n";
     application->refresh_drawing();
 }
