@@ -33,6 +33,7 @@ void drawNewMap(ezgl::application *application);
 void findButton(GtkWidget *widget, ezgl::application *application);
 void searchBar(GtkEntry *widget, ezgl::application *application);
 void clearHighlightButton(GtkEntry *,ezgl::application *application);
+void showPathButton(GtkEntry *,ezgl::application *application);
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
@@ -45,9 +46,12 @@ void setColor(ezgl::renderer *g, int type);
 double slope(double x1, double y1, double x2, double y2);
 double perpSlope(double m);
 std::pair<double, double> findPointOfReference(double m, double distance, double x, double y);
-std::vector<int> tempID;
- std::vector<int> pathSegmentIDs;
+//std::vector<int> tempID;
+std::vector<int> pathSegmentIDs;
 double highlightCount = 0;
+double mouseClick = 0;
+int firstID = 0;
+int secondID = 0;
 
 
 
@@ -108,8 +112,9 @@ void loadIntersections(){
 
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
-                        double x, double y) {
+                        double x, double y) {  
      highlightCount += 1;
+     mouseClick +=1; 
     /*for(int i = 0; i < intersections.size(); i++){
         if(intersections[i].highlight){
             count = count + 1;
@@ -120,14 +125,19 @@ void act_on_mouse_click(ezgl::application *app,
 //    std::cout << "Button clicked is " << event->button << std::endl;
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x));
     int id = findClosestIntersection(pos);
-    std::cout << id << std::endl;
-    if(highlightCount <=2){
-    tempID.push_back(id);
+    //std::cout << id << std::endl;
+    if(highlightCount <=2 & mouseClick == 1){
+        firstID = id;
     intersections[id].highlight = true;
+    }
+    if(highlightCount <=2 & mouseClick ==2){
+        secondID = id;
+        intersections[id].highlight = true;
     }
     /*std::cout << "Closest Intersection: "
               << intersections[id].name << "\n";*/
-    std:: cout << highlightCount << "\n";  
+    //std:: cout << highlightCount << "\n";  
+    //std::cout << firstID << " " << secondID << std::endl;
     app->refresh_drawing();
 }
 //loads information for when when map is selected
@@ -264,7 +274,7 @@ void drawMainCanvas(ezgl::renderer *g) {
     }
     drawStreetLabels(g);
     drawPoiLabel(g);
-    //drawPath(g);
+    drawPath(g);
 }
 
 void loadFeatures(){//loads features and their associated properties
@@ -525,16 +535,25 @@ void initial_setup(ezgl::application *application, bool){
     );
     g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
     g_signal_connect(application -> get_object("clearHighlightBtn"), "clicked", G_CALLBACK(clearHighlightButton), application);
+    g_signal_connect(application -> get_object("showPathBtn"), "clicked", G_CALLBACK(showPathButton), application);
     loadFilterButtons(application);
 }
 
+void showPathButton(GtkEntry *,ezgl::application *application){
+    showPath = !showPath;
+    application -> refresh_drawing();
+}
 void clearHighlightButton(GtkEntry *,ezgl::application *application){
     for(int i = 0; i < intersections.size(); i++){
         if(intersections[i].highlight){
             intersections[i].highlight = false;
         }
     }
+    firstID = 0;
+    secondID = 0;
+    //std::cout << firstID << " " << secondID << std::endl;
     highlightCount = 0;
+    mouseClick = 0;
     std::cout << "button pressed \n";
     application->refresh_drawing();
 }
@@ -699,10 +718,13 @@ void drawStreetLabels(ezgl:: renderer *g){
 }
 
 /*void drawPath(ezgl:: renderer *g){
-    if(highlightCount == 2){
+    if(showPath){
     g->set_color(ezgl:: PURPLE);
     g->set_line_width(3);
-    pathSegmentIDs = findPathBetweenIntersections(tempID[0],tempID[1],0);
+    pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
+    if(pathSegmentIDs.size() == 0){
+        std::cout << "Path does not exist" << std::endl;
+    } else {
     for(int i=0; i < pathSegmentIDs.size(); i++){
         int fromPoint = getStreetSegmentInfo(pathSegmentIDs[i]).from;
         int toPoint = getStreetSegmentInfo(pathSegmentIDs[i]).to;
@@ -717,6 +739,7 @@ void drawStreetLabels(ezgl:: renderer *g){
         ezgl::point2d end(secondX,secondY);
         
         g -> draw_line(start,end);
+    }
     }
     }
 }*/

@@ -15,6 +15,7 @@
 int selectedMap = 18;
 bool colorBlind  = false;
 bool poiFilterActive = false;
+bool showPath = false;
 std::vector<std::string> poiFilter;
 std::string osmFilePath = "/cad2/ece297s/public/maps/toronto_canada.osm.bin";
 std::unordered_map<OSMID, OSMWay*> idToWay;

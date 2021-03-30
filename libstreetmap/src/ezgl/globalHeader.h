@@ -7,6 +7,7 @@
 #pragma once
 
 extern int selectedMap;//stores selected map
+extern bool showPath;
 extern bool colorBlind;
 extern bool poiFilterActive;
 extern std::vector<std::string> poiFilter;
