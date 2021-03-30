@@ -1,5 +1,6 @@
 #include "m2.h"
 #include "m1.h"
+#include "m3.h"
 #include "ezgl/application.hpp"
 #include "ezgl/graphics.hpp"
 #include "globalHeader.h"
@@ -31,6 +32,7 @@ void act_on_mouse_click(ezgl::application *app,
 void drawNewMap(ezgl::application *application);
 void findButton(GtkWidget *widget, ezgl::application *application);
 void searchBar(GtkEntry *widget, ezgl::application *application);
+void clearHighlightButton(GtkEntry *,ezgl::application *application);
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
@@ -38,11 +40,13 @@ void drawPoi(ezgl::renderer *g);
 void drawPoiLabel(ezgl::renderer *g);
 void loadIntersections();
 void drawStreetLabels(ezgl::renderer *g);
+void drawPath(ezgl::renderer *g);
 void setColor(ezgl::renderer *g, int type);
 double slope(double x1, double y1, double x2, double y2);
 double perpSlope(double m);
 std::pair<double, double> findPointOfReference(double m, double distance, double x, double y);
 std::vector<int> tempID;
+ std::vector<int> pathSegmentIDs;
 double highlightCount = 0;
 
 
@@ -123,9 +127,9 @@ void act_on_mouse_click(ezgl::application *app,
     /*std::cout << "Closest Intersection: "
               << intersections[id].name << "\n";*/
     std:: cout << highlightCount << "\n";
-    if(highlightCount <= 2){
+    //if(highlightCount <= 2){
     intersections[id].highlight = true;
-    }
+    
     app->refresh_drawing();
 }
 //loads information for when when map is selected
@@ -262,6 +266,7 @@ void drawMainCanvas(ezgl::renderer *g) {
     }
     drawStreetLabels(g);
     drawPoiLabel(g);
+    //drawPath(g);
 }
 
 void loadFeatures(){//loads features and their associated properties
@@ -521,10 +526,19 @@ void initial_setup(ezgl::application *application, bool){
             application
     );
     g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
-
+    g_signal_connect(application -> get_object("clearHighlightBtn"), "clicked", G_CALLBACK(clearHighlightButton), application);
     loadFilterButtons(application);
 }
 
+void clearHighlightButton(GtkEntry *,ezgl::application *application){
+    for(int i = 0; i < intersections.size(); i++){
+        if(intersections[i].highlight){
+            intersections[i].highlight == false;
+        }
+    }
+    std::cout << "button pressed \n";
+    application->refresh_drawing();
+}
 void colorBlindToggle(GtkEntry *,ezgl::application *application){
     colorBlind = !colorBlind;
     application->refresh_drawing();
@@ -685,3 +699,25 @@ void drawStreetLabels(ezgl:: renderer *g){
             
 }
 
+/*void drawPath(ezgl:: renderer *g){
+    if(highlightCount == 2){
+    g->set_color(ezgl:: PURPLE);
+    g->set_line_width(3);
+    pathSegmentIDs = findPathBetweenIntersections(tempID[0],tempID[1],0);
+    for(int i=0; i < pathSegmentIDs.size(); i++){
+        int fromPoint = getStreetSegmentInfo(pathSegmentIDs[i]).from;
+        int toPoint = getStreetSegmentInfo(pathSegmentIDs[i]).to;
+        LatLon fromPosition = getIntersectionPosition(fromPoint);
+        LatLon toPosition = getIntersectionPosition(toPoint);
+        double firstX = x_from_lon(fromPosition.longitude());
+        double firstY = y_from_lat(fromPosition.latitude());
+        double secondX = x_from_lon(toPosition.longitude());
+        double secondY = y_from_lat(toPosition.latitude());
+        
+        ezgl::point2d start(firstX,firstY);
+        ezgl::point2d end(secondX,secondY);
+        
+        g -> draw_line(start,end);
+    }
+    }
+}*/
