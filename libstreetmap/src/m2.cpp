@@ -120,10 +120,7 @@ void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *,
                         double x, double y) {  
      highlightCount += 1;
-<<<<<<< HEAD
-     std::vector<int> pathSegmentIDs;
-=======
->>>>>>> 34d25876065bcbb550b31c7065c67a1b07f2211f
+     //std::vector<int> pathSegmentIDs;
      mouseClick +=1; 
     /*for(int i = 0; i < intersections.size(); i++){
         if(intersections[i].highlight){
@@ -143,19 +140,10 @@ void act_on_mouse_click(ezgl::application *app,
     if((highlightCount <=2) & (mouseClick ==2)){
         secondID = id;
         intersections[id].highlight = true;
-        //pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
-    }  
-<<<<<<< HEAD
-        //pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
-    /*for(int i = 0; i < pathSegmentIDs.size(); ++i){
-            std::cout << pathSegmentIDs[i] << std::endl;
-        }*/
-        std::cout << firstID << " " << secondID << std::endl;
-    app->refresh_drawing();
-=======
-=======
         pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
->>>>>>> 34d25876065bcbb550b31c7065c67a1b07f2211f
+    }  
+    std::cout << firstID << " " << secondID << std::endl;
+    app->refresh_drawing();
     }
 
     /*std::cout << "Closest Intersection: "
@@ -296,7 +284,7 @@ void drawMainCanvas(ezgl::renderer *g) {
     drawSegments(g);
     drawStreetLabels(g);
     drawPoiLabel(g);
-    //drawPath(g);
+    drawPath(g);
 }
 
 void loadFeatures(){//loads features and their associated properties
@@ -557,14 +545,11 @@ void initial_setup(ezgl::application *application, bool){
     );
     g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
     g_signal_connect(application -> get_object("clearHighlightBtn"), "clicked", G_CALLBACK(clearHighlightButton), application);
-    //g_signal_connect(application -> get_object("showPathBtn"), "clicked", G_CALLBACK(showPathButton), application);
+    g_signal_connect(application -> get_object("showPathBtn"), "clicked", G_CALLBACK(showPathButton), application);
     loadFilterButtons(application);
 }
 
 void showPathButton(GtkEntry *,ezgl::application *application){
-    for(int i = 0 ; i < pathSegmentIDs.size(); i++){
-        std::cout << pathSegmentIDs[i] << std::endl;
-    }
     showPath = !showPath;
     application -> refresh_drawing();
 }
@@ -746,7 +731,7 @@ void drawStreetLabels(ezgl:: renderer *g){
 
 void drawPath(ezgl:: renderer *g){
     if(showPath){
-    pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
+        //directions(pathSegmentIDs);
     if(pathSegmentIDs.size() == 0){
         std::cout << "Path does not exist" << std::endl;
     } else {
@@ -765,46 +750,56 @@ void drawPath(ezgl:: renderer *g){
 
         ezgl::point2d start(firstX,firstY);
         ezgl::point2d end(lastX,lastY);
+        g->set_color(ezgl::PURPLE);
+        g-> set_line_width(5);
+        g->draw_line(start,end);
 
-        if(curvePoints == 0){
-        g->set_color(ezgl:: PURPLE);
-        g->set_line_width(3);
-        g -> draw_line(start,end);
-        }
-        else if(curvePoints == 1){
-            LatLon curvePointPosition = getStreetSegmentCurvePoint(segID, 0);
-            double curvePointX = x_from_lon(curvePointPosition.longitude());
-            double curvePointY = y_from_lat(curvePointPosition.latitude());
-
-            ezgl::point2d oneCurvePoint(curvePointX,curvePointY);
-            g->set_color(ezgl:: PURPLE);
-            g->set_line_width(3);
-            g -> draw_line(start, oneCurvePoint);
-            g -> draw_line(oneCurvePoint, end);
-        } else if (curvePoints > 1){
-            g->set_color(ezgl:: PURPLE);
-            g->set_line_width(3);
-            curvePointVector.resize(curvePoints); // vector is resized to match number of curve points
-            xyPointsOfCurves.resize(curvePoints);
-            for(int j = 0; j < curvePointVector.size(); j++){
-                curvePointVector.push_back(getStreetSegmentCurvePoint(segID, j)); //vector is filled with all of curve points of specific segment
-                double curvePointX = x_from_lon(curvePointVector[j].longitude());
-                double curvePointY = y_from_lat(curvePointVector[j].latitude());
-               std::pair<double, double> xy = {curvePointX, curvePointY};
-               xyPointsOfCurves.push_back(xy);
-            }
-
-            g->draw_line(start, {xyPointsOfCurves[0].first, xyPointsOfCurves[0].second});
-            for(int k = 1; k < xyPointsOfCurves.size()-1; k++){
-                g-> draw_line({xyPointsOfCurves[k].first,xyPointsOfCurves[k].second},{xyPointsOfCurves[k+1].first,xyPointsOfCurves[k+1].second});
-            }
-            double last = xyPointsOfCurves.size();
-            g-> draw_line({xyPointsOfCurves[last].first, xyPointsOfCurves[last].second} , end);
-
-        }
-      }
+//        if(curvePoints == 0){
+//        g->set_color(ezgl:: PURPLE);
+//        g->set_line_width(3);
+//        g -> draw_line(start,end);
+//        }
+//        else if(curvePoints == 1){
+//            LatLon curvePointPosition = getStreetSegmentCurvePoint(segID, 0);
+//            double curvePointX = x_from_lon(curvePointPosition.longitude());
+//            double curvePointY = y_from_lat(curvePointPosition.latitude());
+//
+//            ezgl::point2d oneCurvePoint(curvePointX,curvePointY);
+//            g->set_color(ezgl:: PURPLE);
+//            g->set_line_width(3);
+//            g -> draw_line(start, oneCurvePoint);
+//            g -> draw_line(oneCurvePoint, end);
+//        } else if (curvePoints > 1){
+//            g->set_color(ezgl:: PURPLE);
+//            g->set_line_width(3);
+//            curvePointVector.resize(curvePoints); // vector is resized to match number of curve points
+//            xyPointsOfCurves.resize(curvePoints);
+//            for(int j = 0; j < curvePointVector.size(); j++){
+//                curvePointVector.push_back(getStreetSegmentCurvePoint(segID, j)); //vector is filled with all of curve points of specific segment
+////                double curvePointX = x_from_lon(curvePointVector[j].longitude());
+////                double curvePointY = y_from_lat(curvePointVector[j].latitude());
+////               std::pair<double, double> xy = {curvePointX, curvePointY};
+////               xyPointsOfCurves.push_back(xy);
+//            }
+//            for(int point = 0; point < xyPointsOfCurves.size() ; point++){
+//                double curvePointX = x_from_lon(curvePointVector[point].longitude());
+//                double curvePointY = y_from_lat(curvePointVector[point].latitude());
+//                std::pair<double, double> xy = {curvePointX, curvePointY};
+//                xyPointsOfCurves.push_back(xy);
+//            }
+//
+//            g->draw_line(start, {xyPointsOfCurves[0].first, xyPointsOfCurves[0].second});
+//            for(int k = 1; k < xyPointsOfCurves.size()-1; k++){
+//                g-> draw_line({xyPointsOfCurves[k].first,xyPointsOfCurves[k].second},{xyPointsOfCurves[k+1].first,xyPointsOfCurves[k+1].second});
+//            }
+//            double last = xyPointsOfCurves.size();
+//            g-> draw_line({xyPointsOfCurves[last].first, xyPointsOfCurves[last].second} , end);
+//
+//        }
+//      }
      }
    }
+ }
 }
 
 void drawSegments(ezgl::renderer *g){
