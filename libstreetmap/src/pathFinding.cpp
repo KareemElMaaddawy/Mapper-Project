@@ -156,6 +156,7 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
         }
 
         std::vector<IntersectionIdx> neighbors = findAdjacentIntersections(current.intersection);
+        std::cout << neighbors.size() << std::endl;
 
         for (int i = 0; i < neighbors.size(); ++i) {
             double newCost =

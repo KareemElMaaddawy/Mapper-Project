@@ -63,7 +63,7 @@ std::vector<std::vector<IntersectionIdx>> intersections_of_a_street;
 
 std::vector<std::vector<StreetSegmentIdx>> segments_of_an_intersection;
 
-std::vector<std::vector<IntersectionIdx>> adjacent_intersections;
+std::vector<std::vector<IntersectionIdx>> adjacentIntersections;
 
 
 std::vector<StreetSegmentInfo> street_segment_info; //vector that holds info struct of each street segment
@@ -76,6 +76,28 @@ double streetLengthHelper(StreetIdx street_id);
 std::vector<double> fillVector(StreetIdx street_id);
 // std::vector<LatLon> vectorOfCoord(StreetIdx street_id); ///defined in global declared in globalHeader
 
+void loadAdjacentIntersections(){
+    int numOfIntersections = getNumIntersections();
+    adjacentIntersections.resize(numOfIntersections);
+    for(int i = 0; i < numOfIntersections; ++i){
+        int numOfSegments = getNumIntersectionStreetSegment(i);
+        for(int j = 0; j < numOfSegments; ++j){
+            StreetSegmentInfo segInfo = getStreetSegmentInfo(getIntersectionStreetSegment(i, j));
+            if(segInfo.oneWay){
+                if(i == segInfo.from){
+                    adjacentIntersections[i].push_back(segInfo.to);
+                }
+            }else{
+                if(i == segInfo.from){
+                    adjacentIntersections[i].push_back(segInfo.to);
+                }else{
+                    adjacentIntersections[i].push_back(segInfo.from);
+                }
+            }
+        }
+    }
+}
+
 bool loadMap(std::string map_streets_database_filename) {
     bool load_successful = loadStreetsDatabaseBIN(
             map_streets_database_filename); //Indicates whether the map has loaded successfully
@@ -83,6 +105,8 @@ bool loadMap(std::string map_streets_database_filename) {
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
     if (load_successful) {
+        loadAdjacentIntersections();
+
         numOfStreetSegments = getNumStreetSegments();
         segLength = new double[numOfStreetSegments];
         segTime = new double[numOfStreetSegments];
@@ -114,11 +138,7 @@ bool loadMap(std::string map_streets_database_filename) {
 
         intersections_of_a_street.resize(getNumStreets());
 
-
-
-        adjacent_intersections.resize(getNumIntersections());
-
-
+        //adjacentIntersections.resize(getNumIntersections());
 
 
         for (int i = 0; i < getNumStreetSegments(); i++) {
@@ -176,13 +196,13 @@ bool loadMap(std::string map_streets_database_filename) {
 //                IntersectionIdx from = getStreetSegmentInfo(segments_of_current_intersection[segment]).from;
 //
 //                //check if the vecor of adjacent intersection doesn't have to and from
-//                if(!(std::find(std::begin(adjacent_intersections[intersection]), std::end(adjacent_intersections[intersection]), to) != std::end(adjacent_intersections[intersection]))){
-//                    if(!(std::find(std::begin(adjacent_intersections[intersection]), std::end(adjacent_intersections[intersection]), from) != std::end(adjacent_intersections[intersection]))) {
+//                if(!(std::find(std::begin(adjacentIntersections[intersection]), std::end(adjacentIntersections[intersection]), to) != std::end(adjacentIntersections[intersection]))){
+//                    if(!(std::find(std::begin(adjacentIntersections[intersection]), std::end(adjacentIntersections[intersection]), from) != std::end(adjacentIntersections[intersection]))) {
 //
 //                        //check if the current intersection is the "from" intersection
 //                        if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).from)) {
 //                            //add the "to" intersection to the adjacent intersections of the current intersection
-//                            adjacent_intersections[intersection].push_back(
+//                            adjacentIntersections[intersection].push_back(
 //                                    getStreetSegmentInfo(segments_of_current_intersection[segment]).to);
 //                        }
 //                        //check if the segment is not a one way segment
@@ -190,7 +210,7 @@ bool loadMap(std::string map_streets_database_filename) {
 //                            //check if the current intersection is the "to" intersection
 //                            if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).to)) {
 //                                //add the "from" intersection to the adjacent intersections of the current intersection
-//                                adjacent_intersections[intersection].push_back(
+//                                adjacentIntersections[intersection].push_back(
 //                                        getStreetSegmentInfo(segments_of_current_intersection[segment]).from);
 //                            }
 //                        }
@@ -268,7 +288,7 @@ void closeMap() {
     street_names_of_intersection.clear();
     intersections_of_a_street.clear();
     segments_of_an_intersection.clear();
-    adjacent_intersections.clear();
+    adjacentIntersections.clear();
 
     streetNameMap.clear();
 
@@ -571,7 +591,7 @@ std::vector<IntersectionIdx> findIntersectionsOfStreet(StreetIdx street_id) {
 // Speed Requirement --> high 
 std::vector<IntersectionIdx> findAdjacentIntersections(IntersectionIdx intersection_id) {
 
-    return adjacent_intersections[intersection_id];
+    return adjacentIntersections[intersection_id];
 }
 
 // Returns the nearest intersection to the given position
