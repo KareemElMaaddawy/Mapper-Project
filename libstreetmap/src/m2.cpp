@@ -4,6 +4,7 @@
 #include "ezgl/application.hpp"
 #include "ezgl/graphics.hpp"
 #include "globalHeader.h"
+#include "pathFinding.h"
 #include "buttons.h"
 #include "string"
 
@@ -55,7 +56,7 @@ double highlightCount = 0;
 double mouseClick = 0;
 int firstID = 0;
 int secondID = 0;
-//std::string directions(std::vector<int> path);
+void directions(std::vector<int> path);
 
 
 
@@ -115,10 +116,10 @@ void loadIntersections(){
 
 
 void act_on_mouse_click(ezgl::application *app,
-                        GdkEventButton *event,
+                        GdkEventButton *,
                         double x, double y) {  
      highlightCount += 1;
-    std::vector<int> pathSegmentIDs;
+     std::vector<int> pathSegmentIDs;
      mouseClick +=1; 
     /*for(int i = 0; i < intersections.size(); i++){
         if(intersections[i].highlight){
@@ -131,30 +132,26 @@ void act_on_mouse_click(ezgl::application *app,
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x));
     int id = findClosestIntersection(pos);
     //std::cout << id << std::endl;
-    if(highlightCount <=2 & mouseClick == 1){
+    if((highlightCount <=2)& (mouseClick == 1)){
         firstID = id;
     intersections[id].highlight = true;
     }
-    if(highlightCount <=2 & mouseClick ==2){
+    if((highlightCount <=2) & (mouseClick ==2)){
         secondID = id;
         intersections[id].highlight = true;
-<<<<<<< HEAD
-       // pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
+        //pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
     }  
-=======
-        pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
-        for(int i = 0; i < pathSegmentIDs.size(); ++i){
+        //pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
+    /*for(int i = 0; i < pathSegmentIDs.size(); ++i){
             std::cout << pathSegmentIDs[i] << std::endl;
-        }
+        }*/
+        std::cout << firstID << " " << secondID << std::endl;
+    app->refresh_drawing();
     }
 
->>>>>>> f05a0d54cbc99be554a9385d276884c8a100fa7e
     /*std::cout << "Closest Intersection: "
               << intersections[id].name << "\n";*/
     //std:: cout << highlightCount << "\n";  
-    std::cout << firstID << " " << secondID << std::endl;
-    app->refresh_drawing();
-}
 //loads information for when when map is selected
 void drawNewMap(ezgl::application *application){
     loadPoi();
@@ -864,7 +861,7 @@ void drawSegments(ezgl::renderer *g){
     }
 }
 
-/*std::string directions(std::vector<int> path){
+void directions(std::vector<int> path){
     for(int i = 0; i < path.size(); i++){
         int firstSegID = path[i]; // fetch segment ID of current road
         int secondSegID = path[i+1]; //fetch segment ID of next segment about to go to
@@ -873,7 +870,11 @@ void drawSegments(ezgl::renderer *g){
         std::string firstSegName = getStreetName(firstSegStreetID);
         std::string secondSegName = getStreetName(secondSegStreetID);
         if(firstSegName == secondSegName){
-            return 
+            std::cout << "Continue on " << firstSegName << std::endl;
+        }else if(calculateDirection(firstSegID, secondSegID) == "left"){
+            std::cout << "Head left onto " << secondSegName << std::endl;        
+        }else if(calculateDirection(firstSegID, secondSegID) == "right"){
+            std:: cout << "Head right onto " << secondSegName << std::endl;
         }
     }
-}*/
+}
