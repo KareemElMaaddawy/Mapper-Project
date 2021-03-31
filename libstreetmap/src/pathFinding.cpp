@@ -129,6 +129,7 @@ std::vector<StreetSegmentIdx> reconstructPath(std::unordered_map<IntersectionIdx
     while (currentIntersection != intersect_id_start) {
         IntersectionIdx previousIntersection = pathOrigin[currentIntersection];
         path.insert(path.begin(), findSegmentBetweenIntersections(previousIntersection, currentIntersection));
+        currentIntersection = previousIntersection;
     }
     return path;
 }
@@ -138,6 +139,8 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
         const IntersectionIdx intersect_id_destination,
         const double turn_penalty
 ) {
+    std::cout << intersect_id_start << std::endl;
+    std::cout << intersect_id_destination << std::endl << std::endl;
     std::unordered_map<IntersectionIdx, double> costSoFar;
     std::unordered_map<IntersectionIdx, IntersectionIdx> pathOrigin;
     std::priority_queue<prioElem, std::vector<prioElem>, compare> queueOfIntersections; //mini heap to store queue for streets that need to be expanded upon
@@ -152,11 +155,10 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
         queueOfIntersections.pop(); //remove entry from queue
 
         if (current.intersection == intersect_id_destination) { //allow for early exit if destination reached
-            break;
+            return reconstructPath(pathOrigin, intersect_id_destination, intersect_id_start);
         }
 
         std::vector<IntersectionIdx> neighbors = findAdjacentIntersections(current.intersection);
-        std::cout << neighbors.size() << std::endl;
 
         for (int i = 0; i < neighbors.size(); ++i) {
             double newCost =

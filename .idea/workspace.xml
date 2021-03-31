@@ -12,9 +12,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="formatting">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="rewrote adjacentIntersections, fixed findPath?">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
     </list>
@@ -136,14 +135,7 @@
       <workItem from="1616697711763" duration="8594000" />
       <workItem from="1616864963734" duration="769000" />
       <workItem from="1617058661067" duration="876000" />
-      <workItem from="1617218322153" duration="3225000" />
-    </task>
-    <task id="LOCAL-00009" summary="built data struc for segments">
-      <created>1613157115096</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1613157115097</updated>
+      <workItem from="1617218322153" duration="6710000" />
     </task>
     <task id="LOCAL-00010" summary="finished travel time">
       <created>1613159203826</created>
@@ -481,7 +473,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617058931410</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="rewrote adjacentIntersections, fixed findPath?">
+      <created>1617221855587</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1617221855588</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,7 +512,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="added order to feature drawing" />
     <MESSAGE value="feature drawing done" />
     <MESSAGE value="seperated color for parks" />
     <MESSAGE value="changed road colors" />
@@ -538,7 +536,8 @@
     <MESSAGE value="fixed turn detection, passes all tests" />
     <MESSAGE value="formatting" />
     <MESSAGE value="created calcTurnPenalty as a weighted average of speed limits on the path travelled" />
-    <option name="LAST_COMMIT_MESSAGE" value="created calcTurnPenalty as a weighted average of speed limits on the path travelled" />
+    <MESSAGE value="rewrote adjacentIntersections, fixed findPath?" />
+    <option name="LAST_COMMIT_MESSAGE" value="rewrote adjacentIntersections, fixed findPath?" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -555,8 +554,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/libstreetmap/src/m2.cpp</url>
-          <line>137</line>
-          <option name="timeStamp" value="4" />
+          <line>139</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
