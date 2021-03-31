@@ -55,6 +55,7 @@ double highlightCount = 0;
 double mouseClick = 0;
 int firstID = 0;
 int secondID = 0;
+//std::string directions(std::vector<int> path);
 
 
 
@@ -136,12 +137,12 @@ void act_on_mouse_click(ezgl::application *app,
     if(highlightCount <=2 & mouseClick ==2){
         secondID = id;
         intersections[id].highlight = true;
-        //pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
+       // pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
     }  
     /*std::cout << "Closest Intersection: "
               << intersections[id].name << "\n";*/
     //std:: cout << highlightCount << "\n";  
-    //std::cout << firstID << " " << secondID << std::endl;
+    std::cout << firstID << " " << secondID << std::endl;
     app->refresh_drawing();
 }
 //loads information for when when map is selected
@@ -852,3 +853,17 @@ void drawSegments(ezgl::renderer *g){
         }
     }
 }
+
+/*std::string directions(std::vector<int> path){
+    for(int i = 0; i < path.size(); i++){
+        int firstSegID = path[i]; // fetch segment ID of current road
+        int secondSegID = path[i+1]; //fetch segment ID of next segment about to go to
+        int firstSegStreetID = getStreetSegmentInfo(firstSegID).streetID; //. fetch streetID of first seg
+        int secondSegStreetID = getStreetSegmentInfo (secondSegID).streetID; // fetch streetID of second seg
+        std::string firstSegName = getStreetName(firstSegStreetID);
+        std::string secondSegName = getStreetName(secondSegStreetID);
+        if(firstSegName == secondSegName){
+            return 
+        }
+    }
+}*/
