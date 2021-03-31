@@ -39,6 +39,7 @@ void drawFeatures(ezgl::renderer *g);
 void loadPoi();
 void drawPoi(ezgl::renderer *g);
 void drawPoiLabel(ezgl::renderer *g);
+void drawSegments(ezgl::renderer *g);
 void loadIntersections();
 void drawStreetLabels(ezgl::renderer *g);
 void drawPath(ezgl::renderer *g);
@@ -211,7 +212,7 @@ void drawMainCanvas(ezgl::renderer *g) {
     }
     /*DRAWS THE SEGMENTS*/
     
-    for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
+    /*for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
         //if(points_on_segments.size() <= )
         for(int point = 0; point < xy_points_segments[segment].size(); ++point){
             if (point == 0){
@@ -271,7 +272,8 @@ void drawMainCanvas(ezgl::renderer *g) {
                 g->draw_line({pointBeforeLast.first, pointBeforeLast.second}, {x, y});
             }
         }
-    }
+    }*/
+    drawSegments(g);
     drawStreetLabels(g);
     drawPoiLabel(g);
     drawPath(g);
@@ -717,10 +719,8 @@ void drawStreetLabels(ezgl:: renderer *g){
             
 }
 
-/*void drawPath(ezgl:: renderer *g){
+void drawPath(ezgl:: renderer *g){
     if(showPath){
-    g->set_color(ezgl:: PURPLE);
-    g->set_line_width(3);
     pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
     if(pathSegmentIDs.size() == 0){
         std::cout << "Path does not exist" << std::endl;
@@ -738,8 +738,74 @@ void drawStreetLabels(ezgl:: renderer *g){
         ezgl::point2d start(firstX,firstY);
         ezgl::point2d end(secondX,secondY);
         
+        g->set_color(ezgl:: PURPLE);
+        g->set_line_width(3);
         g -> draw_line(start,end);
+     }
     }
+   }
+}
+
+void drawSegments(ezgl::renderer *g){
+    for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
+        //if(points_on_segments.size() <= )
+        for(int point = 0; point < xy_points_segments[segment].size(); ++point){
+            if (point == 0){
+                std::pair<double, double> secondPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                std::pair<double, double> thirdPoint = {xy_points_segments[segment][point+1].first, xy_points_segments[segment][point+1].second};
+                IntersectionIdx fromIntersection = getStreetSegmentInfo(segment).from;
+                LatLon firstPoint = getIntersectionPosition(fromIntersection);
+                double x = x_from_lon(firstPoint.longitude());
+                double y = y_from_lat(firstPoint.latitude());
+                g->set_color(234,191,75,255);
+                g->set_line_width(0);
+                g->draw_line({x, y}, {secondPoint.first, secondPoint.second});
+                if(xy_points_segments[segment].size() > 1){
+                    g->draw_line({secondPoint.first, secondPoint.second}, {thirdPoint.first, thirdPoint.second});
+                }
+                if(xy_points_segments[segment].size() == 0){
+                    std::cout<<"there is a zero"<<std::endl;
+                }
+            }
+            if((point < xy_points_segments[segment].size() - 1) || ((xy_points_segments[segment].size() < 2)&&(point == xy_points_segments[segment].size()))){
+                g->set_line_width(0);
+
+                std::pair<double, double> formerPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                std::pair<double, double> latterPoint = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
+                g->set_color(234,191,75,255);
+                double m = slope (formerPoint.first, formerPoint.second, latterPoint.first, latterPoint.second);
+                double perpM = perpSlope(m);
+                std::pair<double, double> por;
+                std::pair<double, double> posSidePoint;
+                std::pair<double, double> negSidePoint;
+                if(m == 0){
+                    por = std::make_pair(latterPoint.first - 1, latterPoint.second); 
+                    posSidePoint =  {por.first, por.second + 0.5};
+                    negSidePoint = { por.first, por.second - 0.5};
+                }else if(perpM == 0){
+                    por = std::make_pair(latterPoint.first, latterPoint.second - 1); 
+                    posSidePoint =  {por.first + 0.5, por.second};
+                    negSidePoint = { por.first - 0.5, por.second};
+                }else{
+                    por = findPointOfReference( m, -1, latterPoint.first, latterPoint.second);
+                    posSidePoint = findPointOfReference( perpM, 0.5, por.first, por.second);
+                    negSidePoint = findPointOfReference( perpM, -0.5, por.first, por.second);
+                }
+                
+                
+                g->draw_line({formerPoint.first, formerPoint.second}, {latterPoint.first, latterPoint.second});
+                g->fill_poly({{latterPoint.first, latterPoint.second}, {posSidePoint.first, posSidePoint.second}, {negSidePoint.first, negSidePoint.second}});
+            }
+            else if(point == xy_points_segments[segment].size() - 1){
+                std::pair<double, double> pointBeforeLast = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                IntersectionIdx toIntersection = getStreetSegmentInfo(segment).to;
+                LatLon lastPoint = getIntersectionPosition(toIntersection);
+                double x = x_from_lon(lastPoint.longitude());
+                double y = y_from_lat(lastPoint.latitude());
+                g->set_color(234,191,75,255);
+                g->set_line_width(0);
+                g->draw_line({pointBeforeLast.first, pointBeforeLast.second}, {x, y});
+            }
+        }
     }
-    }
-}*/
+}
