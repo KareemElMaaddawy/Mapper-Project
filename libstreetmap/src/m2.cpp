@@ -865,13 +865,9 @@ void drawStreetLabels(ezgl:: renderer *g){
 }
 
 void drawPath(ezgl:: renderer *g){
-    if(showPath){
-<<<<<<< HEAD
-        
-        //directions(pathSegmentIDs);
-=======
+    if(showPath){        
+
     directions(pathSegmentIDs);
->>>>>>> b4df28a57ee0239973cf27abf5460c960ca06866
     if(pathSegmentIDs.size() == 0){
         std::cout << "Path does not exist" << std::endl;
     } else {
@@ -1056,9 +1052,9 @@ void directions(std::vector<int> path){
         std::string secondSegName = getStreetName(secondSegStreetID);
         if(firstSegName == secondSegName){
             std::cout << "Continue on " << firstSegName << std::endl;
-        }else if(calculateDirection(firstSegID, secondSegID) == "left"){
-            std::cout << "Head left onto " << secondSegName << std::endl;        
         }else if(calculateDirection(firstSegID, secondSegID) == "right"){
+            std::cout << "Head left onto " << secondSegName << std::endl;        
+        }else if(calculateDirection(firstSegID, secondSegID) == "left"){
             std:: cout << "Head right onto " << secondSegName << std::endl;
         }
     }
