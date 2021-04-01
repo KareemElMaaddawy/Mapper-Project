@@ -7,7 +7,8 @@
 #include "pathFinding.h"
 #include "buttons.h"
 #include "string"
-
+#include <math.h>
+#include <cmath>
 //function declarations
 std::string openMap = "Toronto, Canada"; //holds name of map open, default is toronto
 
@@ -1081,4 +1082,59 @@ void directions(std::vector<int> path){
             std:: cout << "Head right onto " << secondSegName << std::endl;
         }
     }
+}
+
+
+void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSegments, ezgl:: renderer *g){
+    int numSegmentsInSection = streetSectionSegments.size();
+    LatLon coordsOfmiddleFrom;
+    LatLon coordsOfmiddleTo;
+    StreetSegmentIdx middleSegmentOfSectionIdx = streetSectionSegments[numSegmentsInSection/2];
+    StreetSegmentInfo middleSegmentInfo = getStreetSegmentInfo(middleSegmentOfSectionIdx);
+    std::string streetName = getStreetName(middleSegmentInfo.streetID);
+    if (middleSegmentInfo.numCurvePoints <= 0){
+        
+        coordsOfmiddleFrom = getIntersectionPosition(middleSegmentInfo.from);
+        coordsOfmiddleTo = getIntersectionPosition(middleSegmentInfo.to);
+        
+        
+        
+    }else{
+        int numberOfCurvePoints = middleSegmentInfo.numCurvePoints;
+        int middleCurvePoint = numberOfCurvePoints/2;
+        coordsOfmiddleFrom = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middleCurvePoint);
+        
+        int middlePlusPoint = numberOfCurvePoints + 1;
+        coordsOfmiddleTo = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middlePlusPoint);
+        
+    }
+    double fromX = x_from_lon(coordsOfmiddleFrom.longitude());
+    double fromY = y_from_lat(coordsOfmiddleFrom.latitude());
+    
+    double toX = x_from_lon(coordsOfmiddleTo.longitude());
+    double toY = y_from_lat(coordsOfmiddleTo.latitude());
+    
+    double deltaX = toX - fromX;
+    double deltaY = toY - fromY;
+    
+    double midPointX = (toX + fromX)/2;
+    double midPointY = (toY + fromY)/2;
+    
+    ezgl::point2d center(midPointX,midPointY);
+    
+    double theta = atan(deltaY/deltaX);
+    theta = M_1_PI * 180; //convert to degrees
+    
+    if((theta < -90) && (theta > -270)){
+        theta = theta + 180;
+    }else if((theta > 90) && (theta < 270)){
+        theta = -180 + theta;
+    }
+    
+    
+    findDistanceBetweenTwoPoints(std::make_pair(coordsOfmiddleFrom, coordsOfmiddleTo));
+    
+    g->set_text_rotation(theta);
+    g->draw_text(center, streetName, 100, 100);
+    
 }
