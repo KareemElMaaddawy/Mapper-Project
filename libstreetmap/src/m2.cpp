@@ -608,6 +608,7 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
             if(!load_success) {
                 std::cerr << "Failed to load map '" << mapInfo[selectedMap].name << "'\n";//error catch
                 return;
+                
             }else{
                 //application -> update_message(mapInfo[selectedMap].name + " loaded");
             }
