@@ -49,8 +49,8 @@ double slope(double x1, double y1, double x2, double y2);
 double perpSlope(double m);
 std::pair<double, double> findPointOfReference(double m, double distance, double x, double y);
 //std::vector<int> tempID;
-std::vector<LatLon> curvePointVector;
-std::vector<std::pair<double,double>> xyPointsOfCurves;
+//std::vector<LatLon> curvePointVector;
+//std::vector<std::pair<double,double>> xyPointsOfCurves;
 std::vector<int> pathSegmentIDs;
 
 double highlightCount = 0;
@@ -562,6 +562,8 @@ void clearHighlightButton(GtkEntry *,ezgl::application *application){
     }
     firstID = 0;
     secondID = 0;
+   // curvePointVector.clear();
+    //xyPointsOfCurves.clear();
     //std::cout << firstID << " " << secondID << std::endl;
     highlightCount = 0;
     mouseClick = 0;
@@ -585,6 +587,9 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
         }else{
             //application -> update_message("Loading...");
             openMap = mapInfo[selectedMap].name;//sets open map to selected map
+            highlightCount = 0;
+            mouseClick = 0;
+            showPath = false;
             closeMap();
             features.clear();
             intersections.clear();
@@ -731,6 +736,7 @@ void drawStreetLabels(ezgl:: renderer *g){
 
 void drawPath(ezgl:: renderer *g){
     if(showPath){
+        
         //directions(pathSegmentIDs);
     if(pathSegmentIDs.size() == 0){
         std::cout << "Path does not exist" << std::endl;
@@ -747,13 +753,53 @@ void drawPath(ezgl:: renderer *g){
         double firstY = y_from_lat(fromPosition.latitude());
         double lastX = x_from_lon(toPosition.longitude());
         double lastY = y_from_lat(toPosition.latitude());
-
+        
         ezgl::point2d start(firstX,firstY);
         ezgl::point2d end(lastX,lastY);
-        g->set_color(ezgl::PURPLE);
+        if(curvePoints == 0){
+            g->set_color(ezgl::PURPLE);
         g-> set_line_width(5);
         g->draw_line(start,end);
-
+        }
+        else if(curvePoints == 1){
+            LatLon curvePointPosition = getStreetSegmentCurvePoint(segID,0);
+            double curvePointX = x_from_lon(curvePointPosition.longitude());
+            double curvePointY = y_from_lat(curvePointPosition.latitude());
+        g->set_color(ezgl::PURPLE);
+        g-> set_line_width(5);
+        g->draw_line(start,{curvePointX, curvePointY});
+        g->draw_line({curvePointX, curvePointY}, end);
+        }
+        else if(curvePoints > 1){
+            std::vector<LatLon> curvePointVector;
+            std::vector<std::pair<double,double>> xyPointsOfCurves;
+            for(int j = 0; j < curvePoints; j++){
+                LatLon curvePointPosition = getStreetSegmentCurvePoint(segID,j);
+                curvePointVector.push_back(curvePointPosition);
+            }
+            for(int k = 0; k < curvePointVector.size();k++){
+                double curvePointsX = x_from_lon(curvePointVector[k].longitude());
+                double curvePointsY = y_from_lat(curvePointVector[k].latitude());
+                std::pair<double,double> tempPair = {curvePointsX,curvePointsY};
+                xyPointsOfCurves.push_back(tempPair);
+            }
+            g->set_color(ezgl::PURPLE);
+            g-> set_line_width(5);
+             g->draw_line(start, {xyPointsOfCurves[0].first, xyPointsOfCurves[0].second});
+              for(int k = 0; k < xyPointsOfCurves.size()-1; k++){
+                g->set_color(ezgl::PURPLE);
+                g-> set_line_width(5);
+                g-> draw_line({xyPointsOfCurves[k].first,xyPointsOfCurves[k].second},{xyPointsOfCurves[k+1].first,xyPointsOfCurves[k+1].second});
+            }
+            //double last = xyPointsOfCurves.size();
+             double lastXs = xyPointsOfCurves.back().first;
+             double lastYs = xyPointsOfCurves.back().second;
+            g->set_color(ezgl::PURPLE);
+            g-> set_line_width(5);
+            g-> draw_line({lastXs,lastYs} , end);
+        }
+        std::cout << "Curve points: " << curvePoints << std::endl;
+        
 //        if(curvePoints == 0){
 //        g->set_color(ezgl:: PURPLE);
 //        g->set_line_width(3);
