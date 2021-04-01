@@ -108,17 +108,19 @@ StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, con
     return -1;
 }
 
-double calculateCost(const double turnPenalty, const IntersectionIdx soruceIntersection,
-                     const IntersectionIdx destinationIntersection) {
+double calculateCost(const double turnPenalty, const StreetSegmentIdx sourceSegment,
+                     const StreetSegmentIdx destinationSegment) {
     double cost = 0;
-    std::vector<StreetSegmentIdx> path = {findSegmentBetweenIntersections(soruceIntersection, destinationIntersection)};
+    std::vector<StreetSegmentIdx> path = {sourceSegment, destinationSegment};
     cost += computePathTravelTime(path, turnPenalty);
     return cost;
 }
-
+//manhattan distance
 double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection) {
-    return findDistanceBetweenTwoPoints(std::make_pair(getIntersectionPosition(currentIntersection),
-                                                       getIntersectionPosition(destinationIntersection)));
+    std::pair<double, double> currentPosition = {x_from_lon(getIntersectionPosition(currentIntersection).longitude()), y_from_lat(getIntersectionPosition(currentIntersection).latitude())};
+    std::pair<double, double> destPosition = {x_from_lon(getIntersectionPosition(destinationIntersection).longitude()), y_from_lat(getIntersectionPosition(destinationIntersection).latitude())};
+
+    return abs(currentPosition.first - destPosition.first) + abs(currentPosition.second - destPosition.second);
 }
 
 std::vector<StreetSegmentIdx> reconstructPath(std::unordered_map<IntersectionIdx, IntersectionIdx> pathOrigin,
@@ -139,8 +141,6 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
         const IntersectionIdx intersect_id_destination,
         const double turn_penalty
 ) {
-    std::cout << intersect_id_start << std::endl;
-    std::cout << intersect_id_destination << std::endl << std::endl;
     std::unordered_map<IntersectionIdx, double> costSoFar;
     std::unordered_map<IntersectionIdx, IntersectionIdx> pathOrigin;
     std::priority_queue<prioElem, std::vector<prioElem>, compare> queueOfIntersections; //mini heap to store queue for streets that need to be expanded upon
@@ -151,7 +151,6 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
 
     while (!queueOfIntersections.empty()) {
         prioElem current = queueOfIntersections.top(); //get value from the top of the queue
-
         queueOfIntersections.pop(); //remove entry from queue
 
         if (current.intersection == intersect_id_destination) { //allow for early exit if destination reached
@@ -162,7 +161,7 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
 
         for (int i = 0; i < neighbors.size(); ++i) {
             double newCost =
-                    costSoFar[current.intersection] + calculateCost(turn_penalty, current.intersection, neighbors[i]);
+                    costSoFar[current.intersection] + calculateCost(turn_penalty, findSegmentBetweenIntersections(pathOrigin[current.intersection], current.intersection), findSegmentBetweenIntersections(current.intersection, neighbors[i]));
             if (costSoFar.find(neighbors[i]) == costSoFar.end() || newCost < costSoFar[neighbors[i]]) {
                 costSoFar[neighbors[i]] = newCost;
                 double priority = newCost + calculateHeuristic(neighbors[i], intersect_id_destination);
