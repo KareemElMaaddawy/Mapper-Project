@@ -11,8 +11,7 @@
 //function declarations
 std::string openMap = "Toronto, Canada"; //holds name of map open, default is toronto
 
-
-
+GtkWidget *userGuideWindow;
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
 double lon_from_x(double x);
@@ -25,16 +24,24 @@ double yFromLatPoi(double lat);
 
 GtkEntry* firstStreetEntry = nullptr;
 GtkEntry* secondStreetEntry = nullptr;
+
+GtkEntry* FirstIntersectionEntry = nullptr;
+GtkEntry* secondIntersectionEntry = nullptr;
+
 GtkComboBox* mapBox = nullptr;
+
+
 
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y);
 void drawNewMap(ezgl::application *application);
 void findButton(GtkWidget *widget, ezgl::application *application);
-void searchBar(GtkEntry *widget, ezgl::application *application);
+void findPathButton(GtkWidget *widget, ezgl::application *application);
 void clearHighlightButton(GtkEntry *,ezgl::application *application);
+void helpMenuItem(GtkWidget*, ezgl::application *application);
 void showPathButton(GtkEntry *,ezgl::application *application);
+void hideUserManualButton(GtkEntry *,ezgl::application *application);
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
@@ -57,7 +64,11 @@ double highlightCount = 0;
 double mouseClick = 0;
 int firstID = 0;
 int secondID = 0;
+
 void directions(std::vector<int> path);
+
+
+IntersectionIdx findFunction(std::string, std::string, int);
 
 
 
@@ -530,6 +541,10 @@ void loadFilterButtons(ezgl::application *application){
 void initial_setup(ezgl::application *application, bool){
     firstStreetEntry = (GtkEntry*)(application -> get_object("FirstStreet"));
     secondStreetEntry = (GtkEntry*)(application -> get_object("SecondStreet"));
+    FirstIntersectionEntry = (GtkEntry*)(application -> get_object("FirstIntersection"));
+    secondIntersectionEntry = (GtkEntry*)(application -> get_object("SecondIntersection"));    
+  
+    userGuideWindow = (GtkWidget*)(application -> get_object("UserWindowId"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
     g_signal_connect(//connecting map select button to callback function
             application->get_object("mapSelectBtn"),
@@ -544,10 +559,18 @@ void initial_setup(ezgl::application *application, bool){
             application
     );
     g_signal_connect(application -> get_object("Find"), "clicked", G_CALLBACK(findButton), application);
+    g_signal_connect(application -> get_object("findPath"), "clicked", G_CALLBACK(findPathButton), application);
     g_signal_connect(application -> get_object("clearHighlightBtn"), "clicked", G_CALLBACK(clearHighlightButton), application);
+    g_signal_connect(application -> get_object("findPath"), "clicked", G_CALLBACK(clearHighlightButton), application);
     g_signal_connect(application -> get_object("showPathBtn"), "clicked", G_CALLBACK(showPathButton), application);
+    g_signal_connect(application -> get_object("UserGuide"), "activate", G_CALLBACK(helpMenuItem), application);
+    g_signal_connect(application -> get_object("hideUserGuide"), "clicked", G_CALLBACK(hideUserManualButton), application);
+    
+
+    
     loadFilterButtons(application);
 }
+
 
 void showPathButton(GtkEntry *,ezgl::application *application){
     showPath = !showPath;
@@ -601,6 +624,7 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
             if(!load_success) {
                 std::cerr << "Failed to load map '" << mapInfo[selectedMap].name << "'\n";//error catch
                 return;
+                
             }else{
                 //application -> update_message(mapInfo[selectedMap].name + " loaded");
             }
@@ -611,6 +635,15 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
     }
 }
 
+void helpMenuItem(GtkWidget*, ezgl::application *application){
+    std::cout<<"help button activated"<<std::endl;
+    gtk_widget_show (userGuideWindow);
+}
+
+//subwindows cannot be closed normally if they are created only once and they need to be hidden in the background
+void hideUserManualButton(GtkEntry *,ezgl::application *application){
+    gtk_widget_hide (userGuideWindow);
+}
 
 void findButton(GtkWidget *, ezgl::application *application){
     //Redraw Main Canvas
@@ -621,8 +654,65 @@ void findButton(GtkWidget *, ezgl::application *application){
     std::string secondTerm = gtk_entry_get_text(secondStreetEntry);
     std::cout<< "first search term: " << firstTerm << ", " << " second search term: " << secondTerm << std::endl;
     
+    //helps identify which find button has been pressed to the findFunction;
+    const int noIntersection = 0;
+    
+    findFunction(firstTerm, secondTerm, noIntersection);
+            
+    application->refresh_drawing();
     
 
+}
+
+//function that works with the find path button
+void findPathButton(GtkWidget *, ezgl::application *application){
+   application -> refresh_drawing();
+    
+    //parse the names of the 2 intersections
+    std::string firstTerm = gtk_entry_get_text(FirstIntersectionEntry);
+    std::string secondTerm = gtk_entry_get_text(secondIntersectionEntry);
+    
+    //separate the names of the 4 streets and find them
+    if(firstTerm.find("&") && secondTerm.find("&") ){
+        
+    //help identify which find button has been pressed to the findFunction;
+        const int fromIntersection = 1;
+        const int toIntersection = 2;
+        
+     
+        std::size_t positionOfAndInFirst = firstTerm.find("&");
+        std::size_t positionOfAndInSecond = secondTerm.find("&");
+        
+        
+        std::string firstStreet = firstTerm.substr (0, positionOfAndInFirst);
+        std::string secondStreet = firstTerm.substr (positionOfAndInFirst + 1);
+        
+        std::string thirdStreet = secondTerm.substr (0, positionOfAndInSecond);
+        std::string fourthStreet = secondTerm.substr (positionOfAndInSecond + 1);
+        
+        //find the names of the intersections (using the same function from last milestone)
+        IntersectionIdx firstIntersection = findFunction(firstStreet, secondStreet, fromIntersection);
+        IntersectionIdx secondIntersection = findFunction(thirdStreet, fourthStreet, toIntersection);
+        
+        //find the path between the intersections
+        pathSegmentIDs = findPathBetweenIntersections(firstIntersection,secondIntersection,15);
+        //highlight the path between the intersections
+        
+        showPath = true;
+        application -> refresh_drawing();
+        
+        //print diresctions
+    }
+    
+    
+}
+
+//function that finds the intersections of streets 2 given street names. 
+//also prints some stuff about them depending on whether it's used with find intersections or find path functions
+IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int intersectionNumber){
+    
+    IntersectionIdx returnIntersection = -1;
+    
     if (firstTerm != "" && secondTerm != ""){
         
         std::vector<StreetIdx> possibleFirstStreets = findStreetIdsFromPartialStreetName(firstTerm);
@@ -648,16 +738,37 @@ void findButton(GtkWidget *, ezgl::application *application){
         if((possibleFirstStreetsNames.size() == 1) && (possibleSecondStreetsNames.size() == 1)){
             std::string fullFirstFromPartial = possibleFirstStreetsNames[0];
             std::string fullSecondFromPartial = possibleSecondStreetsNames[0];
-
-            std::cout << "first street name: " << fullFirstFromPartial <<std::endl;
-            std::cout << "second street name: " << fullSecondFromPartial <<std::endl;
+            
+            //this is for testing for now. Actual needs to only print if intersection number is 0
+            if((intersectionNumber == 0) || (intersectionNumber == 1)){
+                std::cout << "first street name: " << fullFirstFromPartial <<std::endl;
+                std::cout << "second street name: " << fullSecondFromPartial <<std::endl;
+            }else if(intersectionNumber == 2){
+                std::cout << "third street name: " << fullFirstFromPartial <<std::endl;
+                std::cout << "fourth street name: " << fullSecondFromPartial <<std::endl;
+            }
+            
             
             std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({possibleFirstStreets[0], possibleSecondStreets[0]}); 
-            std::cout << "names of common intersections are:" << std::endl;
-            for(int i = 0; i < intersectionsOfStreets.size(); ++i){
-                std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
-                std::cout << "   " << intersections[intersectionsOfStreets[i]].name;
-                intersections[intersectionsOfStreets[i]].highlight = true;
+            //print all the names of the intersections if we are finding common intersections
+            if (intersectionNumber == 0){
+                std::cout << "names of common intersections are:" << std::endl;
+                for(int i = 0; i < intersectionsOfStreets.size(); ++i){
+                   // std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
+                    std::cout << "   " << intersections[intersectionsOfStreets[i]].name;
+                    intersections[intersectionsOfStreets[i]].highlight = true;
+                }
+                
+            //if we are finding the path print the name of the FIRST intersection in the list of 
+            //common intersections and then return that name    
+                
+            }else if((intersectionNumber == 2) || (intersectionNumber == 1)){
+              std::cout << "name of  intersection #" << intersectionNumber << " is: " <<std::endl;
+              returnIntersection = intersectionsOfStreets[0];
+              std::cout << intersections[intersectionsOfStreets[0]].name<< std::endl;
+              
+              intersections[intersectionsOfStreets[0]].highlight = true;
+              
             }
 //            std::cout << "if "<<std::endl;
         }else{
@@ -685,32 +796,51 @@ void findButton(GtkWidget *, ezgl::application *application){
                 }
             }
             else{
+                
                 std::string fullFirstFromPartial = correctFirstStreetName;
                 std::string fullSecondFromPartial = correctSecondStreetName;
-                std::cout << "first full street name: " << fullFirstFromPartial <<std::endl;
-                std::cout << "second full street name: " << fullSecondFromPartial <<std::endl;
+                
+                if((intersectionNumber == 0) || (intersectionNumber == 1)){
+                    std::cout << "first full street name: " << fullFirstFromPartial <<std::endl;
+                    std::cout << "second full street name: " << fullSecondFromPartial <<std::endl;
+                }else if(intersectionNumber == 2){
+                std::cout << "third full street name: " << fullFirstFromPartial <<std::endl;
+                std::cout << "fourth full street name: " << fullSecondFromPartial <<std::endl;
+                }
+                
                 std::vector<StreetIdx> firstS = findStreetIdsFromPartialStreetName(correctFirstStreetName);
                 std::vector<StreetIdx> secondS = findStreetIdsFromPartialStreetName(correctSecondStreetName);
                 std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({firstS[0], secondS[0]}); 
-                std::cout << "street ids: " << firstS[0] << "     " << secondS[0] << std::endl;
-                std::cout << "street names: " << getStreetName(firstS[0]) << "     " << getStreetName(secondS[0]) << std::endl;
-                std::cout << "names of common intersections are:" << std::endl;
-                std::cout << intersectionsOfStreets.size() << std::endl;
-                for(int i = 0; i < intersectionsOfStreets.size(); ++i){
-                    std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
-                    std::cout << "   " << intersections[intersectionsOfStreets[i]].name << std::endl;
-                    intersections[intersectionsOfStreets[i]].highlight = true;
-                }
-            std::cout << "else "<<std::endl;
+                //std::cout << "street ids: " << firstS[0] << "     " << secondS[0] << std::endl;
+                //std::cout << "street names: " << getStreetName(firstS[0]) << "     " << getStreetName(secondS[0]) << std::endl;
+               
+                if(intersectionNumber == 0){
+                    std::cout << "names of common intersections are:" << std::endl;
+                    std::cout << intersectionsOfStreets.size() << std::endl;
+                    for(int i = 0; i < intersectionsOfStreets.size(); ++i){
+                     //   std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
+                        std::cout << "   " << intersections[intersectionsOfStreets[i]].name << std::endl;
+                        intersections[intersectionsOfStreets[i]].highlight = true;
+                    }
+                }else if((intersectionNumber == 2) || (intersectionNumber == 1)){
+                    std::cout << "name of  intersection #" << intersectionNumber << " is: " <<std::endl;
+                    returnIntersection = intersectionsOfStreets[0];
+                    std::cout << intersections[intersectionsOfStreets[0]].name<< std::endl;
+
+                    intersections[intersectionsOfStreets[0]].highlight = true;
+                    
+                }    
+           // std::cout << "else "<<std::endl;
             }
         }
         
     }else if (firstTerm == "" && secondTerm != ""){
-        std::cout << "needs a first street" << std::endl << "second entry: " << secondTerm << std::endl;
+        std::cout << "needs a first street" << std::endl << "first entry: " << secondTerm << std::endl;
     }else if (firstTerm != "" && secondTerm == ""){
-        std::cout << "needs a second street" << std::endl << "first entry: " << firstTerm << std::endl;
+        std::cout << "needs a second street" << std::endl << "second entry: " << firstTerm << std::endl;
     }
-    application->refresh_drawing();
+
+    return returnIntersection;
 }
 
 void drawStreetLabels(ezgl:: renderer *g){
@@ -736,8 +866,12 @@ void drawStreetLabels(ezgl:: renderer *g){
 
 void drawPath(ezgl:: renderer *g){
     if(showPath){
+<<<<<<< HEAD
         
         //directions(pathSegmentIDs);
+=======
+    directions(pathSegmentIDs);
+>>>>>>> b4df28a57ee0239973cf27abf5460c960ca06866
     if(pathSegmentIDs.size() == 0){
         std::cout << "Path does not exist" << std::endl;
     } else {
