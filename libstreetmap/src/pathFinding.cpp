@@ -49,10 +49,9 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
         double vectorTwoX = x_from_lon(dest.longitude()) - x_from_lon(intersectionPosition.longitude());
         double vectorTwoY = y_from_lat(dest.latitude()) - y_from_lat(intersectionPosition.latitude());
 
-        double angle = acos(dot(vectorOneX, vectorOneY, vectorTwoX, vectorTwoY) /
-                            (mag(vectorOneX, vectorOneY) * mag(vectorTwoX, vectorTwoY)));
+        double cross  = vectorOneX * vectorTwoY - vectorOneY * vectorTwoX;
 
-        if (angle < 180) {
+        if (cross > 0) {
             return "left";
         } else {
             return "right";
