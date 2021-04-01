@@ -571,26 +571,7 @@ void initial_setup(ezgl::application *application, bool){
     loadFilterButtons(application);
 }
 
-//void on_dialog_response(GtkDialog *dialog, gint response_id, gpointer user_data)
-//{
-//    // For demonstration purposes, this will show the enum name and int value of the buttonthat was pressed
-//    std::cout << "response is ";
-//    switch(response_id) {
-//        case GTK_RESPONSE_ACCEPT:std::cout << "GTK_RESPONSE_ACCEPT ";
-//        break;
-//        case GTK_RESPONSE_DELETE_EVENT:std::cout << "GTK_RESPONSE_DELETE_EVENT (i.e. ’X’ button) ";
-//        break;
-//        case GTK_RESPONSE_REJECT:std::cout << "GTK_RESPONSE_REJECT ";
-//        break;
-//        default:std::cout << "UNKNOWN ";
-//        break;
-//    }
-//    std::cout << "(" << response_id << ")\n";// This will cause the dialog to be destroyed and close.
-//    // without this line the dialog remains open unless the
-//    // response_id is GTK_RESPONSE_DELETE_EVENT which
-//    // automatically closes the dialog without the following line.
-//    gtk_widget_destroy(GTK_WIDGET (dialog));
-//}
+
 void showPathButton(GtkEntry *,ezgl::application *application){
     showPath = !showPath;
     application -> refresh_drawing();
@@ -652,29 +633,13 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
 void helpMenuItem(GtkWidget*, ezgl::application *application){
     std::cout<<"help button activated"<<std::endl;
     gtk_widget_show (userGuideWindow);
-//    GObject *helpWindow;         // the parent window over which to add the dialog
-//    GtkWidget *helpArea;         // the content area of the dialog
-//    GtkWidget *helpLabel;        // the label we will create to display a message in the contentarea
-//    GtkWidget *helpDialog;       // the dialog box we will create
-//    GtkWidget * gtk_dialog_new_with_buttons(const gchar *title,GtkWindow *parent, GtkDialogFlags flags, const gchar *first_button_text, ...);
-//    
-//    
-//    helpWindow = application->get_object(application->get_main_window_id().c_str());
-//    helpDialog = gtk_dialog_new_with_buttons("Test Dialog",(GtkWindow*) helpWindow, GTK_DIALOG_MODAL, ("OK"), GTK_RESPONSE_ACCEPT, ("CANCEL"), GTK_RESPONSE_REJECT,NULL);
-//    // Create a label and attach it to the content area of the dialog
-//    helpArea = gtk_dialog_get_content_area(GTK_DIALOG(helpDialog));
-//    helpLabel = gtk_label_new("Simple Dialog With a Label. Press OK or CANCEL too close.");
-//    gtk_container_add(GTK_CONTAINER(helpArea), helpLabel);
-//    // The main purpose of this is to show dialog’s child widget, label
-//    gtk_widget_show_all(helpDialog);
-//    // Connecting the "response" signal from the user to the associated callback function
-//    g_signal_connect(GTK_DIALOG(helpDialog),"response",G_CALLBACK(on_dialog_response),NULL);
 }
 
 //subwindows cannot be closed normally if they are created only once and they need to be hidden in the background
 void hideUserManualButton(GtkEntry *,ezgl::application *application){
     gtk_widget_hide (userGuideWindow);
 }
+
 void findButton(GtkWidget *, ezgl::application *application){
     //Redraw Main Canvas
     application -> refresh_drawing();
