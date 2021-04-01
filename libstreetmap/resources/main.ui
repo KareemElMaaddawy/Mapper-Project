@@ -110,6 +110,11 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/food.png</property>
   </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/money.png</property>
+  </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -370,6 +375,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Finance</property>
+                    <property name="image">image1</property>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
