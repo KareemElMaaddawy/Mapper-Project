@@ -2,6 +2,106 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkListStore" id="MapListStore">
+    <columns>
+      <!-- column-name ListOfAvailableMapNames -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Beijing, China</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Cairo, Egypt</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Cape Town, South Africa</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Golden Horseshoe, Canada</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Hamilton, Canada</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Hong Kong, China</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Iceland</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Interlaken, Switzerland</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">London, England</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Moscow, Russia</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">New Delhi, India</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">New York, USA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Rio de Janerio, Brazil</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Saint Helena</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Singapore</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sydney, Australia</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Tehran, Iran</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Tokyo, Japan</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Toronto, Canada</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkImage" id="artPOI">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/art.png</property>
+  </object>
+  <object class="GtkImage" id="bookPOI">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/book.png</property>
+  </object>
+  <object class="GtkImage" id="carPOI">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/car.png</property>
+  </object>
+  <object class="GtkImage" id="doctorPOI">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/doctor.png</property>
+  </object>
+  <object class="GtkImage" id="eye">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/output-onlinepngtools (1).png</property>
+  </object>
+  <object class="GtkImage" id="foodPOI">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/food.png</property>
+  </object>
+  <object class="GtkImage" id="moneyPOI">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/money.png</property>
+  </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -177,25 +277,10 @@
                 <property name="placeholder_text" translatable="yes">Second street</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">17</property>
-                <property name="width">5</property>
-                <property name="height">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="colorToggle">
-                <property name="label" translatable="yes">Color Blind Mode</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_top">468</property>
-              </object>
-              <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">24</property>
+                <property name="top_attach">17</property>
                 <property name="width">3</property>
-                <property name="height">4</property>
+                <property name="height">3</property>
               </packing>
             </child>
             <child>
@@ -205,9 +290,9 @@
                 <property name="placeholder_text" translatable="yes">First street</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
+                <property name="left_attach">1</property>
                 <property name="top_attach">14</property>
-                <property name="width">5</property>
+                <property name="width">3</property>
                 <property name="height">3</property>
               </packing>
             </child>
@@ -248,61 +333,174 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="column_homogeneous">True</property>
+                <child>
+                  <object class="GtkLabel" id="poiFilterLbl">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">POI Filter</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="bookFilterBtn">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Education</property>
+                    <property name="image">bookPOI</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="carFilterBtn">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Transportation</property>
+                    <property name="image">carPOI</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="artFilterBtn">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Entertainment</property>
+                    <property name="image">artPOI</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="foodFilterBtn">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Food</property>
+                    <property name="image">foodPOI</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="moneyFilterBtn">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Finance</property>
+                    <property name="image">moneyPOI</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="filterClearBtn">
+                    <property name="label" translatable="yes">Clear Filter</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="doctorFilterBtn">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Healthcare</property>
+                    <property name="image">doctorPOI</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">24</property>
+                <property name="width">3</property>
+                <property name="height">2</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkButton" id="colorToggle">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">eye</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="clearHighlightBtn">
+                    <property name="label" translatable="yes">Clear Highlights</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="showPathBtn">
+                    <property name="label" translatable="yes">show Path</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">26</property>
+                <property name="width">3</property>
+                <property name="height">4</property>
+              </packing>
             </child>
             <child>
               <placeholder/>
@@ -513,10 +711,28 @@
             <child>
               <placeholder/>
             </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
           </packing>
         </child>
         <child>
@@ -534,70 +750,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="MapListStore">
-    <columns>
-      <!-- column-name ListOfAvailableMapNames -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">Beijing, China</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Cairo, Egypt</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Cape Town, South Africa</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Golden Horseshoe, Canada</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Hamilton, Canada</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Hong Kong, China</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Iceland</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Interlaken, Switzerland</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">London, England</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Moscow, Russia</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">New Delhi, India</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">New York, USA</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Rio de Janerio, Brazil</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Saint Helena</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Singapore</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Sydney, Australia</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Tehran, Iran</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Tokyo, Japan</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Toronto, Canada</col>
-      </row>
-    </data>
   </object>
 </interface>

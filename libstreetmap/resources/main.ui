@@ -233,7 +233,6 @@
                 <property name="left_attach">1</property>
                 <property name="top_attach">6</property>
                 <property name="width">3</property>
-                <property name="height">4</property>
               </packing>
             </child>
             <child>
@@ -247,53 +246,8 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">20</property>
+                <property name="top_attach">19</property>
                 <property name="width">3</property>
-                <property name="height">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="Find">
-                <property name="label">gtk-find</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Enter street names below</property>
-                <property name="margin_top">18</property>
-                <property name="use_stock">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">10</property>
-                <property name="width">3</property>
-                <property name="height">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="SecondStreet">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="margin_bottom">18</property>
-                <property name="placeholder_text" translatable="yes">Second street</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">17</property>
-                <property name="width">3</property>
-                <property name="height">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="FirstStreet">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">First street</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">14</property>
-                <property name="width">3</property>
-                <property name="height">3</property>
               </packing>
             </child>
             <child>
@@ -443,7 +397,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">24</property>
+                <property name="top_attach">13</property>
                 <property name="width">3</property>
                 <property name="height">2</property>
               </packing>
@@ -452,18 +406,6 @@
               <object class="GtkGrid">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkButton" id="colorToggle">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">eye</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
-                  </packing>
-                </child>
                 <child>
                   <object class="GtkButton" id="clearHighlightBtn">
                     <property name="label" translatable="yes">Clear Highlights</property>
@@ -474,6 +416,7 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
+                    <property name="width">3</property>
                   </packing>
                 </child>
                 <child>
@@ -486,7 +429,33 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
+                    <property name="width">3</property>
                   </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="colorToggle">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">eye</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">4</property>
+                    <property name="width">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
@@ -497,52 +466,177 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">26</property>
+                <property name="top_attach">15</property>
                 <property name="width">3</property>
                 <property name="height">4</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkStack" id="stack1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_bottom">80</property>
+                <property name="transition_type">slide-left-right</property>
+                <child>
+                  <object class="GtkFrame">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label_xalign">0</property>
+                    <child>
+                      <object class="GtkGrid">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkGrid">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkButton" id="findPath">
+                                <property name="label" translatable="yes">Find Path</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="margin_left">25</property>
+                                <property name="margin_top">18</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="FirstIntersection">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="margin_left">25</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">1</property>
+                                <property name="width">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="SecondIntersection">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="margin_left">25</property>
+                                <property name="margin_bottom">18</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">2</property>
+                                <property name="width">3</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">3</property>
+                            <property name="height">3</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label_item">
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page0</property>
+                    <property name="title" translatable="yes">find path</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFrame">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label_xalign">0</property>
+                    <property name="label_yalign">0</property>
+                    <child>
+                      <object class="GtkGrid">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkButton" id="Find">
+                            <property name="label">gtk-find</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Enter street names below</property>
+                            <property name="margin_left">25</property>
+                            <property name="margin_right">25</property>
+                            <property name="margin_top">18</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="FirstStreet">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="margin_left">25</property>
+                            <property name="margin_right">25</property>
+                            <property name="placeholder_text" translatable="yes">First street</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="SecondStreet">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="margin_left">25</property>
+                            <property name="margin_right">25</property>
+                            <property name="margin_bottom">18</property>
+                            <property name="placeholder_text" translatable="yes">Second street</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">2</property>
+                            <property name="width">3</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label_item">
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page1</property>
+                    <property name="title" translatable="yes">Find intersections</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">10</property>
+                <property name="width">3</property>
+                <property name="height">3</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
+              <object class="GtkStackSwitcher" id="switcher1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stack">stack1</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">9</property>
+                <property name="width">3</property>
+              </packing>
             </child>
             <child>
               <placeholder/>
@@ -696,43 +790,6 @@
             <property name="left_attach">1</property>
             <property name="top_attach">0</property>
             <property name="height">14</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkGrid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
           </packing>
         </child>
         <child>
