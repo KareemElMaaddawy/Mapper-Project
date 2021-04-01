@@ -2,6 +2,9 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkTextBuffer" id="HelpTextBuffer">
+    <property name="text" translatable="yes">yesssssss</property>
+  </object>
   <object class="GtkListStore" id="MapListStore">
     <columns>
       <!-- column-name ListOfAvailableMapNames -->
@@ -66,6 +69,16 @@
         <col id="0" translatable="yes">Toronto, Canada</col>
       </row>
     </data>
+  </object>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment2">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
   <object class="GtkImage" id="artPOI">
     <property name="visible">True</property>
@@ -132,7 +145,7 @@
               </object>
               <packing>
                 <property name="left_attach">2</property>
-                <property name="top_attach">3</property>
+                <property name="top_attach">4</property>
               </packing>
             </child>
             <child>
@@ -150,7 +163,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">2</property>
+                <property name="top_attach">3</property>
               </packing>
             </child>
             <child>
@@ -167,7 +180,7 @@
               </object>
               <packing>
                 <property name="left_attach">3</property>
-                <property name="top_attach">2</property>
+                <property name="top_attach">3</property>
               </packing>
             </child>
             <child>
@@ -185,7 +198,7 @@
               </object>
               <packing>
                 <property name="left_attach">2</property>
-                <property name="top_attach">1</property>
+                <property name="top_attach">2</property>
               </packing>
             </child>
             <child>
@@ -199,7 +212,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">4</property>
+                <property name="top_attach">5</property>
                 <property name="width">3</property>
               </packing>
             </child>
@@ -213,7 +226,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">5</property>
+                <property name="top_attach">6</property>
                 <property name="width">3</property>
               </packing>
             </child>
@@ -226,7 +239,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">6</property>
+                <property name="top_attach">7</property>
                 <property name="width">3</property>
               </packing>
             </child>
@@ -241,7 +254,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">19</property>
+                <property name="top_attach">20</property>
                 <property name="width">3</property>
               </packing>
             </child>
@@ -255,7 +268,7 @@
               </object>
               <packing>
                 <property name="left_attach">3</property>
-                <property name="top_attach">0</property>
+                <property name="top_attach">1</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -277,7 +290,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
+                <property name="top_attach">1</property>
                 <property name="width">3</property>
               </packing>
             </child>
@@ -392,7 +405,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">13</property>
+                <property name="top_attach">14</property>
                 <property name="width">3</property>
                 <property name="height">2</property>
               </packing>
@@ -547,7 +560,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">10</property>
+                <property name="top_attach">11</property>
                 <property name="width">3</property>
                 <property name="height">3</property>
               </packing>
@@ -560,7 +573,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">9</property>
+                <property name="top_attach">10</property>
                 <property name="width">3</property>
               </packing>
             </child>
@@ -586,7 +599,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">16</property>
+                <property name="top_attach">17</property>
                 <property name="width">3</property>
               </packing>
             </child>
@@ -599,9 +612,175 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">17</property>
+                <property name="top_attach">18</property>
                 <property name="width">3</property>
               </packing>
+            </child>
+            <child>
+              <object class="GtkMenuBar">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkMenuItem">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_File</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-new</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-open</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-save</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-save-as</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSeparatorMenuItem">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-quit</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_Edit</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-cut</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-copy</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-paste</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem">
+                            <property name="label">gtk-delete</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_View</property>
+                    <property name="use_underline">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_Help</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImageMenuItem" id="UserGuide">
+                            <property name="label">gtk-about</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">5</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <placeholder/>
@@ -778,6 +957,68 @@
             <property name="top_attach">0</property>
             <property name="height">14</property>
           </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkApplicationWindow" id="UserWindowId">
+    <property name="can_focus">False</property>
+    <property name="deletable">False</property>
+    <property name="attached_to">UserGuide</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkGrid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkTextView" id="HelpText">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hadjustment">adjustment1</property>
+            <property name="vadjustment">adjustment2</property>
+            <property name="editable">False</property>
+            <property name="cursor_visible">False</property>
+            <property name="buffer">HelpTextBuffer</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="hideUserGuide">
+            <property name="label" translatable="yes">Close</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>
