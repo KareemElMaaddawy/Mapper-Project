@@ -31,7 +31,7 @@ double mag(double x, double y);
 
 double calculateCost(const double turnPenalty,const IntersectionIdx soruceIntersection,const IntersectionIdx destinationIntersection);
 
-double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection);
+double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection, const double speed);
 
 double calcTurnPenalty(std::vector<StreetSegmentIdx> path);
 

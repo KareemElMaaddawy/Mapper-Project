@@ -1,9 +1,5 @@
 #include "pathFinding.h"
 
-double dot(double oneX, double oneY, double twoX, double twoY) {
-    return oneX * twoX + oneY * twoY;
-}
-
 double mag(double x, double y) {
     return std::sqrt(x * x + y * y);
 }
@@ -40,6 +36,7 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
             source = sourceFrom;
             dest = destFrom;
         } else {
+            std::cout << "messed up" << std::endl;
             std::cerr << "no overlap" << std::endl;
             return "error";
         }
@@ -49,10 +46,9 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
         double vectorTwoX = x_from_lon(dest.longitude()) - x_from_lon(intersectionPosition.longitude());
         double vectorTwoY = y_from_lat(dest.latitude()) - y_from_lat(intersectionPosition.latitude());
 
-        double angle = acos(dot(vectorOneX, vectorOneY, vectorTwoX, vectorTwoY) /
-                            (mag(vectorOneX, vectorOneY) * mag(vectorTwoX, vectorTwoY)));
+        double cross  = vectorOneX * vectorTwoY - vectorOneY * vectorTwoX;
 
-        if (angle < 180) {
+        if (cross > 0) {
             return "left";
         } else {
             return "right";
@@ -115,12 +111,12 @@ double calculateCost(const double turnPenalty, const StreetSegmentIdx sourceSegm
     cost += computePathTravelTime(path, turnPenalty);
     return cost;
 }
-//manhattan distance
-double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection) {
+//manhattan distance/segment speed
+double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection, const double speed) {
     std::pair<double, double> currentPosition = {x_from_lon(getIntersectionPosition(currentIntersection).longitude()), y_from_lat(getIntersectionPosition(currentIntersection).latitude())};
     std::pair<double, double> destPosition = {x_from_lon(getIntersectionPosition(destinationIntersection).longitude()), y_from_lat(getIntersectionPosition(destinationIntersection).latitude())};
 
-    return abs(currentPosition.first - destPosition.first) + abs(currentPosition.second - destPosition.second);
+    return (abs(currentPosition.first - destPosition.first) + abs(currentPosition.second - destPosition.second))/(speed*2);
 }
 
 std::vector<StreetSegmentIdx> reconstructPath(std::unordered_map<IntersectionIdx, IntersectionIdx> pathOrigin,
@@ -164,7 +160,8 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
                     costSoFar[current.intersection] + calculateCost(turn_penalty, findSegmentBetweenIntersections(pathOrigin[current.intersection], current.intersection), findSegmentBetweenIntersections(current.intersection, neighbors[i]));
             if (costSoFar.find(neighbors[i]) == costSoFar.end() || newCost < costSoFar[neighbors[i]]) {
                 costSoFar[neighbors[i]] = newCost;
-                double priority = newCost + calculateHeuristic(neighbors[i], intersect_id_destination);
+                StreetSegmentInfo heuristicInfo = getStreetSegmentInfo(findSegmentBetweenIntersections(current.intersection, neighbors[i]));
+                double priority = newCost + calculateHeuristic(neighbors[i], intersect_id_destination, heuristicInfo.speedLimit);
                 queueOfIntersections.push(prioElem{neighbors[i], priority});
                 pathOrigin[neighbors[i]] = current.intersection;
             }

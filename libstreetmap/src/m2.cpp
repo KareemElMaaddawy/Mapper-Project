@@ -7,7 +7,8 @@
 #include "pathFinding.h"
 #include "buttons.h"
 #include "string"
-
+#include <math.h>
+#include <cmath>
 //function declarations
 std::string openMap = "Toronto, Canada"; //holds name of map open, default is toronto
 
@@ -21,7 +22,9 @@ double lat_from_y(double lat);
 double xFromLonPoi(double lon);
 
 double yFromLatPoi(double lat);
-
+GtkTextBuffer *findPathHelpBuffer = nullptr;
+GtkTextBuffer *poiFilterHelpBuffer = nullptr;
+GtkTextView *helpText = nullptr;
 GtkEntry* firstStreetEntry = nullptr;
 GtkEntry* secondStreetEntry = nullptr;
 
@@ -40,6 +43,9 @@ void findButton(GtkWidget *widget, ezgl::application *application);
 void findPathButton(GtkWidget *widget, ezgl::application *application);
 void clearHighlightButton(GtkEntry *,ezgl::application *application);
 void helpMenuItem(GtkWidget*, ezgl::application *application);
+void poiFilterHelp(GtkWidget*, ezgl::application *application);
+void FindPathHelp(GtkWidget*, ezgl::application *application);
+
 void showPathButton(GtkEntry *,ezgl::application *application);
 void hideUserManualButton(GtkEntry *,ezgl::application *application);
 void loadFeatures();
@@ -531,7 +537,9 @@ void initial_setup(ezgl::application *application, bool){
     secondStreetEntry = (GtkEntry*)(application -> get_object("SecondStreet"));
     FirstIntersectionEntry = (GtkEntry*)(application -> get_object("FirstIntersection"));
     secondIntersectionEntry = (GtkEntry*)(application -> get_object("SecondIntersection"));    
-  
+    helpText = (GtkTextView *)(application -> get_object("HelpText"));
+    poiFilterHelpBuffer = (GtkTextBuffer *)(application -> get_object("poiFilterHelpBuffer"));
+    findPathHelpBuffer = (GtkTextBuffer *)(application -> get_object("findPathHelpBuffer"));
     userGuideWindow = (GtkWidget*)(application -> get_object("UserWindowId"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
     g_signal_connect(//connecting map select button to callback function
@@ -554,16 +562,31 @@ void initial_setup(ezgl::application *application, bool){
     g_signal_connect(application -> get_object("UserGuide"), "activate", G_CALLBACK(helpMenuItem), application);
     g_signal_connect(application -> get_object("hideUserGuide"), "clicked", G_CALLBACK(hideUserManualButton), application);
     
+    g_signal_connect(application -> get_object("PoiFilterHelp"), "clicked", G_CALLBACK(poiFilterHelp), application);
+    g_signal_connect(application -> get_object("FindPathHelp"), "clicked", G_CALLBACK(FindPathHelp), application);
+    
 
     
     loadFilterButtons(application);
 }
 
+//function that sets the text to the user guide for poi filter
+void poiFilterHelp(GtkWidget*, ezgl::application *application){
+    gtk_text_view_set_buffer (helpText, poiFilterHelpBuffer);
+}
+
+void FindPathHelp(GtkWidget*, ezgl::application *application){
+    gtk_text_view_set_buffer (helpText, findPathHelpBuffer);
+}
 
 void showPathButton(GtkEntry *,ezgl::application *application){
     showPath = !showPath;
     application -> refresh_drawing();
 }
+
+
+
+//////////////////////////////
 
 void clearHighlightButton(GtkEntry *,ezgl::application *application){
     for(int i = 0; i < intersections.size(); i++){
@@ -582,6 +605,7 @@ void clearHighlightButton(GtkEntry *,ezgl::application *application){
    // std::cout << "button pressed \n";
     application->refresh_drawing();
 }
+
 void colorBlindToggle(GtkEntry *,ezgl::application *application){
     colorBlind = !colorBlind;
     application->refresh_drawing();
@@ -853,9 +877,15 @@ void drawStreetLabels(ezgl:: renderer *g){
 }
 
 void drawPath(ezgl:: renderer *g){
+<<<<<<< HEAD
     if(showPath) //works when button show Path button is clicked
     {
    //directions(pathSegmentIDs);
+=======
+    if(showPath){        
+
+    directions(pathSegmentIDs);
+>>>>>>> ffe7494dedeb8beb08f1ee2c4555eb9f2cb57499
     if(pathSegmentIDs.size() == 0){
         std::cout << "Path does not exist" << std::endl;
     } else {
@@ -994,12 +1024,74 @@ void directions(std::vector<int> path){
         int secondSegStreetID = getStreetSegmentInfo (secondSegID).streetID; // fetch streetID of second seg
         std::string firstSegName = getStreetName(firstSegStreetID);
         std::string secondSegName = getStreetName(secondSegStreetID);
+<<<<<<< HEAD
         if(calculateDirection(firstSegID, secondSegID) == "straight"){
             std::cout << "Straight on " << firstSegName << std::endl;
         }else if(calculateDirection(firstSegID, secondSegID) == "left"){
             std::cout << "Head left onto " << secondSegName << std::endl;        
+=======
+        if(firstSegName == secondSegName){
+            std::cout << "Continue on " << firstSegName << std::endl;
+>>>>>>> ffe7494dedeb8beb08f1ee2c4555eb9f2cb57499
         }else if(calculateDirection(firstSegID, secondSegID) == "right"){
+            std::cout << "Head left onto " << secondSegName << std::endl;        
+        }else if(calculateDirection(firstSegID, secondSegID) == "left"){
             std:: cout << "Head right onto " << secondSegName << std::endl;
         }
     }
+}
+
+
+void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSegments, ezgl:: renderer *g){
+    int numSegmentsInSection = streetSectionSegments.size();
+    LatLon coordsOfmiddleFrom;
+    LatLon coordsOfmiddleTo;
+    StreetSegmentIdx middleSegmentOfSectionIdx = streetSectionSegments[numSegmentsInSection/2];
+    StreetSegmentInfo middleSegmentInfo = getStreetSegmentInfo(middleSegmentOfSectionIdx);
+    std::string streetName = getStreetName(middleSegmentInfo.streetID);
+    if (middleSegmentInfo.numCurvePoints <= 0){
+        
+        coordsOfmiddleFrom = getIntersectionPosition(middleSegmentInfo.from);
+        coordsOfmiddleTo = getIntersectionPosition(middleSegmentInfo.to);
+        
+        
+        
+    }else{
+        int numberOfCurvePoints = middleSegmentInfo.numCurvePoints;
+        int middleCurvePoint = numberOfCurvePoints/2;
+        coordsOfmiddleFrom = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middleCurvePoint);
+        
+        int middlePlusPoint = numberOfCurvePoints + 1;
+        coordsOfmiddleTo = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middlePlusPoint);
+        
+    }
+    double fromX = x_from_lon(coordsOfmiddleFrom.longitude());
+    double fromY = y_from_lat(coordsOfmiddleFrom.latitude());
+    
+    double toX = x_from_lon(coordsOfmiddleTo.longitude());
+    double toY = y_from_lat(coordsOfmiddleTo.latitude());
+    
+    double deltaX = toX - fromX;
+    double deltaY = toY - fromY;
+    
+    double midPointX = (toX + fromX)/2;
+    double midPointY = (toY + fromY)/2;
+    
+    ezgl::point2d center(midPointX,midPointY);
+    
+    double theta = atan(deltaY/deltaX);
+    theta = M_1_PI * 180; //convert to degrees
+    
+    if((theta < -90) && (theta > -270)){
+        theta = theta + 180;
+    }else if((theta > 90) && (theta < 270)){
+        theta = -180 + theta;
+    }
+    
+    
+    findDistanceBetweenTwoPoints(std::make_pair(coordsOfmiddleFrom, coordsOfmiddleTo));
+    
+    g->set_text_rotation(theta);
+    g->draw_text(center, streetName, 100, 100);
+    
 }
