@@ -44,8 +44,8 @@ void findPathButton(GtkWidget *widget, ezgl::application *application);
 void clearHighlightButton(GtkEntry *,ezgl::application *application);
 void helpMenuItem(GtkWidget*, ezgl::application *application);
 void poiFilterHelp(GtkWidget*, ezgl::application *application);
+void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSegments, ezgl:: renderer *g);
 void FindPathHelp(GtkWidget*, ezgl::application *application);
-
 void showPathButton(GtkEntry *,ezgl::application *application);
 void hideUserManualButton(GtkEntry *,ezgl::application *application);
 void loadFeatures();
@@ -64,7 +64,7 @@ std::pair<double, double> findPointOfReference(double m, double distance, double
 //std::vector<int> tempID;
 //std::vector<LatLon> curvePointVector;
 //std::vector<std::pair<double,double>> xyPointsOfCurves;
-std::vector<int> pathSegmentIDs;
+//std::vector<int> pathSegmentIDs;
 
 double highlightCount = 0;
 double mouseClick = 0;
@@ -149,7 +149,7 @@ void act_on_mouse_click(ezgl::application *app,
     if((highlightCount <=2) & (mouseClick ==2)){
         secondID = id;  // grab ID of second intersection clicked
         intersections[id].highlight = true; // highlight the intersection
-        pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15); // initializing pathSegmentIDs 
+       // pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15); // initializing pathSegmentIDs 
     }  
     app->refresh_drawing();
 }
@@ -707,7 +707,7 @@ void findPathButton(GtkWidget *, ezgl::application *application){
         IntersectionIdx secondIntersection = findFunction(thirdStreet, fourthStreet, toIntersection);
         
         //find the path between the intersections
-        pathSegmentIDs = findPathBetweenIntersections(firstIntersection,secondIntersection,15);
+        std::vector<int> pathSegmentIDs = findPathBetweenIntersections(firstIntersection,secondIntersection,15);
         //highlight the path between the intersections
         
         showPath = true;
@@ -877,15 +877,9 @@ void drawStreetLabels(ezgl:: renderer *g){
 }
 
 void drawPath(ezgl:: renderer *g){
-<<<<<<< HEAD
+    std::vector<int> pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
     if(showPath) //works when button show Path button is clicked
     {
-   //directions(pathSegmentIDs);
-=======
-    if(showPath){        
-
-    directions(pathSegmentIDs);
->>>>>>> ffe7494dedeb8beb08f1ee2c4555eb9f2cb57499
     if(pathSegmentIDs.size() == 0){
         std::cout << "Path does not exist" << std::endl;
     } else {
@@ -946,8 +940,10 @@ void drawPath(ezgl:: renderer *g){
             g-> set_line_width(5);
             g-> draw_line({lastXs,lastYs} , end);
         }
-        std::cout << "Curve points: " << curvePoints << std::endl;
+        
+        //std::cout << "Curve points: " << curvePoints << std::endl;
      }
+    directions(pathSegmentIDs);
    }
  }
 }
@@ -1017,28 +1013,61 @@ void drawSegments(ezgl::renderer *g){
 }
 
 void directions(std::vector<int> path){
-    for(int i = 0; i < path.size(); i++){
+     int lastSegID = path.back();
+     int lastSegStreetID = getStreetSegmentInfo(lastSegID).streetID;
+     std::string lastSegName = getStreetName(lastSegStreetID);
+     int beforeLastSegID = path.back()-1;
+     int beforeLastSegStreetID = getStreetSegmentInfo(beforeLastSegID).streetID;
+     std::string beforeLastSegName = getStreetName(beforeLastSegStreetID);
+     if(path.size() == 1){
+         int ID = path[0];
+         int streetID = getStreetSegmentInfo(ID).streetID;
+         std::string segName = getStreetName(streetID);
+         std::cout << "straight on " << segName << std::endl;
+     } else{
+         // for the first segment only 
+         int firstSegid = path[0];
+         int firstSegStreetid = getStreetSegmentInfo(firstSegid).streetID;
+         std:: string segidName = getStreetName(firstSegStreetid);
+         std::cout << "Straight on " << segidName << std::endl;
+         std::cout << "    " << std::endl;
+    for(int i = 0; i < path.size()-1; i++){
         int firstSegID = path[i]; // fetch segment ID of current road
         int secondSegID = path[i+1]; //fetch segment ID of next segment about to go to
         int firstSegStreetID = getStreetSegmentInfo(firstSegID).streetID; //. fetch streetID of first seg
-        int secondSegStreetID = getStreetSegmentInfo (secondSegID).streetID; // fetch streetID of second seg
+        int secondSegStreetID = getStreetSegmentInfo(secondSegID).streetID; // fetch streetID of second seg
         std::string firstSegName = getStreetName(firstSegStreetID);
         std::string secondSegName = getStreetName(secondSegStreetID);
-<<<<<<< HEAD
         if(calculateDirection(firstSegID, secondSegID) == "straight"){
             std::cout << "Straight on " << firstSegName << std::endl;
+            std::cout<< "             "<< std::endl;
         }else if(calculateDirection(firstSegID, secondSegID) == "left"){
-            std::cout << "Head left onto " << secondSegName << std::endl;        
-=======
-        if(firstSegName == secondSegName){
-            std::cout << "Continue on " << firstSegName << std::endl;
->>>>>>> ffe7494dedeb8beb08f1ee2c4555eb9f2cb57499
+            std::cout << "Head left onto " << secondSegName << std::endl; 
+                      std::cout<< "             "<< std::endl;  
         }else if(calculateDirection(firstSegID, secondSegID) == "right"){
-            std::cout << "Head left onto " << secondSegName << std::endl;        
-        }else if(calculateDirection(firstSegID, secondSegID) == "left"){
             std:: cout << "Head right onto " << secondSegName << std::endl;
+            std::cout<< "             "<< std::endl;
         }
+        
+        /*int fromID = getStreetSegmentInfo(path[i]).from;
+        int toID = getStreetSegmentInfo(path[i]).to;
+        
+        std::cout << fromID << std::endl;
+        std::cout << toID << std::endl;
+        std::cout << "     " << std::endl;*/
     }
+     /*if(calculateDirection(beforeLastSegID,lastSegID) == "straight"){
+         std::cout << "Straight on " << beforeLastSegName << std::endl;
+         std::cout<< "             "<< std::endl;
+     }
+      else if(calculateDirection(beforeLastSegID,lastSegID) == "right"){
+         std::cout << "Head right on " << lastSegName << std::endl;
+         std::cout<< "             "<< std::endl;
+     }else if(calculateDirection(beforeLastSegID,lastSegID) == "left"){
+         std::cout << "Head left on " << lastSegName << std::endl;
+         std::cout<< "             "<< std::endl;
+     }*/
+ }
 }
 
 
