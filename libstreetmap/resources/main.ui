@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkTextBuffer" id="HelpTextBuffer">
-    <property name="text" translatable="yes">yesssssss</property>
+    <property name="text" translatable="yes">Please Choose what help you would like from the buttons on the right.</property>
   </object>
   <object class="GtkListStore" id="MapListStore">
     <columns>
@@ -106,7 +106,12 @@
     <property name="pixbuf">poiFilterImages/output-onlinepngtools (1).png</property>
   </object>
   <object class="GtkTextBuffer" id="findPathHelpBuffer">
-    <property name="text" translatable="yes">write description of the find path functionality hevmvrmeimmmw fiwomvnrjew  mfkewpmpqqwvqpv fkoepwqm fmekowpmqvnnr mfowpqnvnejwq feowqpqnjnfe enwofowpq nfejownfoepwq mfejwpnfqpnf mfqwpnfjewq feopwqn fnejwqnf fmepwqnfjeiq fopwqnfjeq fewqopnfjq nfejoqp fewoqnfq nfeowqpnfjew fmeowqnpfqewj feopwqnfq nfejqwpnf jfpenqwjnfqwp fnfoewpnqfpenqw fejwpqf jewpfenwqfne fewifnejwqfn ewjqfnepowqnf ewqjpfnejp fewqp feopwqnfjewpqjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj nfejowqnnnnnnnnnnnnnnnnnn nfpwnqn nejpnqpnf njpeqwnjf fioqmfeqw opfewqnfeopwnqf fmoepwqnfjpewq foewnqfjeoqn fnejwqnfjoepnwq fepwnqfjopewnq fjeopwqnfjeopq feqjofpnejwoq fjepwqnfjeopwq f ejpqnfjoewq fjepw fjepqf ejpwqfnp ewqfp pe wfje fj ewqijpf e qwf ejiq fepq</property>
+    <property name="text" translatable="yes">Path can be chosen in one of two ways:
+
+1) - Please click on the two intersections desired to go between.
+    - Proceed to press on show Path and the path will be highlighted in purple.
+    - Follow the green circles, once you have reached the red circle, you have then reached your destination.
+</property>
   </object>
   <object class="GtkImage" id="foodPOI">
     <property name="visible">True</property>
@@ -117,6 +122,16 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/money.png</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/intersectionS.png</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/PathS.png</property>
   </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
@@ -440,12 +455,13 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkButton" id="findPath">
-                                <property name="label" translatable="yes">Find Path</property>
+                                <property name="label" translatable="yes">Show Path</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="margin_left">25</property>
                                 <property name="margin_top">18</property>
+                                <property name="image">image3</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -458,7 +474,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="margin_left">25</property>
-                                <property name="placeholder_text" translatable="yes">First Intersection</property>
+                                <property name="placeholder_text" translatable="yes">Starting Point</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -472,7 +488,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="margin_left">25</property>
                                 <property name="margin_bottom">18</property>
-                                <property name="placeholder_text" translatable="yes">Second Intersection</property>
+                                <property name="placeholder_text" translatable="yes">End Point</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -511,7 +527,7 @@
                         <property name="can_focus">False</property>
                         <child>
                           <object class="GtkButton" id="Find">
-                            <property name="label">Find Intersection</property>
+                            <property name="label">Find intersections</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -519,6 +535,7 @@
                             <property name="margin_left">25</property>
                             <property name="margin_right">25</property>
                             <property name="margin_top">18</property>
+                            <property name="image">image2</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
