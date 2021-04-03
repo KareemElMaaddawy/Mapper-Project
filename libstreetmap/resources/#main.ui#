@@ -2,7 +2,6 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkEntryCompletion" id="FirstStreetCompletion"/>
   <object class="GtkTextBuffer" id="HelpTextBuffer">
     <property name="text" translatable="yes">yesssssss</property>
   </object>
@@ -534,7 +533,6 @@
                             <property name="margin_left">25</property>
                             <property name="margin_right">25</property>
                             <property name="placeholder_text" translatable="yes">First street</property>
-                            <property name="completion">FirstStreetCompletion</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
