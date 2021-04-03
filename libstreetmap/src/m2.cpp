@@ -300,17 +300,17 @@ void drawMainCanvas(ezgl::renderer *g) {
     drawPath(g);
         //Sheppard Avenue West & Bangor Road
    //Harlandale Avenue & Bangor Road
-    if(test){
-        int id1 = -1;
-        int id2 = -1;
-        std::cout << "enter int ids: "<<std::endl;
-        std::cin >> id1 >> id2;
-        if ((id1 != -1)&&(id2 != -1)){
-            std::vector<StreetSegmentIdx> section = findPathBetweenIntersections(id1, id2, 15);
-            writeInMiddleOfStreetSection(section, g);
-        }
-        test = false;
-    }
+//    if(test){
+//        int id1 = -1;
+//        int id2 = -1;
+//        std::cout << "enter int ids: "<<std::endl;
+//        std::cin >> id1 >> id2;
+//        if ((id1 != -1)&&(id2 != -1)){
+//            std::vector<StreetSegmentIdx> section = findPathBetweenIntersections(id1, id2, 15);
+//            writeInMiddleOfStreetSection(section, g);
+//        }
+//        test = false;
+//    }
     
 }
 
