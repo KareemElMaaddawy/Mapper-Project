@@ -123,6 +123,16 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/money.png</property>
   </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/intersectionS.png</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/PathS.png</property>
+  </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -445,12 +455,13 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkButton" id="findPath">
-                                <property name="label" translatable="yes">Find Path</property>
+                                <property name="label" translatable="yes">Show Path</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="margin_left">25</property>
                                 <property name="margin_top">18</property>
+                                <property name="image">image3</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -463,7 +474,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="margin_left">25</property>
-                                <property name="placeholder_text" translatable="yes">First Intersection</property>
+                                <property name="placeholder_text" translatable="yes">Starting Point</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -477,7 +488,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="margin_left">25</property>
                                 <property name="margin_bottom">18</property>
-                                <property name="placeholder_text" translatable="yes">Second Intersection</property>
+                                <property name="placeholder_text" translatable="yes">End Point</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -516,7 +527,7 @@
                         <property name="can_focus">False</property>
                         <child>
                           <object class="GtkButton" id="Find">
-                            <property name="label">Find Intersection</property>
+                            <property name="label">Find intersections</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -524,6 +535,7 @@
                             <property name="margin_left">25</property>
                             <property name="margin_right">25</property>
                             <property name="margin_top">18</property>
+                            <property name="image">image2</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
