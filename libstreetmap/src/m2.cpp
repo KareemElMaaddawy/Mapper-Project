@@ -17,6 +17,8 @@ void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
 double lon_from_x(double x);
 
+bool test = false;
+
 double lat_from_y(double lat);
 
 double xFromLonPoi(double lon);
@@ -145,10 +147,13 @@ void act_on_mouse_click(ezgl::application *app,
     if((highlightCount <=2)& (mouseClick == 1)){
         firstID = id;  //grab ID of first intersection clicked
     intersections[id].highlight = true; // highlight the intersection
+    
+    std::cout << getIntersectionName(id) <<std::endl;//<< ": " << id << std::endl;
     }
     if((highlightCount <=2) & (mouseClick ==2)){
         secondID = id;  // grab ID of second intersection clicked
         intersections[id].highlight = true; // highlight the intersection
+        std::cout << getIntersectionName(id)<<std::endl;// << ": " << id << std::endl;
        // pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15); // initializing pathSegmentIDs 
     }  
     app->refresh_drawing();
@@ -205,8 +210,8 @@ void drawMainCanvas(ezgl::renderer *g) {
 
     drawFeatures(g);
     drawPoi(g);
-    
-
+    int draw = 0;
+    draw++;
     for (int i = 0; i < intersections.size(); ++i) {
         float x = x_from_lon(intersections[i].position.longitude());
         float y = y_from_lat(intersections[i].position.latitude());
@@ -290,6 +295,22 @@ void drawMainCanvas(ezgl::renderer *g) {
     drawStreetLabels(g);
     drawPoiLabel(g);
     drawPath(g);
+    
+    ////////////////test for writeInMiddleOfStreetSection
+//        //Sheppard Avenue West & Bangor Road
+//   //Harlandale Avenue & Bangor Road
+//    if(test){
+//        int id1 = -1;
+//        int id2 = -1;
+//        std::cout << "enter int ids: "<<std::endl;
+//        std::cin >> id1 >> id2;
+//        if ((id1 != -1)&&(id2 != -1)){
+//            std::vector<StreetSegmentIdx> section = findPathBetweenIntersections(id1, id2, 15);
+//            writeInMiddleOfStreetSection(section, g);
+//        }
+//        test = false;
+//    }
+    
 }
 
 void loadFeatures(){//loads features and their associated properties
@@ -580,8 +601,10 @@ void FindPathHelp(GtkWidget*, ezgl::application *application){
 }
 
 void showPathButton(GtkEntry *,ezgl::application *application){
+    
     showPath = !showPath;
     application -> refresh_drawing();
+    test = true;
 }
 
 
@@ -1088,10 +1111,14 @@ void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSeg
     }else{
         int numberOfCurvePoints = middleSegmentInfo.numCurvePoints;
         int middleCurvePoint = numberOfCurvePoints/2;
-        coordsOfmiddleFrom = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middleCurvePoint);
-        
-        int middlePlusPoint = numberOfCurvePoints + 1;
-        coordsOfmiddleTo = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middlePlusPoint);
+         if(numberOfCurvePoints > 1){  
+            coordsOfmiddleFrom = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middleCurvePoint);
+            int middlePlusPoint = numberOfCurvePoints + 1;
+            coordsOfmiddleTo = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middlePlusPoint);
+        }else{
+           coordsOfmiddleFrom = getIntersectionPosition(middleSegmentInfo.from);
+        coordsOfmiddleTo = getIntersectionPosition(middleSegmentInfo.to);
+        }
         
     }
     double fromX = x_from_lon(coordsOfmiddleFrom.longitude());
