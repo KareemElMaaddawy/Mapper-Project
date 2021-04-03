@@ -149,12 +149,12 @@ void act_on_mouse_click(ezgl::application *app,
         firstID = id;  //grab ID of first intersection clicked
     intersections[id].highlight = true; // highlight the intersection
     
-    std::cout << getIntersectionName(id) <<std::endl;//<< ": " << id << std::endl;
+    std::cout << getIntersectionName(id) << ": " << id << std::endl;
     }
     if((highlightCount <=2) & (mouseClick ==2)){
         secondID = id;  // grab ID of second intersection clicked
         intersections[id].highlight = true; // highlight the intersection
-        std::cout << getIntersectionName(id)<<std::endl;// << ": " << id << std::endl;
+        std::cout << getIntersectionName(id) << ": " << id << std::endl;
        // pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15); // initializing pathSegmentIDs 
     }  
     app->refresh_drawing();
@@ -296,21 +296,19 @@ void drawMainCanvas(ezgl::renderer *g) {
     drawStreetLabels(g);
     drawPoiLabel(g);
     drawPath(g);
-    
-    ////////////////test for writeInMiddleOfStreetSection
-//        //Sheppard Avenue West & Bangor Road
-//   //Harlandale Avenue & Bangor Road
-//    if(test){
-//        int id1 = -1;
-//        int id2 = -1;
-//        std::cout << "enter int ids: "<<std::endl;
-//        std::cin >> id1 >> id2;
-//        if ((id1 != -1)&&(id2 != -1)){
-//            std::vector<StreetSegmentIdx> section = findPathBetweenIntersections(id1, id2, 15);
-//            writeInMiddleOfStreetSection(section, g);
-//        }
-//        test = false;
-//    }
+        //Sheppard Avenue West & Bangor Road
+   //Harlandale Avenue & Bangor Road
+    if(test){
+        int id1 = -1;
+        int id2 = -1;
+        std::cout << "enter int ids: "<<std::endl;
+        std::cin >> id1 >> id2;
+        if ((id1 != -1)&&(id2 != -1)){
+            std::vector<StreetSegmentIdx> section = findPathBetweenIntersections(id1, id2, 15);
+            writeInMiddleOfStreetSection(section, g);
+        }
+        test = false;
+    }
     
 }
 
@@ -1149,7 +1147,7 @@ void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSeg
         int middleCurvePoint = numberOfCurvePoints/2;
          if(numberOfCurvePoints > 1){  
             coordsOfmiddleFrom = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middleCurvePoint);
-            int middlePlusPoint = numberOfCurvePoints + 1;
+            int middlePlusPoint = middleCurvePoint + 1;
             coordsOfmiddleTo = getStreetSegmentCurvePoint(middleSegmentOfSectionIdx, middlePlusPoint);
         }else{
            coordsOfmiddleFrom = getIntersectionPosition(middleSegmentInfo.from);
@@ -1172,17 +1170,18 @@ void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSeg
     ezgl::point2d center(midPointX,midPointY);
     
     double theta = atan(deltaY/deltaX);
-    theta = M_1_PI * 180; //convert to degrees
+    theta = theta/kDegreeToRadian; //convert to degrees
     
-    if((theta < -90) && (theta > -270)){
-        theta = theta + 180;
-    }else if((theta > 90) && (theta < 270)){
-        theta = -180 + theta;
-    }
+//    if((theta < -90) && (theta > -270)){
+//        theta = theta + 180;
+//    }else if((theta > 90) && (theta < 270)){
+//        theta = -180 + theta;
+//    }
     
     
     findDistanceBetweenTwoPoints(std::make_pair(coordsOfmiddleFrom, coordsOfmiddleTo));
-    
+    g->set_color(ezgl::BLACK);
+    g->set_line_width(500);
     g->set_text_rotation(theta);
     g->draw_text(center, streetName, 100, 100);
     
