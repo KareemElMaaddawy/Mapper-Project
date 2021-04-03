@@ -140,6 +140,7 @@ void act_on_mouse_click(ezgl::application *app,
                         double x, double y) {  
      highlightCount += 1;  // keep track of how many highlights so far
      mouseClick +=1; // keep track of how many mouse clicks so far
+     //std::cout << "coord: " << x << " " << y << std::endl;
 
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x)); // extracting position of mouse click
     int id = findClosestIntersection(pos);  // closest intersection related to that mouse click
@@ -918,13 +919,47 @@ void drawPath(ezgl:: renderer *g){
         double firstY = y_from_lat(fromPosition.latitude());  // grab y position
         double lastX = x_from_lon(toPosition.longitude()); // grab x position
         double lastY = y_from_lat(toPosition.latitude()); //grab y position
+//        std::pair<double,double>  startPair = {firstX, firstY};
+//        std::pair<double,double> endPair = {lastX,lastY};
+        double dX = firstX - lastX;
+        double dY = firstY - lastY;
+        double length1 = findStreetSegmentLength(segID);
+        double length2 = 50;
+        double cosVal = cos(0.1);
+        double sinVal= sin(0.1);
         
+        double x3 = lastX + (length2/length1)*((dX*cosVal) + (dY*sinVal));
+        double y3 = lastY + (length2/length1)*((dY*cosVal) - (dX*sinVal));
+        double x4 = lastX + (length2/length1)*((dX*cosVal) - (dY*sinVal));
+        double y4 = lastY + (length2/length1)*((dY*cosVal) + (dX*sinVal));
+        
+        ezgl::point2d point1(x3,y3);
+        ezgl::point2d point2(x4,y4);
+//        double Norm = sqrt(dX * dX + dY * dY);
+//        double uDx = dX/Norm;
+//        double uDy = dY/Norm;
+//        double aX = uDx * sqrt(3)/2 - uDy *0.5;
+//        double aY = uDx * 1/2 + uDy * sqrt(3)/2;
+//        double bX = uDx * sqrt(3)/2 + uDy * 0.5;
+//        double bY = - uDx * 0.5 + uDy * sqrt(3)/2;
+        
+//       double point1X = (firstX + 2 * aX);
+//       double point1Y = (firstY + 2 * aY);
+       
+ //      double point2X = (firstX + 2 * bX);
+  //     double point2Y = (firstY + 2 * bY);
+       
+       //ezgl::point2d point1(point1X, point1Y);
+       //ezgl::point2d point2(point2X, point2Y);
+       
         ezgl::point2d start(firstX,firstY); 
         ezgl::point2d end(lastX,lastY);
         if(curvePoints == 0){
             g->set_color(ezgl::PURPLE);
         g-> set_line_width(5);
         g->draw_line(start,end); // if no curve point just draw line from from point to to point
+        //g-> draw_line(point1, start);
+       // g-> draw_line(point2, start);
         }
         else if(curvePoints == 1){
             LatLon curvePointPosition = getStreetSegmentCurvePoint(segID,0);
@@ -1046,13 +1081,14 @@ void directions(std::vector<int> path){
          int ID = path[0];
          int streetID = getStreetSegmentInfo(ID).streetID;
          std::string segName = getStreetName(streetID);
-         std::cout << "straight on " << segName << std::endl;
+         std::cout << "straight on " << segName << "for " << findStreetSegmentLength(ID) << "m" << std::endl;
+         std::cout << "        " << std::endl;
      } else{
          // for the first segment only 
          int firstSegid = path[0];
          int firstSegStreetid = getStreetSegmentInfo(firstSegid).streetID;
          std:: string segidName = getStreetName(firstSegStreetid);
-         std::cout << "Straight on " << segidName << std::endl;
+         std::cout << "Straight on " << segidName << " for " << findStreetSegmentLength(firstSegid) << "m" << std::endl;
          std::cout << "    " << std::endl;
     for(int i = 0; i < path.size()-1; i++){
         int firstSegID = path[i]; // fetch segment ID of current road
@@ -1062,7 +1098,7 @@ void directions(std::vector<int> path){
         std::string firstSegName = getStreetName(firstSegStreetID);
         std::string secondSegName = getStreetName(secondSegStreetID);
         if(calculateDirection(firstSegID, secondSegID) == "straight"){
-            std::cout << "Straight on " << firstSegName << std::endl;
+            std::cout << "Straight on " << firstSegName << " for " << findStreetSegmentLength(firstSegID) <<"m" << std::endl;
             std::cout<< "             "<< std::endl;
         }else if(calculateDirection(firstSegID, secondSegID) == "left"){
             std::cout << "Head left onto " << secondSegName << std::endl; 
