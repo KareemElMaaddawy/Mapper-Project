@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkEntryCompletion" id="FirstStreetCompletion"/>
   <object class="GtkTextBuffer" id="HelpTextBuffer">
     <property name="text" translatable="yes">yesssssss</property>
   </object>
@@ -106,7 +107,7 @@
     <property name="pixbuf">poiFilterImages/output-onlinepngtools (1).png</property>
   </object>
   <object class="GtkTextBuffer" id="findPathHelpBuffer">
-    <property name="text" translatable="yes">write description of the find path functionality herenejnwcnqjicnjqnncjqnvjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj</property>
+    <property name="text" translatable="yes">write description of the find path functionality hevmvrmeimmmw fiwomvnrjew  mfkewpmpqqwvqpv fkoepwqm fmekowpmqvnnr mfowpqnvnejwq feowqpqnjnfe enwofowpq nfejownfoepwq mfejwpnfqpnf mfqwpnfjewq feopwqn fnejwqnf fmepwqnfjeiq fopwqnfjeq fewqopnfjq nfejoqp fewoqnfq nfeowqpnfjew fmeowqnpfqewj feopwqnfq nfejqwpnf jfpenqwjnfqwp fnfoewpnqfpenqw fejwpqf jewpfenwqfne fewifnejwqfn ewjqfnepowqnf ewqjpfnejp fewqp feopwqnfjewpqjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj nfejowqnnnnnnnnnnnnnnnnnn nfpwnqn nejpnqpnf njpeqwnjf fioqmfeqw opfewqnfeopwnqf fmoepwqnfjpewq foewnqfjeoqn fnejwqnfjoepnwq fepwnqfjopewnq fjeopwqnfjeopq feqjofpnejwoq fjepwqnfjeopwq f ejpqnfjoewq fjepw fjepqf ejpwqfnp ewqfp pe wfje fj ewqijpf e qwf ejiq fepq</property>
   </object>
   <object class="GtkImage" id="foodPOI">
     <property name="visible">True</property>
@@ -458,6 +459,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="margin_left">25</property>
+                                <property name="placeholder_text" translatable="yes">First Intersection</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -471,6 +473,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="margin_left">25</property>
                                 <property name="margin_bottom">18</property>
+                                <property name="placeholder_text" translatable="yes">Second Intersection</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -494,7 +497,7 @@
                   </object>
                   <packing>
                     <property name="name">page0</property>
-                    <property name="title" translatable="yes">find path</property>
+                    <property name="title" translatable="yes">Find Path</property>
                   </packing>
                 </child>
                 <child>
@@ -509,7 +512,7 @@
                         <property name="can_focus">False</property>
                         <child>
                           <object class="GtkButton" id="Find">
-                            <property name="label">gtk-find</property>
+                            <property name="label">Find Intersection</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -517,7 +520,6 @@
                             <property name="margin_left">25</property>
                             <property name="margin_right">25</property>
                             <property name="margin_top">18</property>
-                            <property name="use_stock">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -532,6 +534,7 @@
                             <property name="margin_left">25</property>
                             <property name="margin_right">25</property>
                             <property name="placeholder_text" translatable="yes">First street</property>
+                            <property name="completion">FirstStreetCompletion</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
@@ -562,7 +565,7 @@
                   </object>
                   <packing>
                     <property name="name">page1</property>
-                    <property name="title" translatable="yes">Find intersections</property>
+                    <property name="title" translatable="yes">Find Intersections</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -645,7 +648,6 @@
                             <property name="label">gtk-about</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="right_justified">True</property>
                             <property name="use_underline">True</property>
                             <property name="use_stock">True</property>
                           </object>
@@ -996,6 +998,7 @@
       </object>
     </child>
   </object>
+  <object class="GtkListStore" id="liststore1"/>
   <object class="GtkTextBuffer" id="poiFilterHelpBuffer">
     <property name="text" translatable="yes">write description of poi filters here</property>
   </object>

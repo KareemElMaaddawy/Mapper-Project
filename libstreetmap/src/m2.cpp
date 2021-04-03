@@ -27,12 +27,12 @@ GtkTextBuffer *poiFilterHelpBuffer = nullptr;
 GtkTextView *helpText = nullptr;
 GtkEntry* firstStreetEntry = nullptr;
 GtkEntry* secondStreetEntry = nullptr;
-
+GtkListStore* FirstStreetList = nullptr;
 GtkEntry* FirstIntersectionEntry = nullptr;
 GtkEntry* secondIntersectionEntry = nullptr;
 
 GtkComboBox* mapBox = nullptr;
-
+GtkEntryCompletion* FirstStreetCompletion = nullptr;
 
 
 void act_on_mouse_click(ezgl::application *app,
@@ -542,6 +542,8 @@ void initial_setup(ezgl::application *application, bool){
     findPathHelpBuffer = (GtkTextBuffer *)(application -> get_object("findPathHelpBuffer"));
     userGuideWindow = (GtkWidget*)(application -> get_object("UserWindowId"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
+    FirstStreetCompletion = (GtkEntryCompletion*) (application -> get_object("FirstStreetCompletion"));
+    FirstStreetList = (GtkListStore*) (application -> get_object("FirstStreetList"));
     g_signal_connect(//connecting map select button to callback function
             application->get_object("mapSelectBtn"),
             "clicked",
@@ -565,9 +567,57 @@ void initial_setup(ezgl::application *application, bool){
     g_signal_connect(application -> get_object("PoiFilterHelp"), "clicked", G_CALLBACK(poiFilterHelp), application);
     g_signal_connect(application -> get_object("FindPathHelp"), "clicked", G_CALLBACK(FindPathHelp), application);
     
+    
 
     
     loadFilterButtons(application);
+}
+
+  class ModelColumns : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
+    ModelColumns()
+    { add(m_col_id); add(m_col_name); }
+
+    Gtk::TreeModelColumn<unsigned int> m_col_id;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+  };
+
+  ModelColumns m_Columns;
+ auto completion = Gtk::EntryCompletion::create();
+ 
+   auto refCompletionModel =
+      Gtk::ListStore::create(m_Columns);
+  completion->set_model(refCompletionModel);
+  
+
+void populateListStore(){
+    int numberOfStreets = getNumStreets();
+    GtkTreeIter FirstStreetIter;
+    
+  auto row = *(refCompletionModel->append());
+  row[m_Columns.m_col_id] = 1;
+  row[m_Columns.m_col_name] = "";
+  int streetId = 0;
+    
+    
+    
+    for (streetId = 2; streetId <= numberOfStreets + 2; streetId++){
+        FirstStreetIter.stamp = streetId;
+        gtk_list_store_append (FirstStreetList,
+                       &FirstStreetIter);
+        row = *(refCompletionModel->append());
+        row[m_Columns.m_col_id] = streetId;
+        row[m_Columns.m_col_name] = getStreetName(streetId);
+        
+ 
+        gtk_list_store_set (FirstStreetList,
+                    &FirstStreetIter,
+                    getStreetName(streetId));
+    }
+    gtk_list_store_set (FirstStreetList,
+                    &FirstStreetIter,
+                    -1);
 }
 
 //function that sets the text to the user guide for poi filter

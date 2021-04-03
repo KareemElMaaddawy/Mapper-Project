@@ -26,7 +26,7 @@ double aspVar = 0;
 std::string userInput = {};
 std::vector<std::vector<LatLon>> points_on_segments;
 std::vector<std::vector<std::pair<double, double>>> xy_points_segments;
-
+void populateListStore();
 double x_from_lon(double lon) {
     return lon * kDegreeToRadian * kEarthRadiusInMeters * std::cos(mapInfo[selectedMap].avgLat * kDegreeToRadian);
 }
