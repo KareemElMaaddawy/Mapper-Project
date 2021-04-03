@@ -794,7 +794,7 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                 std::cout << "names of common intersections are:" << std::endl;
                 for(int i = 0; i < intersectionsOfStreets.size(); ++i){
                    // std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
-                    std::cout << "   " << intersections[intersectionsOfStreets[i]].name;
+                    std::cout << "   " << intersections[intersectionsOfStreets[i]].name << std::endl;
                     intersections[intersectionsOfStreets[i]].highlight = true;
                 }
                 
