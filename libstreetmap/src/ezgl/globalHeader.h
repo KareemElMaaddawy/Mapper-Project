@@ -5,7 +5,7 @@
 #include "m2.h"
 #include <string>
 #pragma once
-void populateListStore();
+
 extern int selectedMap;//stores selected map
 extern bool showPath;
 extern bool colorBlind;

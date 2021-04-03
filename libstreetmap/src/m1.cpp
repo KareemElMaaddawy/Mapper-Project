@@ -103,10 +103,7 @@ bool loadMap(std::string map_streets_database_filename) {
             map_streets_database_filename); //Indicates whether the map has loaded successfully
 
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
-    
-    //populate the list stores for the autocomplete functionality
-    populateListStore();
-    
+
     if (load_successful) {
         loadAdjacentIntersections();
 
