@@ -8,6 +8,7 @@
 #include "StreetsDatabaseAPI.h"
 #include "m3.h"
 #include "globalHeader.h"
+#include <algorithm>
 
 struct prioElem{
     IntersectionIdx intersection;

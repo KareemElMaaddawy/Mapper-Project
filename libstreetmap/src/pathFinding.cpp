@@ -1,5 +1,9 @@
 #include "pathFinding.h"
 
+double dot(double oneX, double oneY, double twoX, double twoY) {
+    return oneX * twoX + oneY * twoY;
+}
+
 double mag(double x, double y) {
     return std::sqrt(x * x + y * y);
 }
@@ -36,7 +40,6 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
             source = sourceFrom;
             dest = destFrom;
         } else {
-            std::cout << "messed up" << std::endl;
             std::cerr << "no overlap" << std::endl;
             return "error";
         }
@@ -46,9 +49,10 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
         double vectorTwoX = x_from_lon(dest.longitude()) - x_from_lon(intersectionPosition.longitude());
         double vectorTwoY = y_from_lat(dest.latitude()) - y_from_lat(intersectionPosition.latitude());
 
-        double cross  = vectorOneX * vectorTwoY - vectorOneY * vectorTwoX;
+        double angle = acos(dot(vectorOneX, vectorOneY, vectorTwoX, vectorTwoY) /
+                            (mag(vectorOneX, vectorOneY) * mag(vectorTwoX, vectorTwoY)));
 
-        if (cross > 0) {
+        if (angle < 180) {
             return "left";
         } else {
             return "right";
@@ -139,6 +143,7 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
 ) {
     std::unordered_map<IntersectionIdx, double> costSoFar;
     std::unordered_map<IntersectionIdx, IntersectionIdx> pathOrigin;
+    std::vector<IntersectionIdx> visited;
     std::priority_queue<prioElem, std::vector<prioElem>, compare> queueOfIntersections; //mini heap to store queue for streets that need to be expanded upon
 
     queueOfIntersections.push(prioElem{intersect_id_start, 0});
@@ -153,19 +158,29 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
             return reconstructPath(pathOrigin, intersect_id_destination, intersect_id_start);
         }
 
+        visited.push_back(current.intersection);
+
         std::vector<IntersectionIdx> neighbors = findAdjacentIntersections(current.intersection);
 
         for (int i = 0; i < neighbors.size(); ++i) {
-            double newCost =
-                    costSoFar[current.intersection] + calculateCost(turn_penalty, findSegmentBetweenIntersections(pathOrigin[current.intersection], current.intersection), findSegmentBetweenIntersections(current.intersection, neighbors[i]));
-            if (costSoFar.find(neighbors[i]) == costSoFar.end() || newCost < costSoFar[neighbors[i]]) {
-                costSoFar[neighbors[i]] = newCost;
-                StreetSegmentInfo heuristicInfo = getStreetSegmentInfo(findSegmentBetweenIntersections(current.intersection, neighbors[i]));
-                double priority = newCost + calculateHeuristic(neighbors[i], intersect_id_destination, heuristicInfo.speedLimit);
-                queueOfIntersections.push(prioElem{neighbors[i], priority});
-                pathOrigin[neighbors[i]] = current.intersection;
+
+            if(std::find(visited.begin(), visited.end(), neighbors[i]) == visited.end()) {
+                double newCost =
+                        costSoFar[current.intersection] + calculateCost(turn_penalty, findSegmentBetweenIntersections(
+                                pathOrigin[current.intersection], current.intersection),
+                                                                        findSegmentBetweenIntersections(
+                                                                                current.intersection, neighbors[i]));
+                if (costSoFar.find(neighbors[i]) == costSoFar.end() || newCost < costSoFar[neighbors[i]]) {
+                    costSoFar[neighbors[i]] = newCost;
+                    StreetSegmentInfo heuristicInfo = getStreetSegmentInfo(
+                            findSegmentBetweenIntersections(current.intersection, neighbors[i]));
+                    double priority = newCost + calculateHeuristic(neighbors[i], intersect_id_destination,
+                                                                   heuristicInfo.speedLimit);
+                    queueOfIntersections.push(prioElem{neighbors[i], priority});
+                    pathOrigin[neighbors[i]] = current.intersection;
+                }
             }
         }
     }
-    return reconstructPath(pathOrigin, intersect_id_destination, intersect_id_start);
+    return {};
 }
