@@ -1228,11 +1228,19 @@ void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSeg
 }
 
 void drawStart(ezgl::renderer* g, ezgl::point2d start){
+    if(colorBlind){
+        g->set_color(191, 179, 42, 255);
+    }else{
     g-> set_color(ezgl::GREEN);
+    }
     g->fill_arc(start, 3.5, 0, 360);
 }
 
 void drawEnd(ezgl::renderer *g, ezgl::point2d end){
+    if(colorBlind){
+        g->set_color(96,92,75,255);
+    } else{
     g->set_color(ezgl::RED);
+    }
     g->fill_arc(end, 3.5, 0, 360);
 }
