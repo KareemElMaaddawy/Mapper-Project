@@ -63,6 +63,8 @@ void setColor(ezgl::renderer *g, int type);
 double slope(double x1, double y1, double x2, double y2);
 double perpSlope(double m);
 std::pair<double, double> findPointOfReference(double m, double distance, double x, double y);
+void drawStart(ezgl::renderer *g, ezgl::point2d start);
+void drawEnd(ezgl::renderer *g, ezgl::point2d end);
 //std::vector<int> tempID;
 //std::vector<LatLon> curvePointVector;
 //std::vector<std::pair<double,double>> xyPointsOfCurves;
@@ -433,7 +435,7 @@ void drawPoi(ezgl::renderer *g){
             if (colorBlind) {
                 g->set_color(96,92,75,255);
             }else{
-                g->set_color(ezgl:: RED);
+                g->set_color(ezgl::BLUE);
             }
 
             double width = 15;
@@ -956,6 +958,8 @@ void drawPath(ezgl:: renderer *g){
             g->set_color(ezgl::PURPLE);
         g-> set_line_width(5);
         g->draw_line(start,end); // if no curve point just draw line from from point to to point
+        drawStart(g,start);
+        //drawEnd(g,end);
         //g-> draw_line(point1, start);
        // g-> draw_line(point2, start);
         }
@@ -967,6 +971,8 @@ void drawPath(ezgl:: renderer *g){
         g-> set_line_width(5);
         g->draw_line(start,{curvePointX, curvePointY});
         g->draw_line({curvePointX, curvePointY}, end);   // if there is only one curve point, then draw from start to first curve point to last point
+        drawStart(g, start);
+        //drawEnd(g,end);
         }
         else if(curvePoints > 1){
             std::vector<LatLon> curvePointVector;
@@ -983,7 +989,8 @@ void drawPath(ezgl:: renderer *g){
             }
             g->set_color(ezgl::PURPLE);
             g-> set_line_width(5);
-             g->draw_line(start, {xyPointsOfCurves[0].first, xyPointsOfCurves[0].second});
+             g->draw_line(start, {xyPointsOfCurves[0].first, xyPointsOfCurves[0].second}); 
+             drawStart(g,start);
               for(int k = 0; k < xyPointsOfCurves.size()-1; k++){
                 g->set_color(ezgl::PURPLE);
                 g-> set_line_width(5);
@@ -995,8 +1002,17 @@ void drawPath(ezgl:: renderer *g){
             g->set_color(ezgl::PURPLE);
             g-> set_line_width(5);
             g-> draw_line({lastXs,lastYs} , end);
+            //drawEnd(g,end);
         }
         
+        int endID = pathSegmentIDs.back();
+        int endToPoint = getStreetSegmentInfo(endID).to;
+        LatLon endPointPosition = getIntersectionPosition(endToPoint);
+        double endX = x_from_lon(endPointPosition.longitude());
+        double endY = y_from_lat(endPointPosition.latitude());
+        
+        ezgl::point2d endPoint(endX,endY);
+        drawEnd(g,endPoint);
         //std::cout << "Curve points: " << curvePoints << std::endl;
      }
     directions(pathSegmentIDs);
@@ -1069,7 +1085,9 @@ void drawSegments(ezgl::renderer *g){
 }
 
 void directions(std::vector<int> path){
+     //bool keepGoing = false;
      int lastSegID = path.back();
+     //path.push_back(lastSegID);
      int lastSegStreetID = getStreetSegmentInfo(lastSegID).streetID;
      std::string lastSegName = getStreetName(lastSegStreetID);
      int beforeLastSegID = path.back()-1;
@@ -1079,16 +1097,16 @@ void directions(std::vector<int> path){
          int ID = path[0];
          int streetID = getStreetSegmentInfo(ID).streetID;
          std::string segName = getStreetName(streetID);
-         std::cout << "straight on " << segName << "for " << findStreetSegmentLength(ID) << "m" << std::endl;
+         std::cout << "straight on " << segName << " for " << findStreetSegmentLength(ID) << "m" << std::endl;
          std::cout << "        " << std::endl;
      } else{
          // for the first segment only 
-         int firstSegid = path[0];
-         int firstSegStreetid = getStreetSegmentInfo(firstSegid).streetID;
-         std:: string segidName = getStreetName(firstSegStreetid);
-         std::cout << "Straight on " << segidName << " for " << findStreetSegmentLength(firstSegid) << "m" << std::endl;
-         std::cout << "    " << std::endl;
-    for(int i = 0; i < path.size()-1; i++){
+//         int firstSegid = path[0];
+//         int firstSegStreetid = getStreetSegmentInfo(firstSegid).streetID;
+//         std:: string segidName = getStreetName(firstSegStreetid);
+//         std::cout << "Straight on " << segidName << " for " << findStreetSegmentLength(firstSegid) << "m" << std::endl;
+//         std::cout << "    " << std::endl;         
+    for(int i = 0; i < path.size() -1 ; i++){
         int firstSegID = path[i]; // fetch segment ID of current road
         int secondSegID = path[i+1]; //fetch segment ID of next segment about to go to
         int firstSegStreetID = getStreetSegmentInfo(firstSegID).streetID; //. fetch streetID of first seg
@@ -1185,4 +1203,14 @@ void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSeg
     g->set_text_rotation(theta);
     g->draw_text(center, streetName, 100, 100);
     
+}
+
+void drawStart(ezgl::renderer* g, ezgl::point2d start){
+    g-> set_color(ezgl::GREEN);
+    g->fill_arc(start, 3.5, 0, 360);
+}
+
+void drawEnd(ezgl::renderer *g, ezgl::point2d end){
+    g->set_color(ezgl::RED);
+    g->fill_arc(end, 3.5, 0, 360);
 }
