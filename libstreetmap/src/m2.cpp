@@ -143,7 +143,7 @@ void act_on_mouse_click(ezgl::application *app,
      highlightCount += 1;  // keep track of how many highlights so far
      mouseClick +=1; // keep track of how many mouse clicks so far
      //std::cout << "coord: " << x << " " << y << std::endl;
-
+    // std::cout << aspVar << std::endl;
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x)); // extracting position of mouse click
     int id = findClosestIntersection(pos);  // closest intersection related to that mouse click
 
@@ -215,22 +215,7 @@ void drawMainCanvas(ezgl::renderer *g) {
     drawPoi(g);
     int draw = 0;
     draw++;
-    for (int i = 0; i < intersections.size(); ++i) {
-        float x = x_from_lon(intersections[i].position.longitude());
-        float y = y_from_lat(intersections[i].position.latitude());
-
-        if (intersections[i].highlight) {
-            g->set_color(ezgl::YELLOW);
-        } else {
-            g->set_color(ezgl::GREY_55);
-        }
-
-        float width = 10;
-        float height = width;
-
-        g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
-        
-    }
+    
     /*DRAWS THE SEGMENTS*/
     
     /*for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
@@ -295,6 +280,24 @@ void drawMainCanvas(ezgl::renderer *g) {
         }
     }*/
     drawSegments(g);
+    for (int i = 0; i < intersections.size(); ++i) {
+        float x = x_from_lon(intersections[i].position.longitude());
+        float y = y_from_lat(intersections[i].position.latitude());
+
+        if (intersections[i].highlight) {
+            g->set_color(ezgl::YELLOW);
+        } else {
+            g->set_color(ezgl::GREY_55);
+        }
+
+        float width = 10;
+        float height = width;
+
+        //g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
+        g->fill_arc({x,y},3.5,0,360);
+     
+        
+    }
     drawStreetLabels(g);
     drawPoiLabel(g);
     drawPath(g);
@@ -883,17 +886,24 @@ void drawStreetLabels(ezgl:: renderer *g){
     g-> set_color(ezgl::BLACK);
     for(int i = 0; i < streetPositions.size(); i++){
         std::string streetName = streetPositions[i].name;
-        for(int j = 0; j < streetPositions[i].positions.size(); j+=5){
+        for(int j = 0; j < streetPositions[i].positions.size(); j+=10){
             double firstX = x_from_lon(streetPositions[i].positions[j].longitude());
             double firstY = y_from_lat(streetPositions[i].positions[j].latitude());
             double secondX = x_from_lon(streetPositions[i].positions[j+1].longitude());
             double secondY = y_from_lat(streetPositions[i].positions[j+1].latitude());
+            
+            double deltaX = secondX - firstX;
+            double deltaY = secondY - firstY;
+            
+            double theta = atan(deltaY/deltaX);
+            theta = theta/kDegreeToRadian;
             
             double midPointX = (firstX+secondX)/2;
             double midPointY = (firstY+secondY)/2;
             ezgl::point2d center(midPointX,midPointY);
             if(streetName != "<unknown>"){
                 g->draw_text(center, streetName, 100, 100);
+                g->set_text_rotation(theta);
             }
         }
     }
@@ -1032,7 +1042,11 @@ void drawSegments(ezgl::renderer *g){
                 double x = x_from_lon(firstPoint.longitude());
                 double y = y_from_lat(firstPoint.latitude());
                 g->set_color(234,191,75,255);
-                g->set_line_width(0);
+                if(aspVar >=8.333){
+                g->set_line_width(3);
+                }else{
+                    g->set_line_width(0);
+                }
                 g->draw_line({x, y}, {secondPoint.first, secondPoint.second});
                 if(xy_points_segments[segment].size() > 1){
                     g->draw_line({secondPoint.first, secondPoint.second}, {thirdPoint.first, thirdPoint.second});
@@ -1042,7 +1056,11 @@ void drawSegments(ezgl::renderer *g){
                 }
             }
             if((point < xy_points_segments[segment].size() - 1) || ((xy_points_segments[segment].size() < 2)&&(point == xy_points_segments[segment].size()))){
-                g->set_line_width(0);
+                if(aspVar >=8.333){
+                g->set_line_width(3);
+                }else{
+                    g->set_line_width(0);
+                }
 
                 std::pair<double, double> formerPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
                 std::pair<double, double> latterPoint = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
@@ -1077,7 +1095,11 @@ void drawSegments(ezgl::renderer *g){
                 double x = x_from_lon(lastPoint.longitude());
                 double y = y_from_lat(lastPoint.latitude());
                 g->set_color(234,191,75,255);
-                g->set_line_width(0);
+                if(aspVar >= 8.333){
+                g->set_line_width(3);
+                }else{
+                    g->set_line_width(0);
+                }
                 g->draw_line({pointBeforeLast.first, pointBeforeLast.second}, {x, y});
             }
         }
