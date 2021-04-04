@@ -16,9 +16,10 @@ GtkWidget *userGuideWindow;
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
 double lon_from_x(double x);
- 
+
+
 bool test = false;
- 
+
 double lat_from_y(double lat);
  
 double xFromLonPoi(double lon);
@@ -293,8 +294,8 @@ void drawMainCanvas(ezgl::renderer *g) {
             g->set_color(ezgl::GREY_55);
         }
  
-        float width = 10;
-        float height = width;
+        //float width = 10;
+        //float height = width;
  
         //g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
         g->fill_arc({x,y},3.5,0,360);

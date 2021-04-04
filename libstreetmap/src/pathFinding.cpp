@@ -62,6 +62,60 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
 
 }
 
+std::string calculateDirectionT(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet) {
+    StreetSegmentInfo sourceInfo = getStreetSegmentInfo(sourceStreet);
+    StreetSegmentInfo destInfo = getStreetSegmentInfo(destStreet);
+
+    if (getStreetName(sourceInfo.streetID) != getStreetName(destInfo.streetID)) {
+        LatLon sourceFrom = getIntersectionPosition(sourceInfo.from);
+        LatLon sourceTo = getIntersectionPosition(sourceInfo.to);
+        LatLon destFrom = getIntersectionPosition(destInfo.from);
+        LatLon destTo = getIntersectionPosition(destInfo.to);
+
+        LatLon intersectionPosition;
+        LatLon source;
+        LatLon dest;
+
+        if (sourceFrom == destFrom) {
+            intersectionPosition = sourceFrom;
+            source = sourceTo;
+            dest = destTo;
+        } else if (sourceFrom == destTo) {
+            intersectionPosition = sourceFrom;
+            source = sourceTo;
+            dest = destFrom;
+        } else if (sourceTo == destFrom) {
+            intersectionPosition = sourceTo;
+            source = sourceFrom;
+            dest = destTo;
+        } else if (sourceTo == destTo) {
+            intersectionPosition = sourceTo;
+            source = sourceFrom;
+            dest = destFrom;
+        } else {
+            std::cerr << "no overlap" << std::endl;
+            return "error";
+        }
+
+        double vectorOneX = x_from_lon(intersectionPosition.longitude()) - x_from_lon(source.longitude());
+        double vectorOneY = y_from_lat(intersectionPosition.latitude()) - y_from_lat(source.latitude());
+        double vectorTwoX = x_from_lon(dest.longitude()) - x_from_lon(intersectionPosition.longitude());
+        double vectorTwoY = y_from_lat(dest.latitude()) - y_from_lat(intersectionPosition.latitude());
+
+        double angle = acos(dot(vectorOneX, vectorOneY, vectorTwoX, vectorTwoY) /
+                            (mag(vectorOneX, vectorOneY) * mag(vectorTwoX, vectorTwoY)));
+
+        if (angle < 180) {
+            return "left";
+        } else {
+            return "right";
+        }
+    } else {
+        return "straight";
+    }
+}
+
+
 //calculates turn penalty as the average of the speed limits around the source intersection and destination intersection
 double calcTurnPenalty(IntersectionIdx source, IntersectionIdx dest) {
     int numOfSegment = 0;
@@ -90,7 +144,7 @@ double computePathTravelTime(const std::vector<StreetSegmentIdx> &path, const do
         if (i == 0) {//no need to check for left turn for the initial street segment
             travelTime += findStreetSegmentTravelTime(path[i]);
         } else {
-            direction = calculateDirection(path[i - 1], path[i]);
+            direction = calculateDirectionT(path[i - 1], path[i]);
             if (direction == "left") {
                 travelTime += findStreetSegmentTravelTime(path[i]) + turn_penalty;//if left turn occurs turn penalty is instituted
             } else {
