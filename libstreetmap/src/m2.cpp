@@ -25,7 +25,15 @@ double xFromLonPoi(double lon);
 
 double yFromLatPoi(double lat);
 GtkTextBuffer *findPathHelpBuffer = nullptr;
+GtkTextBuffer *HelpTextBuffer1 = nullptr;
 GtkTextBuffer *poiFilterHelpBuffer = nullptr;
+GtkTextBuffer *ZoomAndNavigateBuffer = nullptr;
+GtkTextBuffer *mapSelectHelpBuffer = nullptr;
+GtkTextBuffer *findInterscetionHelpBuffer = nullptr;
+GtkTextBuffer *findPathHelpEntryBuffer = nullptr;
+GtkTextBuffer *colourBlindHelpBuffer = nullptr;
+
+
 GtkTextView *helpText = nullptr;
 GtkEntry* firstStreetEntry = nullptr;
 GtkEntry* secondStreetEntry = nullptr;
@@ -44,15 +52,21 @@ void drawNewMap(ezgl::application *application);
 void findButton(GtkWidget *widget, ezgl::application *application);
 void findPathButton(GtkWidget *widget, ezgl::application *application);
 void clearHighlightButton(GtkEntry *,ezgl::application *application);
-void helpMenuItem(GtkWidget*, ezgl::application *application);
-void poiFilterHelp(GtkWidget*, ezgl::application *application);
+
+void helpMenuItem(GtkWidget*);
+void UserGuide(GtkWidget*);
+
+void poiFilterHelp(GtkWidget*);
+void FindPathHelp(GtkWidget*);
+void mapSelectHelp(GtkWidget*);
+void ZoomAndNavigate(GtkWidget*);
+void findInterscetionHelp(GtkWidget*);
+void findPathHelpEntry(GtkWidget*);
+void colourBlindHelp(GtkWidget*);
+
 void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSegments, ezgl:: renderer *g);
-void FindPathHelp(GtkWidget*, ezgl::application *application);
-void mapSelectHelp(GtkWidget*, ezgl::application *application);
-void ZoomAndNavigate(GtkWidget*, ezgl::application *application);
-void findInterscetionHelp(GtkWidget*, ezgl::application *application);
 void showPathButton(GtkEntry *,ezgl::application *application);
-void hideUserManualButton(GtkEntry *,ezgl::application *application);
+void hideUserManualButton(GtkEntry *);
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
@@ -506,6 +520,12 @@ void initial_setup(ezgl::application *application, bool){
     helpText = (GtkTextView *)(application -> get_object("HelpText"));
     poiFilterHelpBuffer = (GtkTextBuffer *)(application -> get_object("poiFilterHelpBuffer"));
     findPathHelpBuffer = (GtkTextBuffer *)(application -> get_object("findPathHelpBuffer"));
+    ZoomAndNavigateBuffer = (GtkTextBuffer *)(application -> get_object("ZoomAndNavigateBuffer"));
+    findPathHelpEntryBuffer = (GtkTextBuffer *)(application -> get_object("findPathHelpEntryBuffer"));
+    colourBlindHelpBuffer = (GtkTextBuffer *)(application -> get_object("colourBlindHelpBuffer"));
+    HelpTextBuffer1 = (GtkTextBuffer *)(application -> get_object("HelpTextBuffer1"));
+    findInterscetionHelpBuffer = (GtkTextBuffer *)(application -> get_object("findInterscetionHelpBuffer"));
+    mapSelectHelpBuffer = (GtkTextBuffer *)(application -> get_object("mapSelectHelpBuffer"));
     userGuideWindow = (GtkWidget*)(application -> get_object("UserWindowId"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
     g_signal_connect(//connecting map select button to callback function
@@ -530,19 +550,46 @@ void initial_setup(ezgl::application *application, bool){
     
     g_signal_connect(application -> get_object("PoiFilterHelp"), "clicked", G_CALLBACK(poiFilterHelp), application);
     g_signal_connect(application -> get_object("FindPathHelp"), "clicked", G_CALLBACK(FindPathHelp), application);
-    
+    g_signal_connect(application -> get_object("mapSelectHelp"), "clicked", G_CALLBACK(mapSelectHelp), application);
+    g_signal_connect(application -> get_object("ZoomAndNavigate"), "clicked", G_CALLBACK(ZoomAndNavigate), application);
+    g_signal_connect(application -> get_object("findPathHelpEntry"), "clicked", G_CALLBACK(findPathHelpEntry), application);
+    g_signal_connect(application -> get_object("colourBlindHelp"), "clicked", G_CALLBACK(colourBlindHelp), application);
+    g_signal_connect(application -> get_object("User Guide"), "clicked", G_CALLBACK(UserGuide), application);
 
-    
+    g_signal_connect(application -> get_object("findInterscetionHelp"), "clicked", G_CALLBACK(findInterscetionHelp), application);
     loadFilterButtons(application);
 }
 
 //function that sets the text to the user guide for poi filter
-void poiFilterHelp(GtkWidget*, ezgl::application *application){
+void poiFilterHelp(GtkWidget*){
     gtk_text_view_set_buffer (helpText, poiFilterHelpBuffer);
 }
 
-void FindPathHelp(GtkWidget*, ezgl::application *application){
+void FindPathHelp(GtkWidget*){
     gtk_text_view_set_buffer (helpText, findPathHelpBuffer);
+}
+
+void mapSelectHelp(GtkWidget*){
+    gtk_text_view_set_buffer (helpText, mapSelectHelpBuffer);
+}
+void ZoomAndNavigate(GtkWidget*){
+   gtk_text_view_set_buffer (helpText, ZoomAndNavigateBuffer);
+}
+
+
+void findInterscetionHelp(GtkWidget*){
+    gtk_text_view_set_buffer (helpText, findInterscetionHelpBuffer);
+}
+void colourBlindHelp(GtkWidget*){
+    gtk_text_view_set_buffer (helpText, colourBlindHelpBuffer);
+}
+
+void UserGuide(GtkWidget*){
+    gtk_text_view_set_buffer (helpText, HelpTextBuffer1);
+}
+
+void findPathHelpEntry (GtkWidget*){
+     gtk_text_view_set_buffer (helpText, findPathHelpEntryBuffer);
 }
 
 void showPathButton(GtkEntry *,ezgl::application *application){
@@ -615,13 +662,13 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
     }
 }
 
-void helpMenuItem(GtkWidget*, ezgl::application *application){
+void helpMenuItem(GtkWidget*){
     std::cout<<"help button activated"<<std::endl;
     gtk_widget_show (userGuideWindow);
 }
 
 //subwindows cannot be closed normally if they are created only once and they need to be hidden in the background
-void hideUserManualButton(GtkEntry *,ezgl::application *application){
+void hideUserManualButton(GtkEntry *){
     gtk_widget_hide (userGuideWindow);
 }
 

@@ -2,8 +2,28 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkImage" id="FindPathHelp2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/FindPathHelp2.png</property>
+  </object>
   <object class="GtkTextBuffer" id="HelpTextBuffer">
-    <property name="text" translatable="yes">Please Choose what help you would like from the buttons on the right.</property>
+    <property name="text" translatable="yes">Welcome to the user guide!
+
+----------------------
+
+To learn more about any of these functionalities , click the corresponding button on the right.
+
+You can always come back to this page by clicking the user guide button (bottom middle).</property>
+  </object>
+  <object class="GtkTextBuffer" id="HelpTextBuffer1">
+    <property name="text" translatable="yes">Welcome to the user guide!
+
+----------------------
+
+To learn more about any of these functionalities , click the corresponding button on the right.
+
+You can always come back to this page by clicking the user guide button (bottom middle).</property>
   </object>
   <object class="GtkListStore" id="MapListStore">
     <columns>
@@ -70,6 +90,15 @@
       </row>
     </data>
   </object>
+  <object class="GtkTextBuffer" id="ZoomAndNavigateBuffer">
+    <property name="text" translatable="yes">Zooming and Navigation
+--------------------------
+You have two options for zooming and navigation:
+
+1 - Scroll to zoom with the mouse scroll wheel and drag to zoom by holding down the mouse scroll wheel
+
+2 - Using the buttons in the picture, press + to zoom in and - to zoom out and the 4 arrow keys to navigate. Zoom fit will bring you back to a world view of the whole map the way it loaded.</property>
+  </object>
   <object class="GtkAdjustment" id="adjustment1">
     <property name="upper">100</property>
     <property name="step_increment">1</property>
@@ -100,6 +129,16 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/car.png</property>
   </object>
+  <object class="GtkTextBuffer" id="colourBlindHelpBuffer">
+    <property name="text" translatable="yes">Red-Green Colour blind mode
+------------------------------
+Pressing this button will enable/disable a red-green colour blind friendly mode. </property>
+  </object>
+  <object class="GtkImage" id="colourblindHelppic">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/colourBlindHelp.png</property>
+  </object>
   <object class="GtkImage" id="doctorPOI">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -109,6 +148,31 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/output-onlinepngtools (1).png</property>
+  </object>
+  <object class="GtkTextBuffer" id="findInterscetionHelpBuffer">
+    <property name="text" translatable="yes">Find an intersection of two streets
+----------------------------------
+once the Find Intersection tab is selected, you can enter the names of two streets. Abbreviations are allowed but for best results insure that the names uniquely identify the streets. If successful, the program will print the name of the intersection in terminal and highlight it on the map
+
+If an entry does not uniquley identify a street (i.e. is an abbreviation to more than one street name) you will get those street names printed in the terminal.
+
+The example below is what you would get if you enter "dundas" and "university" as your street names
+
+Example:
+first search term: dundas ,  second search term: university
+more info needed
+first term: dundas 
+second term: university
+all possible names for first: 
+Dundas Crescent
+Dundas Square
+Dundas Street
+Dundas Street East
+Dundas Street West
+Dundas Way
+Dundas West Station
+all possible names for second: 
+University Avenue</property>
   </object>
   <object class="GtkImage" id="findIntersectionsHelp">
     <property name="visible">True</property>
@@ -121,12 +185,23 @@
     <property name="pixbuf">poiFilterImages/FindIntersectionHelp.png</property>
   </object>
   <object class="GtkTextBuffer" id="findPathHelpBuffer">
-    <property name="text" translatable="yes">Path can be chosen in one of two ways:
+    <property name="text" translatable="yes">Display path between two intersections (Method 1)
+---------------------------------------------
+To display a path between two intersections:
 
-1) - Please click on the two intersections desired to go between.
+    - Please click on the two intersections desired to go between.
     - Proceed to press on show Path and the path will be highlighted in purple.
     - Follow the green circles, once you have reached the red circle, you have then reached your destination.
 </property>
+  </object>
+  <object class="GtkTextBuffer" id="findPathHelpEntryBuffer">
+    <property name="text" translatable="yes">Display path between two intersections (Method 2)
+--------------------------------------------------
+After selecting the Find Path tab,  you can enter the name of any two streets separated by an &amp; symbol into both of the text entry slots. 
+
+If successful, this will highlight the path between the intersection of the first two streets (Starting point) and the intersection between the second two streets  (end point). This will also print out the full names of the four streets in terminal . 
+
+If one of the street names does not specify a unique street, the possible names for that street will display i terminal similar to the find intersection functionality.</property>
   </object>
   <object class="GtkImage" id="foodPOI">
     <property name="visible">True</property>
@@ -871,6 +946,13 @@
       </object>
     </child>
   </object>
+  <object class="GtkTextBuffer" id="mapSelectHelpBuffer">
+    <property name="text" translatable="yes">Selecting a map
+-----------------
+To select a map, you can either type the name of the map in the searchbar (with words choose map in gray), Or you can press the downward arrow button to display a list of available maps. 
+
+YOU NEED to press the SELECT button after you choose your map for it to begin to load.</property>
+  </object>
   <object class="GtkImage" id="mapSelection">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -935,7 +1017,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">findPathHelp</property>
+                <property name="image">FindPathHelp2</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -979,19 +1061,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="ZoomAndNavigate">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1003,8 +1073,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
+              <object class="GtkButton" id="User Guide">
+                <property name="label" translatable="yes">User Guide</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1015,11 +1085,23 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
+              <object class="GtkButton" id="findPathHelpEntry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="image">findPathHelp</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="colourBlindHelp">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">colourblindHelppic</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -1037,6 +1119,27 @@
     </child>
   </object>
   <object class="GtkTextBuffer" id="poiFilterHelpBuffer">
-    <property name="text" translatable="yes">write description of poi filters here</property>
+    <property name="text" translatable="yes">Points Of interest Filters
+------------------------
+Each of these buttons denotes a different type of point of interest in the city.
+
+You can only apply one filter at a time and the Clear Filter button will remove the filter you have applied making the map display the ret of the POIs again.
+
+ Moving left to rigth and top to bottom:
+
+- Health care: pharmacies, Hospitals, etc...
+
+-Education : Public schools, universities, libraries, etc..
+
+-Transportation: Bus stops, subway stations, etc...
+
+-Entertainment: Movie thetres, comidy clubs, etc...
+
+- Food: Restaurants, grocery stores, pubs, etc...
+
+-Finance: Banks, Atm machines, etc...
+
+
+</property>
   </object>
 </interface>
