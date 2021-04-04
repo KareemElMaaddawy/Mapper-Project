@@ -54,7 +54,7 @@ double *segLength;
 double *segTime;
 double *stLength;
 
-
+void loadAdjacentIntersections();
 // Vector Declerations
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
