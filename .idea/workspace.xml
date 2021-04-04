@@ -12,10 +12,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="wont revisit an intersection">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="fixed legality issues">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,14 +138,7 @@
       <workItem from="1616864963734" duration="769000" />
       <workItem from="1617058661067" duration="876000" />
       <workItem from="1617218322153" duration="6710000" />
-      <workItem from="1617492425777" duration="2306000" />
-    </task>
-    <task id="LOCAL-00011" summary="fixed mem leaks">
-      <created>1613159575249</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1613159575249</updated>
+      <workItem from="1617492425777" duration="6264000" />
     </task>
     <task id="LOCAL-00012" summary="making data structure for streetlength">
       <created>1613162300648</created>
@@ -481,7 +476,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617493079609</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="fixed legality issues">
+      <created>1617495379395</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1617495379395</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,7 +515,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="seperated color for parks" />
     <MESSAGE value="changed road colors" />
     <MESSAGE value="commented" />
     <MESSAGE value="restored load poi" />
@@ -538,7 +539,8 @@
     <MESSAGE value="created calcTurnPenalty as a weighted average of speed limits on the path travelled" />
     <MESSAGE value="rewrote adjacentIntersections, fixed findPath?" />
     <MESSAGE value="wont revisit an intersection" />
-    <option name="LAST_COMMIT_MESSAGE" value="wont revisit an intersection" />
+    <MESSAGE value="fixed legality issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed legality issues" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

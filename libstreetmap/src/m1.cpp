@@ -138,7 +138,7 @@ bool loadMap(std::string map_streets_database_filename) {
 
         intersections_of_a_street.resize(getNumStreets());
 
-        adjacentIntersections.resize(getNumIntersections());
+        //adjacentIntersections.resize(getNumIntersections());
 
 
         for (int i = 0; i < getNumStreetSegments(); i++) {

@@ -63,19 +63,24 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
 
 }
 
-double calcTurnPenalty(std::vector<StreetSegmentIdx> path) {
-    double totalLength = 0;
-    double num = 0;
-    for(int i = 0; i < path.size(); ++i){
-        StreetSegmentInfo segInfo = getStreetSegmentInfo(path[i]);
-        double speed  = segInfo.speedLimit;
-        double length = findStreetSegmentLength(path[i]);
+double calcTurnPenalty(IntersectionIdx source, IntersectionIdx dest) {
+    int numOfSegment = 0;
+    double speed = 0;
+    std::vector<IntersectionIdx> sourceNeighbors = findAdjacentIntersections(source);
+    std::vector<IntersectionIdx> destNeighbors = findAdjacentIntersections(dest);
 
-        totalLength += length;
-        num += length * speed;
+    for(int i = 0; i < sourceNeighbors.size(); ++i){
+        StreetSegmentInfo temp = getStreetSegmentInfo(findSegmentBetweenIntersections(source, sourceNeighbors[i]));
+        speed += temp.speedLimit;
+        numOfSegment++;
     }
 
-    return num/totalLength;
+    for(int i = 0; i < destNeighbors.size(); ++i){
+        StreetSegmentInfo temp = getStreetSegmentInfo(findSegmentBetweenIntersections(dest, destNeighbors[i]));
+        speed += temp.speedLimit;
+        numOfSegment++;
+    }
+    return speed/numOfSegment;
 }
 
 double computePathTravelTime(const std::vector<StreetSegmentIdx> &path, const double turn_penalty) {
@@ -120,7 +125,7 @@ double calculateHeuristic(const IntersectionIdx currentIntersection, const Inter
     std::pair<double, double> currentPosition = {x_from_lon(getIntersectionPosition(currentIntersection).longitude()), y_from_lat(getIntersectionPosition(currentIntersection).latitude())};
     std::pair<double, double> destPosition = {x_from_lon(getIntersectionPosition(destinationIntersection).longitude()), y_from_lat(getIntersectionPosition(destinationIntersection).latitude())};
 
-    return (abs(currentPosition.first - destPosition.first) + abs(currentPosition.second - destPosition.second))/(speed*2);
+    return (abs(currentPosition.first - destPosition.first) + abs(currentPosition.second - destPosition.second))/(speed);
 }
 
 std::vector<StreetSegmentIdx> reconstructPath(std::unordered_map<IntersectionIdx, IntersectionIdx> pathOrigin,
@@ -185,7 +190,6 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
                                                                                 current.intersection, neighbors[i]));
                 if (costSoFar.find(neighbors[i]) == costSoFar.end() || newCost < costSoFar[neighbors[i]]) {
                     if(checkOneWay(current.intersection, neighbors[i])) {
-
                         costSoFar[neighbors[i]] = newCost;
                         StreetSegmentInfo heuristicInfo = getStreetSegmentInfo(
                                 findSegmentBetweenIntersections(current.intersection, neighbors[i]));
@@ -193,6 +197,7 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
                                                                        heuristicInfo.speedLimit);
                         queueOfIntersections.push(prioElem{neighbors[i], priority});
                         pathOrigin[neighbors[i]] = current.intersection;
+
                     }
                 }
             }

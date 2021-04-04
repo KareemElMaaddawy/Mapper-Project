@@ -12,7 +12,7 @@
 
 struct prioElem{
     IntersectionIdx intersection;
-    double priority = 0;
+    double priority;
 };
 
 struct compare{
@@ -34,7 +34,7 @@ double calculateCost(const double turnPenalty,const IntersectionIdx soruceInters
 
 double calculateHeuristic(const IntersectionIdx currentIntersection, const IntersectionIdx destinationIntersection, const double speed);
 
-double calcTurnPenalty(std::vector<StreetSegmentIdx> path);
+double calcTurnPenalty(IntersectionIdx source, IntersectionIdx dest);
 
 std::vector<StreetSegmentIdx> reconstructPath(
         const std::unordered_map<IntersectionIdx,
