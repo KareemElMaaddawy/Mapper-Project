@@ -11,40 +11,32 @@
 #include <cmath>
 //function declarations
 std::string openMap = "Toronto, Canada"; //holds name of map open, default is toronto
-
+ 
 GtkWidget *userGuideWindow;
 void drawMainCanvas(ezgl::renderer *g);
 void initial_setup(ezgl::application *application, bool new_window);
 double lon_from_x(double x);
-
+ 
 bool test = false;
-
+ 
 double lat_from_y(double lat);
-
+ 
 double xFromLonPoi(double lon);
-
+ 
 double yFromLatPoi(double lat);
 GtkTextBuffer *findPathHelpBuffer = nullptr;
-GtkTextBuffer *HelpTextBuffer1 = nullptr;
 GtkTextBuffer *poiFilterHelpBuffer = nullptr;
-GtkTextBuffer *ZoomAndNavigateBuffer = nullptr;
-GtkTextBuffer *mapSelectHelpBuffer = nullptr;
-GtkTextBuffer *findInterscetionHelpBuffer = nullptr;
-GtkTextBuffer *findPathHelpEntryBuffer = nullptr;
-GtkTextBuffer *colourBlindHelpBuffer = nullptr;
-
-
 GtkTextView *helpText = nullptr;
 GtkEntry* firstStreetEntry = nullptr;
 GtkEntry* secondStreetEntry = nullptr;
-
+ 
 GtkEntry* FirstIntersectionEntry = nullptr;
 GtkEntry* secondIntersectionEntry = nullptr;
-
+ 
 GtkComboBox* mapBox = nullptr;
-
-
-
+ 
+ 
+ 
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *event,
                         double x, double y);
@@ -52,21 +44,15 @@ void drawNewMap(ezgl::application *application);
 void findButton(GtkWidget *widget, ezgl::application *application);
 void findPathButton(GtkWidget *widget, ezgl::application *application);
 void clearHighlightButton(GtkEntry *,ezgl::application *application);
-
-void helpMenuItem(GtkWidget*);
-void UserGuide(GtkWidget*);
-
-void poiFilterHelp(GtkWidget*);
-void FindPathHelp(GtkWidget*);
-void mapSelectHelp(GtkWidget*);
-void ZoomAndNavigate(GtkWidget*);
-void findInterscetionHelp(GtkWidget*);
-void findPathHelpEntry(GtkWidget*);
-void colourBlindHelp(GtkWidget*);
-
+void helpMenuItem(GtkWidget*, ezgl::application *application);
+void poiFilterHelp(GtkWidget*, ezgl::application *application);
 void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSegments, ezgl:: renderer *g);
+void FindPathHelp(GtkWidget*, ezgl::application *application);
+void mapSelectHelp(GtkWidget*, ezgl::application *application);
+void ZoomAndNavigate(GtkWidget*, ezgl::application *application);
+void findInterscetionHelp(GtkWidget*, ezgl::application *application);
 void showPathButton(GtkEntry *,ezgl::application *application);
-void hideUserManualButton(GtkEntry *);
+void hideUserManualButton(GtkEntry *,ezgl::application *application);
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
@@ -86,74 +72,74 @@ void drawEnd(ezgl::renderer *g, ezgl::point2d end);
 //std::vector<LatLon> curvePointVector;
 //std::vector<std::pair<double,double>> xyPointsOfCurves;
 //std::vector<int> pathSegmentIDs;
-std::vector<int> directionPath;
+ 
 double highlightCount = 0;
 double mouseClick = 0;
 int firstID = 0;
 int secondID = 0;
-
+ 
 void directions(std::vector<int> path);
-
-
+ 
+ 
 IntersectionIdx findFunction(std::string, std::string, int);
-
-
-
+ 
+ 
+ 
 struct intersection_data {
     LatLon position;
     std::string name;
     bool highlight = false;
 };
-
+ 
 struct poiData {
     LatLon position;
     std::string name;
     bool highlight = false;
 };
-
+ 
 struct featureData {
     std::string name;
     bool closed = false;
     int numOfPoints = 0;
     std::vector<ezgl::point2d> positionalPoints;
 };
-
+ 
 std::vector<std::vector<featureData>> features;
 std::vector<intersection_data> intersections;
 std::vector<poiData> poi;
-
+ 
 double avgPoiLat = 0;
-
+ 
 //implementations
-
-
+ 
+ 
 double lon_from_x(double x) {
     return x / (kDegreeToRadian * kEarthRadiusInMeters * std::cos(mapInfo[selectedMap].avgLat * kDegreeToRadian));
 }
-
+ 
 double lat_from_y(double lon) {
     return lon / (kDegreeToRadian * kEarthRadiusInMeters);
 }
-
+ 
 double xFromLonPoi(double lon) {
     return lon * kDegreeToRadian * kEarthRadiusInMeters * std::cos(avgPoiLat * kDegreeToRadian);
 }
-
+ 
 double yFromLatPoi(double lat) {
     return lat * kDegreeToRadian * kEarthRadiusInMeters;
 }
-
+ 
 void loadIntersections(){
     intersections.resize(getNumIntersections());
-
+ 
     for (int id = 0; id < getNumIntersections(); ++id) {
         intersections[id].position = getIntersectionPosition(id);
         intersections[id].name = getIntersectionName(id);
     }
 }
-
-
-
+ 
+ 
+ 
 void act_on_mouse_click(ezgl::application *app,
                         GdkEventButton *,
                         double x, double y) {  
@@ -163,11 +149,11 @@ void act_on_mouse_click(ezgl::application *app,
     // std::cout << aspVar << std::endl;
     LatLon pos = LatLon(lat_from_y(y), lon_from_x(x)); // extracting position of mouse click
     int id = findClosestIntersection(pos);  // closest intersection related to that mouse click
-
+ 
     if((highlightCount <=2)& (mouseClick == 1)){
         firstID = id;  //grab ID of first intersection clicked
     intersections[id].highlight = true; // highlight the intersection
-    
+ 
     std::cout << getIntersectionName(id) << ": " << id << std::endl;
     }
     if((highlightCount <=2) & (mouseClick ==2)){
@@ -175,45 +161,44 @@ void act_on_mouse_click(ezgl::application *app,
         intersections[id].highlight = true; // highlight the intersection
         std::cout << getIntersectionName(id) << ": " << id << std::endl;
        // pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15); // initializing pathSegmentIDs 
-        directionPath = findPathBetweenIntersections(firstID,secondID,15);
     }  
     app->refresh_drawing();
 }
-
+ 
 //loads information for when when map is selected
 void drawNewMap(ezgl::application *application){
     loadPoi();
     loadIntersections();//loads data
     loadFeatures();
-
+ 
     ezgl::rectangle new_world({x_from_lon(mapInfo[selectedMap].minLon), y_from_lat(mapInfo[selectedMap].minLat)}, //creates new world rectangle
                                   {x_from_lon(mapInfo[selectedMap].maxLon), y_from_lat(mapInfo[selectedMap].maxLat)});
     application->change_canvas_world_coordinates(application->get_main_canvas_id(), new_world); //changes world coords to rectangle
-
+ 
 }
-
+ 
 //draws initial map
 void drawMap() {
     loadPoi();
     loadIntersections();//loads data
     loadFeatures();
-
+ 
     ezgl::application::settings settings;
     settings.main_ui_resource = "libstreetmap/resources/main.ui";
     settings.window_identifier = "MainWindow";
     settings.canvas_identifier = "MainCanvas";
-
+ 
     ezgl::application application(settings);
-
-
+ 
+ 
     ezgl::rectangle initial_world({x_from_lon(mapInfo[selectedMap].minLon), y_from_lat(mapInfo[selectedMap].minLat)},
                                   {x_from_lon(mapInfo[selectedMap].maxLon), y_from_lat(mapInfo[selectedMap].maxLat)});
     application.add_canvas("MainCanvas", drawMainCanvas, initial_world);
-
-
+ 
+ 
     application.run(initial_setup, act_on_mouse_click, nullptr, nullptr);
 }
-
+ 
 double slope(double x1, double y1, double x2, double y2){
     return((y2-y1)/(x2-x1));
 }
@@ -226,32 +211,95 @@ std::pair<double, double> findPointOfReference(double m, double distance, double
     std::pair <double, double> returnPair = {x-a, y-b};
     return(returnPair);
 }
-
+ 
 void drawMainCanvas(ezgl::renderer *g) {
-
+ 
     drawFeatures(g);
     drawPoi(g);
     int draw = 0;
     draw++;
-
+ 
+    /*DRAWS THE SEGMENTS*/
+ 
+    /*for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
+        //if(points_on_segments.size() <= )
+        for(int point = 0; point < xy_points_segments[segment].size(); ++point){
+            if (point == 0){
+                std::pair<double, double> secondPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                std::pair<double, double> thirdPoint = {xy_points_segments[segment][point+1].first, xy_points_segments[segment][point+1].second};
+                IntersectionIdx fromIntersection = getStreetSegmentInfo(segment).from;
+                LatLon firstPoint = getIntersectionPosition(fromIntersection);
+                double x = x_from_lon(firstPoint.longitude());
+                double y = y_from_lat(firstPoint.latitude());
+                g->set_color(234,191,75,255);
+                g->set_line_width(0);
+                g->draw_line({x, y}, {secondPoint.first, secondPoint.second});
+                if(xy_points_segments[segment].size() > 1){
+                    g->draw_line({secondPoint.first, secondPoint.second}, {thirdPoint.first, thirdPoint.second});
+                }
+                if(xy_points_segments[segment].size() == 0){
+                    std::cout<<"there is a zero"<<std::endl;
+                }
+            }
+            if((point < xy_points_segments[segment].size() - 1) || ((xy_points_segments[segment].size() < 2)&&(point == xy_points_segments[segment].size()))){
+                g->set_line_width(0);
+ 
+                std::pair<double, double> formerPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                std::pair<double, double> latterPoint = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
+                g->set_color(234,191,75,255);
+                double m = slope (formerPoint.first, formerPoint.second, latterPoint.first, latterPoint.second);
+                double perpM = perpSlope(m);
+                std::pair<double, double> por;
+                std::pair<double, double> posSidePoint;
+                std::pair<double, double> negSidePoint;
+                if(m == 0){
+                    por = std::make_pair(latterPoint.first - 1, latterPoint.second); 
+                    posSidePoint =  {por.first, por.second + 0.5};
+                    negSidePoint = { por.first, por.second - 0.5};
+                }else if(perpM == 0){
+                    por = std::make_pair(latterPoint.first, latterPoint.second - 1); 
+                    posSidePoint =  {por.first + 0.5, por.second};
+                    negSidePoint = { por.first - 0.5, por.second};
+                }else{
+                    por = findPointOfReference( m, -1, latterPoint.first, latterPoint.second);
+                    posSidePoint = findPointOfReference( perpM, 0.5, por.first, por.second);
+                    negSidePoint = findPointOfReference( perpM, -0.5, por.first, por.second);
+                }
+ 
+ 
+                g->draw_line({formerPoint.first, formerPoint.second}, {latterPoint.first, latterPoint.second});
+                g->fill_poly({{latterPoint.first, latterPoint.second}, {posSidePoint.first, posSidePoint.second}, {negSidePoint.first, negSidePoint.second}});
+            }
+            else if(point == xy_points_segments[segment].size() - 1){
+                std::pair<double, double> pointBeforeLast = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
+                IntersectionIdx toIntersection = getStreetSegmentInfo(segment).to;
+                LatLon lastPoint = getIntersectionPosition(toIntersection);
+                double x = x_from_lon(lastPoint.longitude());
+                double y = y_from_lat(lastPoint.latitude());
+                g->set_color(234,191,75,255);
+                g->set_line_width(0);
+                g->draw_line({pointBeforeLast.first, pointBeforeLast.second}, {x, y});
+            }
+        }
+    }*/
     drawSegments(g);
     for (int i = 0; i < intersections.size(); ++i) {
         float x = x_from_lon(intersections[i].position.longitude());
         float y = y_from_lat(intersections[i].position.latitude());
-
+ 
         if (intersections[i].highlight) {
             g->set_color(ezgl::YELLOW);
         } else {
             g->set_color(ezgl::GREY_55);
         }
-
-        //float width = 10;
-        //float height = width;
-
+ 
+        float width = 10;
+        float height = width;
+ 
         //g->fill_rectangle({x - width / 2, y - height / 2}, {x + width / 2, y + height / 2});
         g->fill_arc({x,y},3.5,0,360);
-     
-        
+ 
+ 
     }
     drawStreetLabels(g);
     drawPoiLabel(g);
@@ -269,9 +317,9 @@ void drawMainCanvas(ezgl::renderer *g) {
 //        }
 //        test = false;
 //    }
-    
+ 
 }
-
+ 
 void loadFeatures(){//loads features and their associated properties
     features.resize(10);//ten types of different features
     for (int i = 0; i < getNumFeatures(); ++i) {//loops through all features
@@ -289,7 +337,7 @@ void loadFeatures(){//loads features and their associated properties
         }
     }
 }
-
+ 
 void setColor(ezgl::renderer *g, int type){//sets drawing based on feature type
     if(colorBlind){
         if (type == 1) {
@@ -337,16 +385,16 @@ void setColor(ezgl::renderer *g, int type){//sets drawing based on feature type
         }
     }
 }
-
+ 
 void loadPoi(){
     poi.resize(getNumPointsOfInterest());
-
+ 
     for (int i = 0; i < getNumPointsOfInterest(); i++) {
         poi[i].position = getPOIPosition(i);
         poi[i].name = getPOIName(i);
     }
 }
-
+ 
 void drawFeatures(ezgl::renderer *g){//draws features
     int zoomLevel;
     if(aspVar >= 13){
@@ -358,9 +406,9 @@ void drawFeatures(ezgl::renderer *g){//draws features
     }else{
         zoomLevel = 0;
     }
-
+ 
     g->set_line_width(0);
-
+ 
     for(int i = 0; i < featureDrawOrder[zoomLevel].size(); ++i){//looping through array of feature types
         int type = featureDrawOrder[zoomLevel][i];//fetching what the feature type is
         setColor(g, type);//setting color based on feature type
@@ -377,33 +425,33 @@ void drawFeatures(ezgl::renderer *g){//draws features
         }
     }
 }
-
+ 
 bool checkPOIFilter(std::string poiType){
     if(std::find(poiFilter.begin(), poiFilter.end(), poiType) != poiFilter.end()){
         return true;
     }return false;
 }
-
+ 
 void drawPoi(ezgl::renderer *g){
     for (int i = 0; i < poi.size(); i++) {
         if(!poiFilterActive||checkPOIFilter(getPOIType(i))){
             double x = x_from_lon(poi[i].position.longitude());
             double y = y_from_lat(poi[i].position.latitude());
-
+ 
             if (colorBlind) {
                 g->set_color(96,92,75,255);
             }else{
                 g->set_color(ezgl::BLUE);
             }
-
+ 
             double width = 15;
             float height = width;
-
+ 
             g->fill_arc({x - width / 2, y - height / 2}, 3.5, 0, 360);
         }
     }
 }
-
+ 
 void drawPoiLabel(ezgl::renderer *g){
     if(aspVar >= 16.666){
     g -> set_font_size(10);
@@ -416,57 +464,57 @@ void drawPoiLabel(ezgl::renderer *g){
             double width = 15;
             double height = width;
             ezgl::point2d center(x - width / 2, y - height / 2);
-
+ 
             float poiLen = 100;
             g->draw_text(center, poiName, poiLen, poiLen);
         }
     }
     }
 }
-
-
-
+ 
+ 
+ 
 void docButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
     poiFilter = poiFilterHealthcare;
     application->refresh_drawing(); //refreshes
 }
-
+ 
 void bkButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
     poiFilter = poiFilterEducation;
     application->refresh_drawing(); //refreshes
 }
-
+ 
 void carButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
     poiFilter = poiFilterTransportation;
     application->refresh_drawing(); //refreshes
 }
-
+ 
 void artButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
     poiFilter = poiFilterArt;
     application->refresh_drawing(); //refreshes
 }
-
+ 
 void foodButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
     poiFilter = poiFilterFood;
     application->refresh_drawing(); //refreshes
 }
-
+ 
 void monButtonClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = true;
     poiFilter = poiFilterFinance;
     application->refresh_drawing(); //refreshes
 }
-
+ 
 void filClrClk(GtkEntry *,ezgl::application *application){
     poiFilterActive = false;
     application->refresh_drawing(); //refreshes
 }
-
+ 
 void loadFilterButtons(ezgl::application *application){
     g_signal_connect(//connecting map select button to callback function
             application->get_object("doctorFilterBtn"),
@@ -511,7 +559,7 @@ void loadFilterButtons(ezgl::application *application){
             application
     );
 }
-
+ 
 void initial_setup(ezgl::application *application, bool){
     firstStreetEntry = (GtkEntry*)(application -> get_object("FirstStreet"));
     secondStreetEntry = (GtkEntry*)(application -> get_object("SecondStreet"));
@@ -520,12 +568,6 @@ void initial_setup(ezgl::application *application, bool){
     helpText = (GtkTextView *)(application -> get_object("HelpText"));
     poiFilterHelpBuffer = (GtkTextBuffer *)(application -> get_object("poiFilterHelpBuffer"));
     findPathHelpBuffer = (GtkTextBuffer *)(application -> get_object("findPathHelpBuffer"));
-    ZoomAndNavigateBuffer = (GtkTextBuffer *)(application -> get_object("ZoomAndNavigateBuffer"));
-    findPathHelpEntryBuffer = (GtkTextBuffer *)(application -> get_object("findPathHelpEntryBuffer"));
-    colourBlindHelpBuffer = (GtkTextBuffer *)(application -> get_object("colourBlindHelpBuffer"));
-    HelpTextBuffer1 = (GtkTextBuffer *)(application -> get_object("HelpTextBuffer1"));
-    findInterscetionHelpBuffer = (GtkTextBuffer *)(application -> get_object("findInterscetionHelpBuffer"));
-    mapSelectHelpBuffer = (GtkTextBuffer *)(application -> get_object("mapSelectHelpBuffer"));
     userGuideWindow = (GtkWidget*)(application -> get_object("UserWindowId"));
     mapBox = (GtkComboBox*) application->get_object("MapSelectBox");
     g_signal_connect(//connecting map select button to callback function
@@ -547,62 +589,35 @@ void initial_setup(ezgl::application *application, bool){
     g_signal_connect(application -> get_object("showPathBtn"), "clicked", G_CALLBACK(showPathButton), application);
     g_signal_connect(application -> get_object("UserGuide"), "activate", G_CALLBACK(helpMenuItem), application);
     g_signal_connect(application -> get_object("hideUserGuide"), "clicked", G_CALLBACK(hideUserManualButton), application);
-    
+ 
     g_signal_connect(application -> get_object("PoiFilterHelp"), "clicked", G_CALLBACK(poiFilterHelp), application);
     g_signal_connect(application -> get_object("FindPathHelp"), "clicked", G_CALLBACK(FindPathHelp), application);
-    g_signal_connect(application -> get_object("mapSelectHelp"), "clicked", G_CALLBACK(mapSelectHelp), application);
-    g_signal_connect(application -> get_object("ZoomAndNavigate"), "clicked", G_CALLBACK(ZoomAndNavigate), application);
-    g_signal_connect(application -> get_object("findPathHelpEntry"), "clicked", G_CALLBACK(findPathHelpEntry), application);
-    g_signal_connect(application -> get_object("colourBlindHelp"), "clicked", G_CALLBACK(colourBlindHelp), application);
-    g_signal_connect(application -> get_object("User Guide"), "clicked", G_CALLBACK(UserGuide), application);
-
-    g_signal_connect(application -> get_object("findInterscetionHelp"), "clicked", G_CALLBACK(findInterscetionHelp), application);
+ 
+ 
+ 
     loadFilterButtons(application);
 }
-
+ 
 //function that sets the text to the user guide for poi filter
-void poiFilterHelp(GtkWidget*){
+void poiFilterHelp(GtkWidget*, ezgl::application *application){
     gtk_text_view_set_buffer (helpText, poiFilterHelpBuffer);
 }
-
-void FindPathHelp(GtkWidget*){
+ 
+void FindPathHelp(GtkWidget*, ezgl::application *application){
     gtk_text_view_set_buffer (helpText, findPathHelpBuffer);
 }
-
-void mapSelectHelp(GtkWidget*){
-    gtk_text_view_set_buffer (helpText, mapSelectHelpBuffer);
-}
-void ZoomAndNavigate(GtkWidget*){
-   gtk_text_view_set_buffer (helpText, ZoomAndNavigateBuffer);
-}
-
-
-void findInterscetionHelp(GtkWidget*){
-    gtk_text_view_set_buffer (helpText, findInterscetionHelpBuffer);
-}
-void colourBlindHelp(GtkWidget*){
-    gtk_text_view_set_buffer (helpText, colourBlindHelpBuffer);
-}
-
-void UserGuide(GtkWidget*){
-    gtk_text_view_set_buffer (helpText, HelpTextBuffer1);
-}
-
-void findPathHelpEntry (GtkWidget*){
-     gtk_text_view_set_buffer (helpText, findPathHelpEntryBuffer);
-}
-
+ 
 void showPathButton(GtkEntry *,ezgl::application *application){
-    directions(directionPath);
+ 
     showPath = !showPath;
     application -> refresh_drawing();
-    //test = true;
+    test = true;
 }
-
-
-
+ 
+ 
+ 
 //////////////////////////////
-
+ 
 void clearHighlightButton(GtkEntry *,ezgl::application *application){
     for(int i = 0; i < intersections.size(); i++){
         if(intersections[i].highlight){
@@ -620,15 +635,15 @@ void clearHighlightButton(GtkEntry *,ezgl::application *application){
    // std::cout << "button pressed \n";
     application->refresh_drawing();
 }
-
+ 
 void colorBlindToggle(GtkEntry *,ezgl::application *application){
     colorBlind = !colorBlind;
     application->refresh_drawing();
 }
-
+ 
 void selectButtonClk(GtkEntry *,ezgl::application *application){//callback function when map select button is pressed
     selectedMap = gtk_combo_box_get_active(mapBox);//fetching selection
-
+ 
     if(selectedMap == -1){//if nothing selected and button pressed, prompt selection
         //application -> update_message("Select Map");
     }else{
@@ -651,121 +666,121 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
             if(!load_success) {
                 std::cerr << "Failed to load map '" << mapInfo[selectedMap].name << "'\n";//error catch
                 return;
-                
+ 
             }else{
                 //application -> update_message(mapInfo[selectedMap].name + " loaded");
             }
             drawNewMap(application);//draws new map
-
+ 
         }
         application->refresh_drawing(); //refreshes
     }
 }
-
-void helpMenuItem(GtkWidget*){
+ 
+void helpMenuItem(GtkWidget*, ezgl::application *application){
     std::cout<<"help button activated"<<std::endl;
     gtk_widget_show (userGuideWindow);
 }
-
+ 
 //subwindows cannot be closed normally if they are created only once and they need to be hidden in the background
-void hideUserManualButton(GtkEntry *){
+void hideUserManualButton(GtkEntry *,ezgl::application *application){
     gtk_widget_hide (userGuideWindow);
 }
-
+ 
 void findButton(GtkWidget *, ezgl::application *application){
     //Redraw Main Canvas
     application -> refresh_drawing();
-    
-    
+ 
+ 
     std::string firstTerm = gtk_entry_get_text(firstStreetEntry);
     std::string secondTerm = gtk_entry_get_text(secondStreetEntry);
     std::cout<< "first search term: " << firstTerm << ", " << " second search term: " << secondTerm << std::endl;
-    
+ 
     //helps identify which find button has been pressed to the findFunction;
     const int noIntersection = 0;
-    
+ 
     findFunction(firstTerm, secondTerm, noIntersection);
-            
+ 
     application->refresh_drawing();
-    
-
+ 
+ 
 }
-
+ 
 //function that works with the find path button
 void findPathButton(GtkWidget *, ezgl::application *application){
    application -> refresh_drawing();
-    
+ 
     //parse the names of the 2 intersections
     std::string firstTerm = gtk_entry_get_text(FirstIntersectionEntry);
     std::string secondTerm = gtk_entry_get_text(secondIntersectionEntry);
-    
+ 
     //separate the names of the 4 streets and find them
     if(firstTerm.find("&") && secondTerm.find("&") ){
-        
+ 
     //help identify which find button has been pressed to the findFunction;
         const int fromIntersection = 1;
         const int toIntersection = 2;
-        
-     
+ 
+ 
         std::size_t positionOfAndInFirst = firstTerm.find("&");
         std::size_t positionOfAndInSecond = secondTerm.find("&");
-        
-        
+ 
+ 
         std::string firstStreet = firstTerm.substr (0, positionOfAndInFirst);
         std::string secondStreet = firstTerm.substr (positionOfAndInFirst + 1);
-        
+ 
         std::string thirdStreet = secondTerm.substr (0, positionOfAndInSecond);
         std::string fourthStreet = secondTerm.substr (positionOfAndInSecond + 1);
-        
+ 
         //find the names of the intersections (using the same function from last milestone)
         IntersectionIdx firstIntersection = findFunction(firstStreet, secondStreet, fromIntersection);
         IntersectionIdx secondIntersection = findFunction(thirdStreet, fourthStreet, toIntersection);
-        
+ 
         //find the path between the intersections
         std::vector<int> pathSegmentIDs = findPathBetweenIntersections(firstIntersection,secondIntersection,15);
         //highlight the path between the intersections
-        
+ 
         showPath = true;
         application -> refresh_drawing();
-        
+ 
         //print diresctions
     }
-    
-    
+ 
+ 
 }
-
+ 
 //function that finds the intersections of streets 2 given street names. 
 //also prints some stuff about them depending on whether it's used with find intersections or find path functions
 IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int intersectionNumber){
-    
+ 
     IntersectionIdx returnIntersection = -1;
-    
+ 
     if (firstTerm != "" && secondTerm != ""){
-        
+ 
         std::vector<StreetIdx> possibleFirstStreets = findStreetIdsFromPartialStreetName(firstTerm);
         std::vector<StreetIdx> possibleSecondStreets = findStreetIdsFromPartialStreetName(secondTerm);
         std::string correctFirstStreetName = "";
         std::string correctSecondStreetName = "";
         std::vector<std::string> possibleFirstStreetsNames;
         std::vector<std::string> possibleSecondStreetsNames;
-        
+ 
         for(int i = 0; i< possibleFirstStreets.size();i++){
            possibleFirstStreetsNames.push_back( getStreetName(possibleFirstStreets[i]));
         }
-        
+ 
         for(int i = 0; i< possibleSecondStreets.size();i++){
            possibleSecondStreetsNames.push_back( getStreetName(possibleSecondStreets[i]));
         }
         std::sort( possibleFirstStreetsNames.begin(), possibleFirstStreetsNames.end() );
             possibleFirstStreetsNames.erase( std::unique( possibleFirstStreetsNames.begin(), possibleFirstStreetsNames.end() ), possibleFirstStreetsNames.end() );
-            
+ 
         std::sort( possibleSecondStreetsNames.begin(), possibleSecondStreetsNames.end() );
             possibleSecondStreetsNames.erase( std::unique( possibleSecondStreetsNames.begin(), possibleSecondStreetsNames.end() ), possibleSecondStreetsNames.end() );   
-            
+ 
         if((possibleFirstStreetsNames.size() == 1) && (possibleSecondStreetsNames.size() == 1)){
             std::string fullFirstFromPartial = possibleFirstStreetsNames[0];
             std::string fullSecondFromPartial = possibleSecondStreetsNames[0];
-            
+ 
             //this is for testing for now. Actual needs to only print if intersection number is 0
             if((intersectionNumber == 0) || (intersectionNumber == 1)){
                 std::cout << "first street name: " << fullFirstFromPartial <<std::endl;
@@ -774,8 +789,8 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                 std::cout << "third street name: " << fullFirstFromPartial <<std::endl;
                 std::cout << "fourth street name: " << fullSecondFromPartial <<std::endl;
             }
-            
-            
+ 
+ 
             std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({possibleFirstStreets[0], possibleSecondStreets[0]}); 
             //print all the names of the intersections if we are finding common intersections
             if (intersectionNumber == 0){
@@ -785,21 +800,21 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                     std::cout << "   " << intersections[intersectionsOfStreets[i]].name << std::endl;
                     intersections[intersectionsOfStreets[i]].highlight = true;
                 }
-                
+ 
             //if we are finding the path print the name of the FIRST intersection in the list of 
             //common intersections and then return that name    
-                
+ 
             }else if((intersectionNumber == 2) || (intersectionNumber == 1)){
               std::cout << "name of  intersection #" << intersectionNumber << " is: " <<std::endl;
               returnIntersection = intersectionsOfStreets[0];
               std::cout << intersections[intersectionsOfStreets[0]].name<< std::endl;
-              
+ 
               intersections[intersectionsOfStreets[0]].highlight = true;
-              
+ 
             }
 //            std::cout << "if "<<std::endl;
         }else{
-            
+ 
             for (int i = 0; i < possibleFirstStreets.size(); ++i){
                 if (getStreetName(possibleFirstStreets[i]) == firstTerm){
                     correctFirstStreetName = firstTerm;
@@ -818,15 +833,15 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                 }
                 std::cout << "all possible names for second: " << std::endl;
                 for (int i = 0; i < possibleSecondStreetsNames.size(); ++i){
-
+ 
                     std::cout << possibleSecondStreetsNames[i] << std::endl;
                 }
             }
             else{
-                
+ 
                 std::string fullFirstFromPartial = correctFirstStreetName;
                 std::string fullSecondFromPartial = correctSecondStreetName;
-                
+ 
                 if((intersectionNumber == 0) || (intersectionNumber == 1)){
                     std::cout << "first full street name: " << fullFirstFromPartial <<std::endl;
                     std::cout << "second full street name: " << fullSecondFromPartial <<std::endl;
@@ -834,13 +849,13 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                 std::cout << "third full street name: " << fullFirstFromPartial <<std::endl;
                 std::cout << "fourth full street name: " << fullSecondFromPartial <<std::endl;
                 }
-                
+ 
                 std::vector<StreetIdx> firstS = findStreetIdsFromPartialStreetName(correctFirstStreetName);
                 std::vector<StreetIdx> secondS = findStreetIdsFromPartialStreetName(correctSecondStreetName);
                 std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({firstS[0], secondS[0]}); 
                 //std::cout << "street ids: " << firstS[0] << "     " << secondS[0] << std::endl;
                 //std::cout << "street names: " << getStreetName(firstS[0]) << "     " << getStreetName(secondS[0]) << std::endl;
-               
+ 
                 if(intersectionNumber == 0){
                     std::cout << "names of common intersections are:" << std::endl;
                     std::cout << intersectionsOfStreets.size() << std::endl;
@@ -853,44 +868,39 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                     std::cout << "name of  intersection #" << intersectionNumber << " is: " <<std::endl;
                     returnIntersection = intersectionsOfStreets[0];
                     std::cout << intersections[intersectionsOfStreets[0]].name<< std::endl;
-
+ 
                     intersections[intersectionsOfStreets[0]].highlight = true;
-                    
+ 
                 }    
            // std::cout << "else "<<std::endl;
             }
         }
-        
+ 
     }else if (firstTerm == "" && secondTerm != ""){
         std::cout << "needs a first street" << std::endl << "first entry: " << secondTerm << std::endl;
     }else if (firstTerm != "" && secondTerm == ""){
         std::cout << "needs a second street" << std::endl << "second entry: " << firstTerm << std::endl;
     }
-
+ 
     return returnIntersection;
 }
-
+ 
 void drawStreetLabels(ezgl:: renderer *g){
     g-> set_color(ezgl::BLACK);
     for(int i = 0; i < streetPositions.size(); i++){
         std::string streetName = streetPositions[i].name;
-        for(int j = 0; j < streetPositions[i].positions.size(); j+=20){
+        for(int j = 0; j < streetPositions[i].positions.size(); j+=10){
             double firstX = x_from_lon(streetPositions[i].positions[j].longitude());
             double firstY = y_from_lat(streetPositions[i].positions[j].latitude());
             double secondX = x_from_lon(streetPositions[i].positions[j+1].longitude());
             double secondY = y_from_lat(streetPositions[i].positions[j+1].latitude());
-            
+ 
             double deltaX = secondX - firstX;
             double deltaY = secondY - firstY;
-            
+ 
             double theta = atan(deltaY/deltaX);
             theta = theta/kDegreeToRadian;
-            
-                if((theta < -90) && (theta > -270)){
-        theta = theta + 180;
-    }else if((theta > 90) && (theta < 270)){
-        theta = -180 + theta;
-    }
+ 
             double midPointX = (firstX+secondX)/2;
             double midPointY = (firstY+secondY)/2;
             ezgl::point2d center(midPointX,midPointY);
@@ -900,11 +910,11 @@ void drawStreetLabels(ezgl:: renderer *g){
             }
         }
     }
-            
+ 
 }
-
+ 
 void drawPath(ezgl:: renderer *g){
-    std::vector<int> pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,calcTurnPenalty(firstID, secondID));
+    std::vector<int> pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,0);
     if(showPath) //works when button show Path button is clicked
     {
     if(pathSegmentIDs.size() == 0){
@@ -917,7 +927,7 @@ void drawPath(ezgl:: renderer *g){
         int toPoint = getStreetSegmentInfo(segID).to; // grab the to point ID
         LatLon fromPosition = getIntersectionPosition(fromPoint); // latlon position of from
         LatLon toPosition = getIntersectionPosition(toPoint); // latlon position of to
-
+ 
         double firstX = x_from_lon(fromPosition.longitude()); // grab x position
         double firstY = y_from_lat(fromPosition.latitude());  // grab y position
         double lastX = x_from_lon(toPosition.longitude()); // grab x position
@@ -930,12 +940,12 @@ void drawPath(ezgl:: renderer *g){
         double length2 = 50;
         double cosVal = cos(0.1);
         double sinVal= sin(0.1);
-        
+ 
         double x3 = lastX + (length2/length1)*((dX*cosVal) + (dY*sinVal));
         double y3 = lastY + (length2/length1)*((dY*cosVal) - (dX*sinVal));
         double x4 = lastX + (length2/length1)*((dX*cosVal) - (dY*sinVal));
         double y4 = lastY + (length2/length1)*((dY*cosVal) + (dX*sinVal));
-        
+ 
         ezgl::point2d point1(x3,y3);
         ezgl::point2d point2(x4,y4);
 //        double Norm = sqrt(dX * dX + dY * dY);
@@ -945,16 +955,16 @@ void drawPath(ezgl:: renderer *g){
 //        double aY = uDx * 1/2 + uDy * sqrt(3)/2;
 //        double bX = uDx * sqrt(3)/2 + uDy * 0.5;
 //        double bY = - uDx * 0.5 + uDy * sqrt(3)/2;
-        
+ 
 //       double point1X = (firstX + 2 * aX);
 //       double point1Y = (firstY + 2 * aY);
-       
+ 
  //      double point2X = (firstX + 2 * bX);
   //     double point2Y = (firstY + 2 * bY);
-       
+ 
        //ezgl::point2d point1(point1X, point1Y);
        //ezgl::point2d point2(point2X, point2Y);
-       
+ 
         ezgl::point2d start(firstX,firstY); 
         ezgl::point2d end(lastX,lastY);
         if(curvePoints == 0){
@@ -1007,22 +1017,22 @@ void drawPath(ezgl:: renderer *g){
             g-> draw_line({lastXs,lastYs} , end);
             //drawEnd(g,end);
         }
-        
+ 
         int endID = pathSegmentIDs.back();
         int endToPoint = getStreetSegmentInfo(endID).to;
         LatLon endPointPosition = getIntersectionPosition(endToPoint);
         double endX = x_from_lon(endPointPosition.longitude());
         double endY = y_from_lat(endPointPosition.latitude());
-        
+ 
         ezgl::point2d endPoint(endX,endY);
         drawEnd(g,endPoint);
         //std::cout << "Curve points: " << curvePoints << std::endl;
      }
-    //directions(pathSegmentIDs);
+    directions(pathSegmentIDs);
    }
  }
 }
-
+ 
 void drawSegments(ezgl::renderer *g){
     for (StreetSegmentIdx segment = 0; segment < points_on_segments.size(); ++segment) {
         //if(points_on_segments.size() <= )
@@ -1054,7 +1064,7 @@ void drawSegments(ezgl::renderer *g){
                 }else{
                     g->set_line_width(0);
                 }
-
+ 
                 std::pair<double, double> formerPoint = {xy_points_segments[segment][point].first, xy_points_segments[segment][point].second};
                 std::pair<double, double> latterPoint = {xy_points_segments[segment][point + 1].first, xy_points_segments[segment][point + 1].second};
                 g->set_color(234,191,75,255);
@@ -1076,8 +1086,8 @@ void drawSegments(ezgl::renderer *g){
                     posSidePoint = findPointOfReference( perpM, 0.5, por.first, por.second);
                     negSidePoint = findPointOfReference( perpM, -0.5, por.first, por.second);
                 }
-                
-                
+ 
+ 
                 g->draw_line({formerPoint.first, formerPoint.second}, {latterPoint.first, latterPoint.second});
                 g->fill_poly({{latterPoint.first, latterPoint.second}, {posSidePoint.first, posSidePoint.second}, {negSidePoint.first, negSidePoint.second}});
             }
@@ -1098,7 +1108,7 @@ void drawSegments(ezgl::renderer *g){
         }
     }
 }
-
+ 
 void directions(std::vector<int> path){
      //bool keepGoing = false;
      int lastSegID = path.back();
@@ -1138,10 +1148,10 @@ void directions(std::vector<int> path){
             std:: cout << "Head right onto " << secondSegName << std::endl;
             std::cout<< "             "<< std::endl;
         }
-        
+ 
         /*int fromID = getStreetSegmentInfo(path[i]).from;
         int toID = getStreetSegmentInfo(path[i]).to;
-        
+ 
         std::cout << fromID << std::endl;
         std::cout << toID << std::endl;
         std::cout << "     " << std::endl;*/
@@ -1159,8 +1169,8 @@ void directions(std::vector<int> path){
      }*/
  }
 }
-
-
+ 
+ 
 void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSegments, ezgl:: renderer *g){
     int numSegmentsInSection = streetSectionSegments.size();
     LatLon coordsOfmiddleFrom;
@@ -1169,12 +1179,12 @@ void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSeg
     StreetSegmentInfo middleSegmentInfo = getStreetSegmentInfo(middleSegmentOfSectionIdx);
     std::string streetName = getStreetName(middleSegmentInfo.streetID);
     if (middleSegmentInfo.numCurvePoints <= 0){
-        
+ 
         coordsOfmiddleFrom = getIntersectionPosition(middleSegmentInfo.from);
         coordsOfmiddleTo = getIntersectionPosition(middleSegmentInfo.to);
-        
-        
-        
+ 
+ 
+ 
     }else{
         int numberOfCurvePoints = middleSegmentInfo.numCurvePoints;
         int middleCurvePoint = numberOfCurvePoints/2;
@@ -1186,40 +1196,40 @@ void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSeg
            coordsOfmiddleFrom = getIntersectionPosition(middleSegmentInfo.from);
         coordsOfmiddleTo = getIntersectionPosition(middleSegmentInfo.to);
         }
-        
+ 
     }
     double fromX = x_from_lon(coordsOfmiddleFrom.longitude());
     double fromY = y_from_lat(coordsOfmiddleFrom.latitude());
-    
+ 
     double toX = x_from_lon(coordsOfmiddleTo.longitude());
     double toY = y_from_lat(coordsOfmiddleTo.latitude());
-    
+ 
     double deltaX = toX - fromX;
     double deltaY = toY - fromY;
-    
+ 
     double midPointX = (toX + fromX)/2;
     double midPointY = (toY + fromY)/2;
-    
+ 
     ezgl::point2d center(midPointX,midPointY);
-    
+ 
     double theta = atan(deltaY/deltaX);
     theta = theta/kDegreeToRadian; //convert to degrees
-    
+ 
 //    if((theta < -90) && (theta > -270)){
 //        theta = theta + 180;
 //    }else if((theta > 90) && (theta < 270)){
 //        theta = -180 + theta;
 //    }
-    
-    
+ 
+ 
     findDistanceBetweenTwoPoints(std::make_pair(coordsOfmiddleFrom, coordsOfmiddleTo));
     g->set_color(ezgl::BLACK);
     g->set_line_width(500);
     g->set_text_rotation(theta);
     g->draw_text(center, streetName, 100, 100);
-    
+ 
 }
-
+ 
 void drawStart(ezgl::renderer* g, ezgl::point2d start){
     if(colorBlind){
         g->set_color(191, 179, 42, 255);
@@ -1228,7 +1238,7 @@ void drawStart(ezgl::renderer* g, ezgl::point2d start){
     }
     g->fill_arc(start, 3.5, 0, 360);
 }
-
+ 
 void drawEnd(ezgl::renderer *g, ezgl::point2d end){
     if(colorBlind){
         g->set_color(96,92,75,255);
