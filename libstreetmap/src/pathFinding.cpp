@@ -49,12 +49,12 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
         double vectorTwoX = x_from_lon(dest.longitude()) - x_from_lon(intersectionPosition.longitude());
         double vectorTwoY = y_from_lat(dest.latitude()) - y_from_lat(intersectionPosition.latitude());
 
-        double angle = acos(dot(vectorOneX, vectorOneY, vectorTwoX, vectorTwoY) /
-                            (mag(vectorOneX, vectorOneY) * mag(vectorTwoX, vectorTwoY))); //formula for turn
+        double cross  = vectorOneX * vectorTwoY - vectorOneY * vectorTwoX;
 
-        if (angle < 180) {//if angle is greater than 180 left turn
+        if (cross > 0) {//if angle is greater than 0 left turn
             return "left";
         } else {
+            std::cout << "right occurs" << std::endl;
             return "right";
         }
     } else {
@@ -62,6 +62,7 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
     }
 
 }
+
 //calculates turn penalty as the average of the speed limits around the source intersection and destination intersection
 double calcTurnPenalty(IntersectionIdx source, IntersectionIdx dest) {
     int numOfSegment = 0;
