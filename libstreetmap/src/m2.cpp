@@ -72,7 +72,7 @@ void drawEnd(ezgl::renderer *g, ezgl::point2d end);
 //std::vector<LatLon> curvePointVector;
 //std::vector<std::pair<double,double>> xyPointsOfCurves;
 //std::vector<int> pathSegmentIDs;
-
+std::vector<int> directionPath;
 double highlightCount = 0;
 double mouseClick = 0;
 int firstID = 0;
@@ -161,6 +161,7 @@ void act_on_mouse_click(ezgl::application *app,
         intersections[id].highlight = true; // highlight the intersection
         std::cout << getIntersectionName(id) << ": " << id << std::endl;
        // pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15); // initializing pathSegmentIDs 
+        directionPath = findPathBetweenIntersections(firstID,secondID,15);
     }  
     app->refresh_drawing();
 }
@@ -301,7 +302,7 @@ void drawMainCanvas(ezgl::renderer *g) {
      
         
     }
-    drawStreetLabels(g);
+    //drawStreetLabels(g);
     drawPoiLabel(g);
     drawPath(g);
         //Sheppard Avenue West & Bangor Road
@@ -608,10 +609,10 @@ void FindPathHelp(GtkWidget*, ezgl::application *application){
 }
 
 void showPathButton(GtkEntry *,ezgl::application *application){
-    
+    directions(directionPath);
     showPath = !showPath;
     application -> refresh_drawing();
-    test = true;
+    //test = true;
 }
 
 
@@ -889,7 +890,7 @@ void drawStreetLabels(ezgl:: renderer *g){
     g-> set_color(ezgl::BLACK);
     for(int i = 0; i < streetPositions.size(); i++){
         std::string streetName = streetPositions[i].name;
-        for(int j = 0; j < streetPositions[i].positions.size(); j+=10){
+        for(int j = 0; j < streetPositions[i].positions.size(); j+=20){
             double firstX = x_from_lon(streetPositions[i].positions[j].longitude());
             double firstY = y_from_lat(streetPositions[i].positions[j].latitude());
             double secondX = x_from_lon(streetPositions[i].positions[j+1].longitude());
@@ -901,6 +902,11 @@ void drawStreetLabels(ezgl:: renderer *g){
             double theta = atan(deltaY/deltaX);
             theta = theta/kDegreeToRadian;
             
+                if((theta < -90) && (theta > -270)){
+        theta = theta + 180;
+    }else if((theta > 90) && (theta < 270)){
+        theta = -180 + theta;
+    }
             double midPointX = (firstX+secondX)/2;
             double midPointY = (firstY+secondY)/2;
             ezgl::point2d center(midPointX,midPointY);
@@ -1028,7 +1034,7 @@ void drawPath(ezgl:: renderer *g){
         drawEnd(g,endPoint);
         //std::cout << "Curve points: " << curvePoints << std::endl;
      }
-    directions(pathSegmentIDs);
+    //directions(pathSegmentIDs);
    }
  }
 }
