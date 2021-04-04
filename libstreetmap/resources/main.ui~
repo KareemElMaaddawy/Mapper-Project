@@ -90,6 +90,11 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/book.png</property>
   </object>
+  <object class="GtkImage" id="buttonsAndZoom">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/arrowsAndZoom.png</property>
+  </object>
   <object class="GtkImage" id="carPOI">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -104,6 +109,16 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/output-onlinepngtools (1).png</property>
+  </object>
+  <object class="GtkImage" id="findIntersectionsHelp">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/ACTUALFINDINTERSECTIONS.png</property>
+  </object>
+  <object class="GtkImage" id="findPathHelp">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/FindIntersectionHelp.png</property>
   </object>
   <object class="GtkTextBuffer" id="findPathHelpBuffer">
     <property name="text" translatable="yes">Path can be chosen in one of two ways:
@@ -659,12 +674,11 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkImageMenuItem" id="UserGuide">
-                            <property name="label">gtk-about</property>
+                          <object class="GtkMenuItem" id="UserGuide">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">User Guide</property>
                             <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
                           </object>
                         </child>
                       </object>
@@ -857,11 +871,20 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="mapSelection">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/chooseMap.png</property>
+  </object>
+  <object class="GtkImage" id="poiFilterHelp">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/poiFilterHelp.png</property>
+  </object>
   <object class="GtkApplicationWindow" id="UserWindowId">
     <property name="can_focus">False</property>
     <property name="window_position">center</property>
     <property name="deletable">False</property>
-    <property name="attached_to">UserGuide</property>
     <child>
       <placeholder/>
     </child>
@@ -909,10 +932,10 @@
             </child>
             <child>
               <object class="GtkButton" id="FindPathHelp">
-                <property name="label" translatable="yes">Find Path</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="image">findPathHelp</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -921,10 +944,10 @@
             </child>
             <child>
               <object class="GtkButton" id="PoiFilterHelp">
-                <property name="label" translatable="yes">poi filter</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="image">poiFilterHelp</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -932,11 +955,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
+              <object class="GtkButton" id="mapSelectHelp">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="image">mapSelection</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -944,11 +967,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
+              <object class="GtkButton" id="findInterscetionHelp">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="image">findIntersectionsHelp</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -969,10 +992,10 @@
             </child>
             <child>
               <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="image">buttonsAndZoom</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>

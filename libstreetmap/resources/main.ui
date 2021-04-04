@@ -100,6 +100,11 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">poiFilterImages/car.png</property>
   </object>
+  <object class="GtkImage" id="colourblindHelppic">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">poiFilterImages/colourBlindHelp.png</property>
+  </object>
   <object class="GtkImage" id="doctorPOI">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -979,19 +984,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="ZoomAndNavigate">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1020,6 +1013,18 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="colourBlindHelp">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">colourblindHelppic</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
