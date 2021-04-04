@@ -114,6 +114,7 @@ bool loadMap(std::string map_streets_database_filename) {
             double length = lengthHelper(i);
             segLength[i] = length;
             segTime[i] = length / getStreetSegmentInfo(i).speedLimit;
+            street_segment_info.push_back(getStreetSegmentInfo(i));
         }
         stLength = new double[numOfStreets];
         for(int i = 0; i < numOfStreets; i++){
@@ -121,7 +122,6 @@ bool loadMap(std::string map_streets_database_filename) {
             stLength[i] = stlength;
         }
 
-        numOfStreets = getNumStreets();
         streetNames = new std::string[numOfStreets]; //container to store streetnames
 
         for (int i = 0; i < numOfStreets; i++) { //formatting and storing street names w/o spaces and all lowercase
@@ -137,14 +137,6 @@ bool loadMap(std::string map_streets_database_filename) {
         street_names_of_intersection.resize(getNumIntersections());
 
         intersections_of_a_street.resize(getNumStreets());
-
-        //adjacentIntersections.resize(getNumIntersections());
-
-
-        for (int i = 0; i < getNumStreetSegments(); i++) {
-
-            street_segment_info.push_back(getStreetSegmentInfo(i)); // vector is filled with struct of info
-        }
 
         for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
             for (int segment = 0; segment < getNumIntersectionStreetSegment(intersection); segment++) {
@@ -174,50 +166,6 @@ bool loadMap(std::string map_streets_database_filename) {
             }
 
         }
-        /*FINDING ADJACENT INTERSECTIONS*/
-        //Helpers: findStreetSegmentsOfIntersection
-
-        /*logic:
-         loop through every intersection and then loop through the segments of that intersection
-         use findStreetSegmentsOfIntersection to find the ids of each segment
-         find the "to" and the "from" intersections of each segment
-         if those were not already stored in the adjacent intersections vector AND if the intersection we are on is the from intersection
-         Add the intersection to the intersections vector
-         if we are not on the from intersection but the street is a 2 way street then also add the intersection to the vector*/
-
-        // loop through intersections
-//        for (int intersection = 0; intersection < getNumIntersections(); intersection++) {
-//            //create a vector to store the segment id of each segment on the intersection
-//            const std::vector<StreetSegmentIdx> segments_of_current_intersection = findStreetSegmentsOfIntersection(intersection);
-//            //loop through the segments
-//            for (int segment = 0; segment < segments_of_current_intersection.size(); segment++){
-//                //assign the segments "to" intersection id to a variable called to, do the same for "from"
-//                IntersectionIdx to = getStreetSegmentInfo(segments_of_current_intersection[segment]).to;
-//                IntersectionIdx from = getStreetSegmentInfo(segments_of_current_intersection[segment]).from;
-//
-//                //check if the vecor of adjacent intersection doesn't have to and from
-//                if(!(std::find(std::begin(adjacentIntersections[intersection]), std::end(adjacentIntersections[intersection]), to) != std::end(adjacentIntersections[intersection]))){
-//                    if(!(std::find(std::begin(adjacentIntersections[intersection]), std::end(adjacentIntersections[intersection]), from) != std::end(adjacentIntersections[intersection]))) {
-//
-//                        //check if the current intersection is the "from" intersection
-//                        if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).from)) {
-//                            //add the "to" intersection to the adjacent intersections of the current intersection
-//                            adjacentIntersections[intersection].push_back(
-//                                    getStreetSegmentInfo(segments_of_current_intersection[segment]).to);
-//                        }
-//                        //check if the segment is not a one way segment
-//                        if (!getStreetSegmentInfo(segments_of_current_intersection[segment]).oneWay) {
-//                            //check if the current intersection is the "to" intersection
-//                            if (intersection == (getStreetSegmentInfo(segments_of_current_intersection[segment]).to)) {
-//                                //add the "from" intersection to the adjacent intersections of the current intersection
-//                                adjacentIntersections[intersection].push_back(
-//                                        getStreetSegmentInfo(segments_of_current_intersection[segment]).from);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
 
 
 
