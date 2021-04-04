@@ -911,7 +911,7 @@ void drawStreetLabels(ezgl:: renderer *g){
 }
 
 void drawPath(ezgl:: renderer *g){
-    std::vector<int> pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,15);
+    std::vector<int> pathSegmentIDs = findPathBetweenIntersections(firstID,secondID,0);
     if(showPath) //works when button show Path button is clicked
     {
     if(pathSegmentIDs.size() == 0){

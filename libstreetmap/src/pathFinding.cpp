@@ -136,6 +136,19 @@ std::vector<StreetSegmentIdx> reconstructPath(std::unordered_map<IntersectionIdx
     return path;
 }
 
+bool checkOneWay(IntersectionIdx source, IntersectionIdx dest){
+    StreetSegmentInfo segInfo = getStreetSegmentInfo(findSegmentBetweenIntersections(source, dest));
+    if(segInfo.oneWay){
+        if(source == segInfo.from){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        return true;
+    }
+}
+
 std::vector<StreetSegmentIdx> findPathBetweenIntersections(
         const IntersectionIdx intersect_id_start,
         const IntersectionIdx intersect_id_destination,
@@ -171,13 +184,16 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
                                                                         findSegmentBetweenIntersections(
                                                                                 current.intersection, neighbors[i]));
                 if (costSoFar.find(neighbors[i]) == costSoFar.end() || newCost < costSoFar[neighbors[i]]) {
-                    costSoFar[neighbors[i]] = newCost;
-                    StreetSegmentInfo heuristicInfo = getStreetSegmentInfo(
-                            findSegmentBetweenIntersections(current.intersection, neighbors[i]));
-                    double priority = newCost + calculateHeuristic(neighbors[i], intersect_id_destination,
-                                                                   heuristicInfo.speedLimit);
-                    queueOfIntersections.push(prioElem{neighbors[i], priority});
-                    pathOrigin[neighbors[i]] = current.intersection;
+                    if(checkOneWay(current.intersection, neighbors[i])) {
+
+                        costSoFar[neighbors[i]] = newCost;
+                        StreetSegmentInfo heuristicInfo = getStreetSegmentInfo(
+                                findSegmentBetweenIntersections(current.intersection, neighbors[i]));
+                        double priority = newCost + calculateHeuristic(neighbors[i], intersect_id_destination,
+                                                                       heuristicInfo.speedLimit);
+                        queueOfIntersections.push(prioElem{neighbors[i], priority});
+                        pathOrigin[neighbors[i]] = current.intersection;
+                    }
                 }
             }
         }

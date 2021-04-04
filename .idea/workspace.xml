@@ -12,7 +12,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="rewrote adjacentIntersections, fixed findPath?" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="wont revisit an intersection">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,7 +33,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="ff1a73fbfa6466b1241ae99d71a1905f2687cbd2" />
+        <entry key="$PROJECT_DIR$" value="ffe7494dedeb8beb08f1ee2c4555eb9f2cb57499" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -132,14 +136,7 @@
       <workItem from="1616864963734" duration="769000" />
       <workItem from="1617058661067" duration="876000" />
       <workItem from="1617218322153" duration="6710000" />
-      <workItem from="1617492425777" duration="443000" />
-    </task>
-    <task id="LOCAL-00010" summary="finished travel time">
-      <created>1613159203826</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1613159203826</updated>
+      <workItem from="1617492425777" duration="2306000" />
     </task>
     <task id="LOCAL-00011" summary="fixed mem leaks">
       <created>1613159575249</created>
@@ -477,7 +474,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617221855588</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="wont revisit an intersection">
+      <created>1617493079608</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1617493079609</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -509,7 +513,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="feature drawing done" />
     <MESSAGE value="seperated color for parks" />
     <MESSAGE value="changed road colors" />
     <MESSAGE value="commented" />
@@ -534,7 +537,8 @@
     <MESSAGE value="formatting" />
     <MESSAGE value="created calcTurnPenalty as a weighted average of speed limits on the path travelled" />
     <MESSAGE value="rewrote adjacentIntersections, fixed findPath?" />
-    <option name="LAST_COMMIT_MESSAGE" value="rewrote adjacentIntersections, fixed findPath?" />
+    <MESSAGE value="wont revisit an intersection" />
+    <option name="LAST_COMMIT_MESSAGE" value="wont revisit an intersection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
