@@ -54,7 +54,6 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
         if (cross > 0) {//if angle is greater than 0 left turn
             return "left";
         } else {
-            std::cout << "right occurs" << std::endl;
             return "right";
         }
     } else {
