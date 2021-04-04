@@ -24,6 +24,8 @@ struct compare{
 //helper to check if a left turn occurs, takes the previous street and the current street as parameters, and returns true if a left turn occurs
 std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
 
+bool checkOneWay(IntersectionIdx, IntersectionIdx);
+
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to);
 
 double dot(double oneX, double oneY, double twoX, double twoY);
