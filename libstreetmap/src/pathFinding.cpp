@@ -50,8 +50,9 @@ std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx d
         double vectorTwoY = y_from_lat(dest.latitude()) - y_from_lat(intersectionPosition.latitude());
 
         double cross  = vectorOneX * vectorTwoY - vectorOneY * vectorTwoX;
+        cross = asin(cross/ (mag(vectorOneX, vectorOneY)* mag(vectorTwoX, vectorTwoY)));
 
-        if (cross > 0) {//if angle is greater than 0 left turn
+        if (cross > 180) {//if angle is greater than 0 left turn
             return "left";
         } else {
             return "right";
@@ -102,6 +103,21 @@ std::string calculateDirectionT(StreetSegmentIdx sourceStreet, StreetSegmentIdx 
         double vectorTwoX = x_from_lon(dest.longitude()) - x_from_lon(intersectionPosition.longitude());
         double vectorTwoY = y_from_lat(dest.latitude()) - y_from_lat(intersectionPosition.latitude());
 
+        std::cout << x_from_lon(intersectionPosition.longitude()) << std::endl;std::cout << y_from_lat(intersectionPosition.latitude()) << std::endl;
+        std::cout << x_from_lon(source.longitude()) << std::endl;std::cout << y_from_lat(source.latitude()) << std::endl;
+        std::cout << x_from_lon(dest.longitude()) << std::endl;
+        std::cout << y_from_lat(dest.latitude()) << std::endl;
+
+
+
+
+        std::cout << vectorOneX << std::endl;
+        std::cout << vectorOneY << std::endl;
+        std::cout << vectorTwoX << std::endl;
+        std::cout << vectorTwoY << std::endl;
+
+
+
         double angle = acos(dot(vectorOneX, vectorOneY, vectorTwoX, vectorTwoY) /
                             (mag(vectorOneX, vectorOneY) * mag(vectorTwoX, vectorTwoY)));
 
@@ -144,7 +160,7 @@ double computePathTravelTime(const std::vector<StreetSegmentIdx> &path, const do
         if (i == 0) {//no need to check for left turn for the initial street segment
             travelTime += findStreetSegmentTravelTime(path[i]);
         } else {
-            direction = calculateDirectionT(path[i - 1], path[i]);
+            direction = calculateDirection(path[i - 1], path[i]);
             if (direction == "left") {
                 travelTime += findStreetSegmentTravelTime(path[i]) + turn_penalty;//if left turn occurs turn penalty is instituted
             } else {
@@ -152,6 +168,7 @@ double computePathTravelTime(const std::vector<StreetSegmentIdx> &path, const do
             }
         }
     }
+
     return travelTime;
 }
 //finds the street segment between a pair of intersections
