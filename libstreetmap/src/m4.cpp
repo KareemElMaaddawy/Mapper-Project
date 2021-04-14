@@ -38,16 +38,20 @@ DeliveryOrder loadDeliveryOrder(std::vector<DeliveryInf>& deliveries, std::vecto
     order.startingDepot = findClosestDepot(depots, deliveries[0].pickUp, order.turnPenalty);
     order.endingDepot = findClosestDepot(depots, deliveries[deliveries.size()-1].dropOff, order.turnPenalty);
 
-    for(int i = 0; i < order.deliveryOrder.size(); i+=2){
-        if(i == 0){
-            order.deliveryOrder[i] = order.startingDepot;
-        }else if(i == order.numberOfStops-1){
-            order.deliveryOrder[i] = order.endingDepot;
-        }else{
-            order.deliveryOrder[i] = deliveries[i].pickUp;
-            order.deliveryOrder[i+1] = deliveries[i].dropOff;
+    for(int i = 0; i < order.deliveryOrder.size()-2; i+=2){
+        for(int j = 0; j < 2; j++){
+            if(j == 0){
+                order.deliveryOrder[i+j] = deliveries[i].pickUp;
+            }else{
+                order.deliveryOrder[i+j] = deliveries[i].dropOff;
+            }
+
         }
     }
+
+    order.deliveryOrder.insert(order.deliveryOrder.begin(), order.startingDepot);
+    order.deliveryOrder.insert(order.deliveryOrder.end(), order.endingDepot);
+
     return order;
 }
 
