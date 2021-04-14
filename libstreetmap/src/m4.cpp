@@ -2,15 +2,7 @@
 #include <vector>
 #include "pathFinding.h"
 #include "m4.h"
-
-struct DeliveryOrder{
-    int startingDepot;
-    int endingDepot;
-    int numberOfStops;
-    std::vector<int> &deliveryOrder;
-    float turnPenalty;
-    DeliveryOrder();
-};
+#include "m4Functions.h"
 
 int findClosestDepot(std::vector<int>& depots, int intersection, float turn_penalty){
     int closestDepot = -1;

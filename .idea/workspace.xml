@@ -12,11 +12,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="made non static turn penalty">
-      <change afterPath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" afterDir="false" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="changed iterable">
+      <change afterPath="$PROJECT_DIR$/libstreetmap/src/m4Functions.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,21 +138,7 @@
       <workItem from="1617218322153" duration="6710000" />
       <workItem from="1617492425777" duration="7231000" />
       <workItem from="1617987514992" duration="3322000" />
-      <workItem from="1618419847329" duration="1095000" />
-    </task>
-    <task id="LOCAL-00014" summary="data structure to relate streetsegments to streets">
-      <created>1613164593029</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1613164593029</updated>
-    </task>
-    <task id="LOCAL-00015" summary="building streetlength">
-      <created>1613170155268</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1613170155268</updated>
+      <workItem from="1618419847329" duration="2222000" />
     </task>
     <task id="LOCAL-00016" summary="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543">
       <created>1613171637829</created>
@@ -484,7 +469,21 @@
       <option name="project" value="LOCAL" />
       <updated>1617499398586</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="basic implementation of m4 functions">
+      <created>1618425475024</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1618425475025</updated>
+    </task>
+    <task id="LOCAL-00064" summary="changed iterable">
+      <created>1618426283085</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1618426283085</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -516,8 +515,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="commented" />
-    <MESSAGE value="restored load poi" />
     <MESSAGE value="updated colorblind colors" />
     <MESSAGE value="progress on A* algorithm, heurisitic is based on euclidean distance" />
     <MESSAGE value="finished pathfinding, need to test and comment" />
@@ -541,7 +538,9 @@
     <MESSAGE value="wont revisit an intersection" />
     <MESSAGE value="fixed legality issues" />
     <MESSAGE value="made non static turn penalty" />
-    <option name="LAST_COMMIT_MESSAGE" value="made non static turn penalty" />
+    <MESSAGE value="basic implementation of m4 functions" />
+    <MESSAGE value="changed iterable" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed iterable" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
