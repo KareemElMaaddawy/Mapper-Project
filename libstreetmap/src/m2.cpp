@@ -687,101 +687,101 @@ void helpMenuItem(GtkWidget*, ezgl::application *application){
 void hideUserManualButton(GtkEntry *,ezgl::application *application){
     gtk_widget_hide (userGuideWindow);
 }
- 
+
 void findButton(GtkWidget *, ezgl::application *application){
     //Redraw Main Canvas
     application -> refresh_drawing();
- 
- 
+
+
     std::string firstTerm = gtk_entry_get_text(firstStreetEntry);
     std::string secondTerm = gtk_entry_get_text(secondStreetEntry);
     std::cout<< "first search term: " << firstTerm << ", " << " second search term: " << secondTerm << std::endl;
- 
+
     //helps identify which find button has been pressed to the findFunction;
     const int noIntersection = 0;
- 
+
     findFunction(firstTerm, secondTerm, noIntersection);
- 
+
     application->refresh_drawing();
- 
- 
+
+
 }
- 
+
 //function that works with the find path button
 void findPathButton(GtkWidget *, ezgl::application *application){
-   application -> refresh_drawing();
- 
+    application -> refresh_drawing();
+
     //parse the names of the 2 intersections
     std::string firstTerm = gtk_entry_get_text(FirstIntersectionEntry);
     std::string secondTerm = gtk_entry_get_text(secondIntersectionEntry);
- 
+
     //separate the names of the 4 streets and find them
     if(firstTerm.find("&") && secondTerm.find("&") ){
- 
-    //help identify which find button has been pressed to the findFunction;
+
+        //help identify which find button has been pressed to the findFunction;
         const int fromIntersection = 1;
         const int toIntersection = 2;
- 
- 
+
+
         std::size_t positionOfAndInFirst = firstTerm.find("&");
         std::size_t positionOfAndInSecond = secondTerm.find("&");
- 
- 
+
+
         std::string firstStreet = firstTerm.substr (0, positionOfAndInFirst);
         std::string secondStreet = firstTerm.substr (positionOfAndInFirst + 1);
- 
+
         std::string thirdStreet = secondTerm.substr (0, positionOfAndInSecond);
         std::string fourthStreet = secondTerm.substr (positionOfAndInSecond + 1);
- 
+
         //find the names of the intersections (using the same function from last milestone)
         IntersectionIdx firstIntersection = findFunction(firstStreet, secondStreet, fromIntersection);
         IntersectionIdx secondIntersection = findFunction(thirdStreet, fourthStreet, toIntersection);
- 
+
         //find the path between the intersections
-        std::vector<int> pathSegmentIDs = findPathBetweenIntersections(firstIntersection,secondIntersection,15);
+        std::vector<StreetSegmentIdx> pathSegmentIDs = findPathBetweenIntersections(firstIntersection,secondIntersection,15);
         //highlight the path between the intersections
- 
+
         showPath = true;
         application -> refresh_drawing();
- 
+
         //print diresctions
     }
- 
- 
+
+
 }
- 
+
 //function that finds the intersections of streets 2 given street names. 
 //also prints some stuff about them depending on whether it's used with find intersections or find path functions
 IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int intersectionNumber){
- 
+
     IntersectionIdx returnIntersection = -1;
- 
+
     if (firstTerm != "" && secondTerm != ""){
- 
+
         std::vector<StreetIdx> possibleFirstStreets = findStreetIdsFromPartialStreetName(firstTerm);
         std::vector<StreetIdx> possibleSecondStreets = findStreetIdsFromPartialStreetName(secondTerm);
         std::string correctFirstStreetName = "";
         std::string correctSecondStreetName = "";
         std::vector<std::string> possibleFirstStreetsNames;
         std::vector<std::string> possibleSecondStreetsNames;
- 
+
         for(int i = 0; i< possibleFirstStreets.size();i++){
-           possibleFirstStreetsNames.push_back( getStreetName(possibleFirstStreets[i]));
+            possibleFirstStreetsNames.push_back( getStreetName(possibleFirstStreets[i]));
         }
- 
+
         for(int i = 0; i< possibleSecondStreets.size();i++){
-           possibleSecondStreetsNames.push_back( getStreetName(possibleSecondStreets[i]));
+            possibleSecondStreetsNames.push_back( getStreetName(possibleSecondStreets[i]));
         }
         std::sort( possibleFirstStreetsNames.begin(), possibleFirstStreetsNames.end() );
-            possibleFirstStreetsNames.erase( std::unique( possibleFirstStreetsNames.begin(), possibleFirstStreetsNames.end() ), possibleFirstStreetsNames.end() );
- 
+        possibleFirstStreetsNames.erase( std::unique( possibleFirstStreetsNames.begin(), possibleFirstStreetsNames.end() ), possibleFirstStreetsNames.end() );
+
         std::sort( possibleSecondStreetsNames.begin(), possibleSecondStreetsNames.end() );
-            possibleSecondStreetsNames.erase( std::unique( possibleSecondStreetsNames.begin(), possibleSecondStreetsNames.end() ), possibleSecondStreetsNames.end() );   
- 
+        possibleSecondStreetsNames.erase( std::unique( possibleSecondStreetsNames.begin(), possibleSecondStreetsNames.end() ), possibleSecondStreetsNames.end() );
+
         if((possibleFirstStreetsNames.size() == 1) && (possibleSecondStreetsNames.size() == 1)){
             std::string fullFirstFromPartial = possibleFirstStreetsNames[0];
             std::string fullSecondFromPartial = possibleSecondStreetsNames[0];
- 
+
             //this is for testing for now. Actual needs to only print if intersection number is 0
             if((intersectionNumber == 0) || (intersectionNumber == 1)){
                 std::cout << "first street name: " << fullFirstFromPartial <<std::endl;
@@ -790,32 +790,32 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                 std::cout << "third street name: " << fullFirstFromPartial <<std::endl;
                 std::cout << "fourth street name: " << fullSecondFromPartial <<std::endl;
             }
- 
- 
-            std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({possibleFirstStreets[0], possibleSecondStreets[0]}); 
+
+
+            std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({possibleFirstStreets[0], possibleSecondStreets[0]});
             //print all the names of the intersections if we are finding common intersections
             if (intersectionNumber == 0){
                 std::cout << "names of common intersections are:" << std::endl;
                 for(int i = 0; i < intersectionsOfStreets.size(); ++i){
-                   // std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
-                    std::cout << "   " << intersections[intersectionsOfStreets[i]].name << std::endl;
+                    // std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
+                    std::cout << "   " << intersections[intersectionsOfStreets[i]].name;
                     intersections[intersectionsOfStreets[i]].highlight = true;
                 }
- 
-            //if we are finding the path print the name of the FIRST intersection in the list of 
-            //common intersections and then return that name    
- 
+
+                //if we are finding the path print the name of the FIRST intersection in the list of
+                //common intersections and then return that name
+
             }else if((intersectionNumber == 2) || (intersectionNumber == 1)){
-              std::cout << "name of  intersection #" << intersectionNumber << " is: " <<std::endl;
-              returnIntersection = intersectionsOfStreets[0];
-              std::cout << intersections[intersectionsOfStreets[0]].name<< std::endl;
- 
-              intersections[intersectionsOfStreets[0]].highlight = true;
- 
+                std::cout << "name of  intersection #" << intersectionNumber << " is: " <<std::endl;
+                returnIntersection = intersectionsOfStreets[0];
+                std::cout << intersections[intersectionsOfStreets[0]].name<< std::endl;
+
+                intersections[intersectionsOfStreets[0]].highlight = true;
+
             }
 //            std::cout << "if "<<std::endl;
         }else{
- 
+
             for (int i = 0; i < possibleFirstStreets.size(); ++i){
                 if (getStreetName(possibleFirstStreets[i]) == firstTerm){
                     correctFirstStreetName = firstTerm;
@@ -834,34 +834,34 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                 }
                 std::cout << "all possible names for second: " << std::endl;
                 for (int i = 0; i < possibleSecondStreetsNames.size(); ++i){
- 
+
                     std::cout << possibleSecondStreetsNames[i] << std::endl;
                 }
             }
             else{
- 
+
                 std::string fullFirstFromPartial = correctFirstStreetName;
                 std::string fullSecondFromPartial = correctSecondStreetName;
- 
+
                 if((intersectionNumber == 0) || (intersectionNumber == 1)){
                     std::cout << "first full street name: " << fullFirstFromPartial <<std::endl;
                     std::cout << "second full street name: " << fullSecondFromPartial <<std::endl;
                 }else if(intersectionNumber == 2){
-                std::cout << "third full street name: " << fullFirstFromPartial <<std::endl;
-                std::cout << "fourth full street name: " << fullSecondFromPartial <<std::endl;
+                    std::cout << "third full street name: " << fullFirstFromPartial <<std::endl;
+                    std::cout << "fourth full street name: " << fullSecondFromPartial <<std::endl;
                 }
- 
+
                 std::vector<StreetIdx> firstS = findStreetIdsFromPartialStreetName(correctFirstStreetName);
                 std::vector<StreetIdx> secondS = findStreetIdsFromPartialStreetName(correctSecondStreetName);
-                std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({firstS[0], secondS[0]}); 
+                std::vector<IntersectionIdx> intersectionsOfStreets = findIntersectionsOfTwoStreets({firstS[0], secondS[0]});
                 //std::cout << "street ids: " << firstS[0] << "     " << secondS[0] << std::endl;
                 //std::cout << "street names: " << getStreetName(firstS[0]) << "     " << getStreetName(secondS[0]) << std::endl;
- 
+
                 if(intersectionNumber == 0){
                     std::cout << "names of common intersections are:" << std::endl;
                     std::cout << intersectionsOfStreets.size() << std::endl;
                     for(int i = 0; i < intersectionsOfStreets.size(); ++i){
-                     //   std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
+                        //   std::cout<< "iterator: " << i << "     " << "intersecttionsOfStreetEntry" << intersectionsOfStreets[i] << std::endl;
                         std::cout << "   " << intersections[intersectionsOfStreets[i]].name << std::endl;
                         intersections[intersectionsOfStreets[i]].highlight = true;
                     }
@@ -869,20 +869,20 @@ IntersectionIdx findFunction(std::string firstTerm, std::string secondTerm, int 
                     std::cout << "name of  intersection #" << intersectionNumber << " is: " <<std::endl;
                     returnIntersection = intersectionsOfStreets[0];
                     std::cout << intersections[intersectionsOfStreets[0]].name<< std::endl;
- 
+
                     intersections[intersectionsOfStreets[0]].highlight = true;
- 
-                }    
-           // std::cout << "else "<<std::endl;
+
+                }
+                // std::cout << "else "<<std::endl;
             }
         }
- 
+
     }else if (firstTerm == "" && secondTerm != ""){
         std::cout << "needs a first street" << std::endl << "first entry: " << secondTerm << std::endl;
     }else if (firstTerm != "" && secondTerm == ""){
         std::cout << "needs a second street" << std::endl << "second entry: " << firstTerm << std::endl;
     }
- 
+
     return returnIntersection;
 }
  
@@ -1139,13 +1139,13 @@ void directions(std::vector<int> path){
         int secondSegStreetID = getStreetSegmentInfo(secondSegID).streetID; // fetch streetID of second seg
         std::string firstSegName = getStreetName(firstSegStreetID);
         std::string secondSegName = getStreetName(secondSegStreetID);
-        if(calculateDirection(firstSegID, secondSegID) == "straight"){
+        if(findDirection(firstSegID, secondSegID) == "straight"){
             std::cout << "Straight on " << firstSegName << " for " << findStreetSegmentLength(firstSegID) <<"m" << std::endl;
             std::cout<< "             "<< std::endl;
-        }else if(calculateDirection(firstSegID, secondSegID) == "left"){
+        }else if(findDirection(firstSegID, secondSegID) == "left"){
             std::cout << "Head left onto " << secondSegName << std::endl; 
                       std::cout<< "             "<< std::endl;  
-        }else if(calculateDirection(firstSegID, secondSegID) == "right"){
+        }else if(findDirection(firstSegID, secondSegID) == "right"){
             std:: cout << "Head right onto " << secondSegName << std::endl;
             std::cout<< "             "<< std::endl;
         }

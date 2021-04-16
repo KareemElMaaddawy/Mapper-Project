@@ -10,6 +10,30 @@
 #include "globalHeader.h"
 #include <algorithm>
 
+
+class Point{
+public:
+    double x;
+    double y;
+
+    Point(LatLon input){
+        x = x_from_lon(input.longitude());
+        y = y_from_lat(input.latitude());
+    }
+
+    Point(double xInput, double yInput){
+        x = xInput;
+        y = yInput;
+    }
+
+    Point subtract(Point second){
+        return Point(x - second.x, y - second.y);
+    }
+
+    void print(){
+        std::cout << "x: " + std::to_string(x) + " y: " + std::to_string(y) << std::endl;
+    }
+};
 struct prioElem{
     IntersectionIdx intersection;
     double priority;
@@ -22,17 +46,13 @@ struct compare{
 };
 
 //helper to check if a left turn occurs, takes the previous street and the current street as parameters, and returns true if a left turn occurs
-std::string calculateDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
-
-std::string calculateDirectionT(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
+std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
 
 bool checkOneWay(IntersectionIdx, IntersectionIdx);
 
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to);
 
-double dot(double oneX, double oneY, double twoX, double twoY);
-
-double mag(double x, double y);
+double findSlope(Point p0, Point p1);
 
 double calculateCost(const double turnPenalty,const IntersectionIdx soruceIntersection,const IntersectionIdx destinationIntersection);
 

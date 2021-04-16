@@ -32,7 +32,7 @@ constexpr int ERROR_EXIT_CODE = 1;          //An error occured
 constexpr int BAD_ARGUMENTS_EXIT_CODE = 2;  //Invalid command-line usage
 
 //The default map to load if none is specified
-std::string default_map_path = "/cad2/ece297s/public/maps/interlaken_switzerland.streets.bin";
+std::string default_map_path = "/cad2/ece297s/public/maps/toronto_canada.streets.bin";
 std::string defaultOSMFilePath = "/cad2/ece297s/public/maps/interlaken_switzerland.osm.bin";
 
 // The start routine of your program (main) when you are running your standalone
@@ -67,13 +67,8 @@ int main(int argc, char** argv) {
 
     std::cout << "Successfully loaded map '" << map_path << "'\n";
 
-    std::vector<StreetSegmentIdx> path = {2023, 2176, 1353, 2175, 998, 1846, 1389, 2115, 158, 1544, 78, 79, 80, 1886, 1885, 1884, 1883, 1854, 1853, 1852, 1851, 1129};
-    double turn_penalty = 2.68072293181142607;
-    //expected = 121.91283796741122103;
-    std::cout << computePathTravelTime(path, turn_penalty) << std::endl;
-
     //You can now do something with the map data
-    drawMap();
+    //drawMap();
 
     //Clean-up the map data and related data structures
     std::cout << "Closing map\n";

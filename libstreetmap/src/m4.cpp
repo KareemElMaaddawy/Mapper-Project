@@ -20,7 +20,7 @@ int findClosestDepot(std::vector<int>& depots, int intersection, float turn_pena
     return closestDepot;
 }
 
-DeliveryOrder loadDeliveryOrder(std::vector<DeliveryInf>& deliveries, std::vector<int>& depots, float turn_penalty){
+DeliveryOrder loadDeliveryOrder(std::vector<DeliveryInf> deliveries, std::vector<int> depots, float turn_penalty){
     DeliveryOrder order;
 
     order.turnPenalty = turn_penalty;
@@ -66,4 +66,12 @@ double computeDeliveryTravelTime(DeliveryOrder order){
         time += computePathTravelTime(findPathBetweenIntersections(order.deliveryOrder[i], order.deliveryOrder[i+1], order.turnPenalty), order.turnPenalty);
     }
     return time;
+}
+
+std::vector<CourierSubPath> travelingCourier(
+        const std::vector<DeliveryInf>& deliveries,
+        const std::vector<int>& depots,
+        const float turn_penalty){
+    DeliveryOrder order = loadDeliveryOrder(deliveries, depots, turn_penalty);
+    return findPaths(order);
 }
