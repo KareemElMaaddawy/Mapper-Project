@@ -12,13 +12,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="working on djikstra for m4">
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/Node.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/Node.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/global.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/ezgl/globalHeader.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" afterDir="false" />
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="finished djikstra for m4">
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,13 +139,6 @@
       <workItem from="1618419847329" duration="2222000" />
       <workItem from="1618509430641" duration="354000" />
       <workItem from="1618511654969" duration="13269000" />
-    </task>
-    <task id="LOCAL-00018" summary="commented out fillvector">
-      <created>1613613815299</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1613613815300</updated>
     </task>
     <task id="LOCAL-00019" summary="loaded feature info into structs, started drawing">
       <created>1615002595662</created>
@@ -488,7 +476,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618610721237</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="finished djikstra for m4">
+      <created>1618613895598</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1618613895598</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -520,7 +515,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="finished pathfinding, need to test and comment" />
     <MESSAGE value="finished pathfinding logic, need to fix errors" />
     <MESSAGE value="commented feature colours" />
     <MESSAGE value="finished pathFinding, need to test" />
@@ -545,7 +539,8 @@
     <MESSAGE value="changed iterable" />
     <MESSAGE value="fixed computePathCost" />
     <MESSAGE value="working on djikstra for m4" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on djikstra for m4" />
+    <MESSAGE value="finished djikstra for m4" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished djikstra for m4" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
