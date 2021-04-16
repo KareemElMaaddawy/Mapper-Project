@@ -9,6 +9,10 @@
 #include "m3.h"
 #include "globalHeader.h"
 #include <algorithm>
+#include "Node.h"
+
+#define NO_EDGE -1
+#define NO_TIME 0
 
 
 class Point{
@@ -35,13 +39,20 @@ public:
     }
 };
 struct prioElem{
-    IntersectionIdx intersection;
-    double priority;
+    Node* node;
+    int edgeId;
+    double travelTime;
+
+    prioElem(Node* n, int id, double time){
+        node = n;
+        edgeId = id;
+        travelTime = time;
+    }
 };
 
 struct compare{
     bool operator()(const prioElem & a, const prioElem & b){
-        return a.priority > b.priority;
+        return a.travelTime > b.travelTime;
     }
 };
 

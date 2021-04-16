@@ -12,14 +12,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="changed iterable">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="fixed computePathCost">
+      <change afterPath="$PROJECT_DIR$/libstreetmap/src/Node.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libstreetmap/src/Node.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m2.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m4Functions.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m4Functions.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,14 +143,7 @@
       <workItem from="1617987514992" duration="3322000" />
       <workItem from="1618419847329" duration="2222000" />
       <workItem from="1618509430641" duration="354000" />
-      <workItem from="1618511654969" duration="6014000" />
-    </task>
-    <task id="LOCAL-00016" summary="Revert &quot;merging ghamr's branch&quot;&#10;&#10;This reverts commit e43fb543">
-      <created>1613171637829</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1613171637829</updated>
+      <workItem from="1618511654969" duration="13269000" />
     </task>
     <task id="LOCAL-00017" summary="restructured partialStreetName around multimap, removed trie">
       <created>1613612495734</created>
@@ -489,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618426283085</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="fixed computePathCost">
+      <created>1618539065477</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1618539065477</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -521,7 +520,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="updated colorblind colors" />
     <MESSAGE value="progress on A* algorithm, heurisitic is based on euclidean distance" />
     <MESSAGE value="finished pathfinding, need to test and comment" />
     <MESSAGE value="finished pathfinding logic, need to fix errors" />
@@ -546,7 +544,8 @@
     <MESSAGE value="made non static turn penalty" />
     <MESSAGE value="basic implementation of m4 functions" />
     <MESSAGE value="changed iterable" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed iterable" />
+    <MESSAGE value="fixed computePathCost" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed computePathCost" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

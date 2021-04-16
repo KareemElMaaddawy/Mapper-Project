@@ -29,9 +29,12 @@
 #include "globalHeader.h"
 #include <vector>
 #include <map>
+#include "Node.h"
 #include <boost/functional/hash.hpp>
 #include <unordered_map>
 #include <bits/stdc++.h>
+
+#define NO_EDGE -1
 // loadMap will be called with the name of the file that stores the "layer-2"
 // map data accessed through StreetsDatabaseAPI: the street and intersection
 // data that is higher-level than the raw OSM data).
@@ -56,6 +59,8 @@ double *stLength;
 
 void loadAdjacentIntersections();
 // Vector Declerations
+
+std::vector<Node> nodes;
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
 //Includes repetition!!
@@ -95,6 +100,12 @@ void loadAdjacentIntersections(){
                 }
             }
         }
+    }
+}
+
+void fillNodes(){
+    for(int i = 0; i < getNumIntersections(); i++){
+        nodes[i] = Node(i, NO_EDGE, std::numeric_limits<int>::max());
     }
 }
 
