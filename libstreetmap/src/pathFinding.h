@@ -19,7 +19,7 @@ struct deliveryStop{
     IntersectionIdx intersection;
     std::string type;
 
-    deliveryPair(IntersectionIdx id, std::string intersectionType){
+    deliveryStop(IntersectionIdx id, std::string intersectionType){
         intersection = id; type = intersectionType;
     }
 };
@@ -69,6 +69,16 @@ struct compare{
 std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
 
 bool checkOneWay(IntersectionIdx, IntersectionIdx);
+
+bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_penalty);
+
+std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest);
+
+std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop> stops, const IntersectionIdx departurePoint, const double turn_penalty);
+
+Node* getNodeFromId(IntersectionIdx id);
+
+void clearVisitedNodes();
 
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to);
 

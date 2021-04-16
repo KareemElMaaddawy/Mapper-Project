@@ -1,7 +1,8 @@
 #include "pathFinding.h"
 
-std::vector<int, Node*> nodesExpanded;
-std::vect<std::pair<IntersectionIdx, std::string>> interVisited;
+bool pathFound;
+std::unordered_map<int, Node*> nodesExpanded;
+std::vector<deliveryStop> interVisited;
 double shortestTravelTime;
 
 double findSlope(Point p0, Point p1){
@@ -68,6 +69,8 @@ std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destSt
 double calcTurnPenalty(IntersectionIdx source, IntersectionIdx dest) {
     int numOfSegment = 0;
     double speed = 0;
+    bool leftTurn = false;
+
     std::vector<IntersectionIdx> sourceNeighbors = findAdjacentIntersections(source);
     std::vector<IntersectionIdx> destNeighbors = findAdjacentIntersections(dest);
 
@@ -157,12 +160,62 @@ bool checkOneWay(IntersectionIdx source, IntersectionIdx dest){
     }
 }
 
-bool djikstra(std::vector<DeliveryStop> stops, Node* source, const double turn_penalty){
+void clearVisitedNodes(){
+    for(std::unordered_map<int, Node*>::iterator it = nodesExpanded.begin(); it != nodesExpanded.end(); ++it){
+        delete (*it).second;
+    }
+    nodesExpanded.clear();
+}
+
+Node* getNodeFromId(IntersectionIdx id){
+    return &nodes[id];
+}
+
+std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop> stops, const IntersectionIdx departurePoint, const double turn_penalty){
+    std::vector<StreetSegmentIdx> path;
+    Node* source = getNodeFromId(departurePoint);
+
+    bool found = djikstra(stops, source, turn_penalty);
+
+    if(found){
+        IntersectionIdx id = interVisited.back().intersection;
+        path = traceback(id);
+    }
+    clearVisitedNodes();
+    return path;
+}
+
+
+std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest){
+    std::vector<StreetSegmentIdx> path;
+    Node* currentNode = getNodeFromId(dest);
+
+    IntersectionIdx interId = dest;
+
+    int reachingSegment = currentNode->reachingEdge;
+    while(reachingSegment != NO_EDGE){
+        path.insert(path.begin(),reachingSegment);
+        StreetSegmentInfo segInfo = getStreetSegmentInfo(reachingSegment);
+
+        if(segInfo.from == interId){
+            currentNode = getNodeFromId(segInfo.to);
+        }else{
+            currentNode = getNodeFromId(segInfo.from);
+        }
+
+        interId = currentNode->id;
+        reachingSegment = currentNode->reachingEdge;
+    }
+    return path;
+}
+
+bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_penalty){
     std::priority_queue<prioElem, std::vector<prioElem>, compare> queue;
     queue.push(prioElem(source, NO_EDGE, NO_TIME));
-
     shortestTravelTime = 0;
+
     bool destReached = false;
+    bool leftTurn = false;
 
     while(!destReached){
         while(!queue.empty()){
@@ -175,8 +228,8 @@ bool djikstra(std::vector<DeliveryStop> stops, Node* source, const double turn_p
                 current->bestTime = currentElem.travelTime;
                 current->reachingEdge = currentElem.edgeId;
 
-                for(std::vector<DeliveryStop>::iterator it = stops.begin(); it != nodes.end(); ++it){
-                    if(current->id == it->id){
+                for(std::vector<deliveryStop>::iterator it = stops.begin(); it != stops.end(); ++it){
+                    if(current->id == it->intersection){
                         shortestTravelTime = currentElem.travelTime;
                         interVisited.push_back(*it);
                         destReached = true;
@@ -188,7 +241,7 @@ bool djikstra(std::vector<DeliveryStop> stops, Node* source, const double turn_p
 
                 IntersectionIdx nodeId;
 
-                for(std::vector<StreetSegmentIdx> segIt = current->outgoingEdges.begin(); segIt != current->outgoingEdges.end(); ++segIt){
+                for(std::vector<StreetSegmentIdx>::iterator segIt = current->outgoingEdges.begin(); segIt != current->outgoingEdges.end(); ++segIt){
                     StreetSegmentInfo segInfo = getStreetSegmentInfo(*segIt);
                     if(segInfo.from == current->id){
                         if(segInfo.oneWay){
@@ -202,16 +255,28 @@ bool djikstra(std::vector<DeliveryStop> stops, Node* source, const double turn_p
 
                     if(current != source){
                         StreetSegmentInfo tempInfo = getStreetSegmentInfo(current->reachingEdge);
-
+                        std::string direction = findDirection(segInfo.streetID, tempInfo.streetID);
+                        if(direction == "left"){
+                            leftTurn = true;
+                        }else{
+                            leftTurn = false;
+                        }
                     }
-                    queue.push(prioElem(getNodeFromId()));
+                    if(leftTurn){
+                        queue.push(prioElem(getNodeFromId(nodeId), *segIt, currentElem.travelTime+ findStreetSegmentTravelTime(*segIt)+ turn_penalty));
+                    }else{
+                        queue.push(prioElem(getNodeFromId(nodeId), *segIt, currentElem.travelTime+ findStreetSegmentTravelTime(*segIt)));
+                    }
                 }
             }
         }
     }
 
-
+    return false;
 }
+
+
+
 
 
 std::vector<StreetSegmentIdx> findPathBetweenIntersections(
@@ -219,49 +284,49 @@ std::vector<StreetSegmentIdx> findPathBetweenIntersections(
         const IntersectionIdx intersect_id_destination,
         const double turn_penalty
 ) {
-    std::unordered_map<IntersectionIdx, double> costSoFar; //holds costs to travel to nodes
-    std::unordered_map<IntersectionIdx, IntersectionIdx> pathOrigin; // holds previous node
-    std::vector<IntersectionIdx> visited;//holds if a node has been visted
-    std::priority_queue<prioElem, std::vector<prioElem>, compare> queueOfIntersections; //mini heap to store queue for streets that need to be expanded upon
-
-    queueOfIntersections.push(prioElem{intersect_id_start, 0}); //push source intersection to heap
-    pathOrigin[intersect_id_start] = intersect_id_start;
-    costSoFar[intersect_id_start] = 0; //zero cost for source
-
-    while (!queueOfIntersections.empty()) { //loops till heap is empty
-        prioElem current = queueOfIntersections.top(); //get value from the top of the queue
-        queueOfIntersections.pop(); //remove entry from queue
-
-        if (current.intersection == intersect_id_destination) { //allow for early exit if destination reached
-            return reconstructPath(pathOrigin, intersect_id_destination, intersect_id_start);
-        }
-
-        visited.push_back(current.intersection); //mark intersection as visited
-
-        std::vector<IntersectionIdx> neighbors = findAdjacentIntersections(current.intersection); //find neighboring intersections
-
-        for (int & neighbor : neighbors) { //loop through neighbors
-
-            if(std::find(visited.begin(), visited.end(), neighbor) == visited.end()) {//only expand the intersection if it hasnt been expanded
-                double newCost =
-                        costSoFar[current.intersection] + calculateCost(turn_penalty, findSegmentBetweenIntersections(
-                                pathOrigin[current.intersection], current.intersection),
-                                                                        findSegmentBetweenIntersections(
-                                                                                current.intersection, neighbor));//calculate new cost of reaching intersection
-                if (costSoFar.find(neighbor) == costSoFar.end() || newCost < costSoFar[neighbor]) {//if no cost exists or new cost is lower that existing cost
-                    if(checkOneWay(current.intersection, neighbor)) {//check if legal movement
-                        costSoFar[neighbor] = newCost;//new cost becomes the new cost
-                        StreetSegmentInfo heuristicInfo = getStreetSegmentInfo(
-                                findSegmentBetweenIntersections(current.intersection, neighbor));
-                        double priority = newCost + calculateHeuristic(neighbor, intersect_id_destination,
-                                                                       heuristicInfo.speedLimit);//calculate priority for the heap
-                        queueOfIntersections.push(prioElem{neighbor, priority});//push to heap
-                        pathOrigin[neighbor] = current.intersection;//mark path origin
-
-                    }
-                }
-            }
-        }
-    }
+//    std::unordered_map<IntersectionIdx, double> costSoFar; //holds costs to travel to nodes
+//    std::unordered_map<IntersectionIdx, IntersectionIdx> pathOrigin; // holds previous node
+//    std::vector<IntersectionIdx> visited;//holds if a node has been visted
+//    std::priority_queue<prioElem, std::vector<prioElem>, compare> queueOfIntersections; //mini heap to store queue for streets that need to be expanded upon
+//
+//    //queueOfIntersections.push(prioElem{intersect_id_start, 0, 0}); //push source intersection to heap
+//    pathOrigin[intersect_id_start] = intersect_id_start;
+//    costSoFar[intersect_id_start] = 0; //zero cost for source
+//
+//    while (!queueOfIntersections.empty()) { //loops till heap is empty
+//        prioElem current = queueOfIntersections.top(); //get value from the top of the queue
+//        queueOfIntersections.pop(); //remove entry from queue
+//
+//        if (current.intersection == intersect_id_destination) { //allow for early exit if destination reached
+//            return reconstructPath(pathOrigin, intersect_id_destination, intersect_id_start);
+//        }
+//
+//        visited.push_back(current.intersection); //mark intersection as visited
+//
+//        std::vector<IntersectionIdx> neighbors = findAdjacentIntersections(current.intersection); //find neighboring intersections
+//
+//        for (int & neighbor : neighbors) { //loop through neighbors
+//
+//            if(std::find(visited.begin(), visited.end(), neighbor) == visited.end()) {//only expand the intersection if it hasnt been expanded
+//                double newCost =
+//                        costSoFar[current.intersection] + calculateCost(turn_penalty, findSegmentBetweenIntersections(
+//                                pathOrigin[current.intersection], current.intersection),
+//                                                                        findSegmentBetweenIntersections(
+//                                                                                current.intersection, neighbor));//calculate new cost of reaching intersection
+//                if (costSoFar.find(neighbor) == costSoFar.end() || newCost < costSoFar[neighbor]) {//if no cost exists or new cost is lower that existing cost
+//                    if(checkOneWay(current.intersection, neighbor)) {//check if legal movement
+//                        costSoFar[neighbor] = newCost;//new cost becomes the new cost
+//                        StreetSegmentInfo heuristicInfo = getStreetSegmentInfo(
+//                                findSegmentBetweenIntersections(current.intersection, neighbor));
+//                        double priority = newCost + calculateHeuristic(neighbor, intersect_id_destination,
+//                                                                       heuristicInfo.speedLimit);//calculate priority for the heap
+//                        //queueOfIntersections.push(prioElem{neighbor, priority});//push to heap
+//                        //pathOrigin[neighbor] = current.intersection;//mark path origin
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
     return {}; //returns empty array if no path is possible
 }

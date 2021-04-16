@@ -4,6 +4,7 @@
 #include <vector>
 
 class Node {
+public:
     int id;
     std::vector<int> outgoingEdges;
     int reachingEdge;

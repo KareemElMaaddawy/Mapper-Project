@@ -12,6 +12,8 @@
 #include "m2.h"
 #include <cmath>
 #include <string>
+#include "Node.h"
+
 int selectedMap = 18;
 bool colorBlind  = false;
 bool poiFilterActive = false;
@@ -21,6 +23,8 @@ std::string osmFilePath = "/cad2/ece297s/public/maps/toronto_canada.osm.bin";
 std::unordered_map<OSMID, OSMWay*> idToWay;
 std::unordered_map<StreetSegmentIdx, std::string> streetTypes;
 std::vector<streetInfo> streetPositions;
+
+std::vector<Node> nodes;
 
 double aspVar = 0;
 std::string userInput = {};

@@ -4,6 +4,7 @@
 #include "m1.h"
 #include "m2.h"
 #include <string>
+#include "Node.h"
 #pragma once
 
 extern int selectedMap;//stores selected map
@@ -12,6 +13,7 @@ extern bool colorBlind;
 extern bool poiFilterActive;
 extern std::vector<std::string> poiFilter;
 extern std::string osmFilePath;
+extern std::vector<Node> nodes;
 
 struct map{ //struct for maps
     std::string name;

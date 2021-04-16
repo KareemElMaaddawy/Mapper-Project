@@ -60,7 +60,7 @@ double *stLength;
 void loadAdjacentIntersections();
 // Vector Declerations
 
-std::vector<Node> nodes;
+
 
 std::vector<std::vector<std::string>> street_names_of_intersection; //stores the street names for each intersection
 //Includes repetition!!
@@ -116,6 +116,8 @@ bool loadMap(std::string map_streets_database_filename) {
     std::cout << "loadMap: " << map_streets_database_filename << std::endl;
 
     if (load_successful) {
+
+        fillNodes();
         loadAdjacentIntersections();
 
         numOfStreetSegments = getNumStreetSegments();
