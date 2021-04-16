@@ -15,6 +15,15 @@
 #define NO_TIME 0
 
 
+struct deliveryStop{
+    IntersectionIdx intersection;
+    std::string type;
+
+    deliveryPair(IntersectionIdx id, std::string intersectionType){
+        intersection = id; type = intersectionType;
+    }
+};
+
 class Point{
 public:
     double x;
