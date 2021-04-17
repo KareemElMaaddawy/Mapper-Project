@@ -77,6 +77,20 @@ std::vector<CourierSubPath> travelingCourier(
             }
             
         }
+        else{
+            partPath = findPathDK(interestingIntersections, previousIntersection, turn_penalty);
+            
+            if((partPath.empty()) && (djikstra(interestingIntersections, getNodeFromId(previousIntersection), turn_penalty) == false)){
+                wrongPath = true;
+                break;
+            }
+            nodeFound = interVisited.back().intersection;
+            
+            if(pickUpDropOffPrevious == "dropOff"){
+                interestingIntersections.insert(std::end(interestingIntersections), std::begin(reVisit), std::end(reVisit));
+                reVisit.clear();
+            }
+        }
     }
 }
 
