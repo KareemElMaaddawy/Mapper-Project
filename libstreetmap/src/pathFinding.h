@@ -42,10 +42,6 @@ public:
         y = yInput;
     }
 
-    Point subtract(Point second){
-        return Point(x - second.x, y - second.y);
-    }
-
     void print(){
         std::cout << "x: " + std::to_string(x) + " y: " + std::to_string(y) << std::endl;
     }

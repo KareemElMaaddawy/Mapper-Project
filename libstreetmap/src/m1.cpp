@@ -104,6 +104,8 @@ void loadAdjacentIntersections(){
 }
 
 void fillNodes(){
+    nodes.resize(getNumIntersections());
+
     for(int i = 0; i < getNumIntersections(); i++){
         nodes[i] = Node(i, NO_EDGE, std::numeric_limits<int>::max());
     }
@@ -117,7 +119,7 @@ bool loadMap(std::string map_streets_database_filename) {
 
     if (load_successful) {
 
-        fillNodes();
+
         loadAdjacentIntersections();
 
         numOfStreetSegments = getNumStreetSegments();
@@ -158,7 +160,7 @@ bool loadMap(std::string map_streets_database_filename) {
 //                //get the index of the segment you're on
                 int streetSeg_id = getIntersectionStreetSegment(intersection, segment);
 //                //for each intersection add each segment id to that intersection's associated sub vector
-//                segments_of_an_intersection[intersection].push_back(streetSeg_id);
+                segments_of_an_intersection[intersection].push_back(streetSeg_id);
 //
 //                /*FINDING THE STREET NAMES THAT PASS THROUGH AN INTERSECTION*/
 //                //gets the street id of a specific segment
@@ -238,6 +240,8 @@ bool loadMap(std::string map_streets_database_filename) {
                 streetPositions[i].positions.push_back(getIntersectionPosition(intersections_of_a_street[i][j]));
             }
         }
+
+        fillNodes();
 
     }return load_successful;
 }
@@ -531,7 +535,6 @@ std::vector<std::string> findStreetNamesOfIntersection(IntersectionIdx intersect
 // Returns the street segments that connect to the given intersection 
 // Speed Requirement --> high
 std::vector<StreetSegmentIdx> findStreetSegmentsOfIntersection(IntersectionIdx intersection_id) {
-
     return segments_of_an_intersection[intersection_id];
 }
 

@@ -6,7 +6,7 @@ std::vector<deliveryStop> interVisited;
 double shortestTravelTime;
 
 double findSlope(Point p0, Point p1){
-    return (p0.y - p1.y) / (p0.x - p1.y);
+    return (p0.y - p1.y) / (p0.x - p1.x);
 }
 
 std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet){
@@ -53,10 +53,6 @@ std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destSt
         if (!result) {//if angle is greater than 0 left turn
             return "left";
         } else {
-            sourcePoint.print();
-            intersectionPoint.print();
-            destinationPoint.print();
-
             return "right";
         }
     } else {
