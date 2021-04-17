@@ -13,6 +13,8 @@
 
 #define NO_EDGE -1
 #define NO_TIME 0
+#define NOT_DELIVERY_NODE -1
+
 
 
 
@@ -68,6 +70,7 @@ struct compare{
 
 //helper to check if a left turn occurs, takes the previous street and the current street as parameters, and returns true if a left turn occurs
 std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet);
+extern bool pathFound;
 
 bool checkOneWay(IntersectionIdx, IntersectionIdx);
 

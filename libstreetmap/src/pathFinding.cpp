@@ -171,7 +171,7 @@ Node* getNodeFromId(IntersectionIdx id){
     return &nodes[id];
 }
 
-std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop> stops, const IntersectionIdx departurePoint, const double turn_penalty){
+std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop>& stops, const IntersectionIdx departurePoint, const double turn_penalty){
     std::vector<StreetSegmentIdx> path;
     Node* source = getNodeFromId(departurePoint);
 

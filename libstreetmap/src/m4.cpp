@@ -5,92 +5,155 @@
 #include "globalHeader.h"
 #include "m4Functions.h"
 
-std::vector<CourierSubPath> travelingCourier(
-        const std::vector<DeliveryInf> &deliveries,
-        const std::vector<int> &depots,
-        const float turn_penalty) {
-    
+
+std::vector<CourierSubPath>
+travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<int> &depots, const float turn_penalty,
+                 const float truck_capacity) {
+    std::vector<CourierSubPath> completePath; //will hold the final path;
+    std::vector<StreetSegmentIdx> partialPath; //holds path pieces
+    std::vector<deliveryStop> stops; //holds stops that need to be made
+    std::vector<int> pickUps;
+    std::vector<int> previousPickups;
+
+    struct CourierSubPath partialDeliveryPath; //holds partial delivery path before it gets added to the complete path
+
+    int previousIntersection = NOT_DELIVERY_NODE;
+    int startDepot = depots[0], endDepot = depots[0];
+    int intersectionFound;
+
+    std::string prevStop;
+    std::string currentStop;
+
     bool duplicate = false;
-    std::vector<deliveryStop> interestingIntersections;
-    
-    for(int i = 0; i < deliveries.size(); i++){
-        deliveryStop order(deliveries[i].pickUp, "pickUp");
-        
-        for(int j = 0; j < interestingIntersections.size(); j++){
-            if(interestingIntersections[j].intersection == deliveries[i].pickUp){
+    bool invalidPath = false;
+
+    //add all deliveries into stops vector as pickups
+    for (std::vector<DeliveryInf>::const_iterator deliveryIt = deliveries.begin();
+         deliveryIt != deliveries.end(); deliveryIt++) {
+
+        deliveryStop tempStop((*deliveryIt).pickUp, "pickup"); //create deliveryStop struct
+
+        for (std::vector<deliveryStop>::iterator it = stops.begin();
+             it != stops.end(); ++it) {//make sure something isnt being added twice
+            if (it->intersection == deliveryIt->pickUp) {//if duplicate exit out of loop
                 duplicate = true;
                 break;
             }
         }
-        
-        if(!duplicate){
-            interestingIntersections.push_back(order);
+
+        if (duplicate) {
+            duplicate = false;
+        } else {
+            stops.push_back(tempStop);//only add stop if not already present
         }
+
     }
-    
-    bool wrongPath = false;
-    
-    std::vector<CourierSubPath> entirePath;
-    std::vector<int> partPath;
-    std::vector<int> deliveriesPickedUp;
-    std::vector<deliveryStop> reVisit;
-    
-    int previousIntersection = -1;
-    int firstDepot = depots[0];
-    int lastDepot = depots[0];
-    int nodeFound;
-    
-    struct CourierSubPath deliverySubPath;
-    
-    std::string pickUpDropOffPrevious, pickUpDropOffCurrent;
-  
-    while(interestingIntersections.empty() == false){
-        if(previousIntersection == -1){
-            partPath = findPathDK(interestingIntersections, firstDepot, turn_penalty);
-            
-            if((partPath.empty()) && (djikstra(interestingIntersections, getNodeFromId(firstDepot), turn_penalty) == false)){
-                wrongPath = true;
+
+    while (!stops.empty()) { //cycle till all interesting intersections reached
+
+        if (previousIntersection == NOT_DELIVERY_NODE) { //first pickup, .: previous has to be a depot
+            partialPath = findPathDK(stops, startDepot, turn_penalty); //find path from starting depot to closest pickup
+            //if path does not exist
+            if (partialPath.empty() && (pathFound == false)) { //ERROR CHECKING IN CASE NO PATH FOUND
+                invalidPath = true;
                 break;
             }
-            nodeFound = interVisited.back().intersection;
-            pickUpDropOffCurrent = interVisited.back().type;
-            
-            deliverySubPath = {firstDepot, nodeFound, partPath};
-            entirePath.push_back(deliverySubPath);
-            
-            for(int i = 0; i < deliveries.size(); i++){
-                if(deliveries[i].pickUp == nodeFound){
-                    deliveryStop order(deliveries[i].dropOff, "dropOff");
-                    duplicate = false;
-                    for(int j = 0 ; j < interestingIntersections.size(); j++){
-                       if(interestingIntersections[j].intersection == deliveries[i].dropOff){
-                           duplicate = true;
-                           break;
-                       } 
+
+            pathFound = false;//RESET ERROR CHECKING
+
+            intersectionFound = interVisited.back().intersection;//the closest interesting intersection fould
+            currentStop = interVisited.back().type; //pickup or dropoff
+
+            partialDeliveryPath = {startDepot, intersectionFound, partialPath};
+            completePath.push_back(partialDeliveryPath);
+
+            //adding pickups dropoff into stop vector
+            for (std::vector<DeliveryInf>::const_iterator deliveryIt = deliveries.begin();
+                 deliveryIt != deliveries.end(); ++deliveryIt) {
+                if (deliveryIt->pickUp ==
+                    intersectionFound) {//found the intersection that was found from the desired stops
+                    deliveryStop tempDropOff((*deliveryIt).dropOff, "dropoff");   //create dropoff struct
+
+                    duplicate = false;//reset flag
+                    for (std::vector<deliveryStop>::iterator it = stops.begin(); it !=
+                                                                                 stops.end(); ++it) {//going through stops and making sure the delivery stop isnt already adeed into the stops
+                        if (it->intersection == deliveryIt->dropOff) {
+                            duplicate = true;
+                            break;//leaves if its already added
+                        }
                     }
-                    
-                    if(!duplicate){
-                        interestingIntersections.push_back(order);
-                        duplicate = false;
+
+                    if (!duplicate) { //if not duplicated
+                        stops.push_back(tempDropOff); // add dropOff into the stops
+                        duplicate = false;//reset flag
                     }
                 }
             }
-            
-        }
-        else{
-            partPath = findPathDK(interestingIntersections, previousIntersection, turn_penalty);
-            
-            if((partPath.empty()) && (djikstra(interestingIntersections, getNodeFromId(previousIntersection), turn_penalty) == false)){
-                wrongPath = true;
+        } else {//not the first stop
+            partialPath = findPathDK(stops, previousIntersection, turn_penalty);//find next stop
+
+            if (partialPath.empty() && (pathFound == false)) {//ERROR CHECKING
+                invalidPath = true;
                 break;
             }
-            nodeFound = interVisited.back().intersection;
-            
-            if(pickUpDropOffPrevious == "dropOff"){
-                interestingIntersections.insert(std::end(interestingIntersections), std::begin(reVisit), std::end(reVisit));
-                reVisit.clear();
+
+            pathFound = false;//reset flag
+
+            intersectionFound = interVisited.back().intersection;//get intersection that was reached by djikstra
+            currentStop = interVisited.back().type;
+
+            if (currentStop == "pickup") {
+                for (std::vector<DeliveryInf>::const_iterator deliveryIt = deliveries.begin();
+                     deliveryIt != deliveries.end(); ++deliveryIt) {
+                    if (deliveryIt->pickUp == intersectionFound) {
+                        deliveryStop tempStop((*deliveryIt).dropOff, "dropoff");
+                        duplicate = false;
+                        for (std::vector<deliveryStop>::iterator it = stops.begin(); it != stops.end(); it++) {
+                            if (it->intersection == deliveryIt->dropOff) {
+                                duplicate = true;
+                            }
+                        }
+                        if (!duplicate) {
+                            stops.push_back(tempStop);
+                            duplicate = false;//clear flag
+                        }
+                    }
+                }
             }
         }
+
+        //depending on whether it was a pick up or drop off, pickUpIndices has been updated and path is pushed
+        partialDeliveryPath = {previousIntersection, intersectionFound, partialPath};
+        completePath.push_back(partialDeliveryPath);
+    }
+
+    //update previous intersect id to the last intersection travelled to
+    previousIntersection = intersectionFound;
+
+    //keep track of previous string type (pick up or drop off)
+    prevStop = currentStop;
+
+    //remove the intersection reached from pickUpDropOffLocations
+    for (std::vector<deliveryStop>::iterator stopIt = stops.begin(); stopIt != stops.end(); ++stopIt) {
+        if (stopIt->intersection == intersectionFound) {
+            stops.erase(stopIt);
+            break;
+        }
+    }
+
+    if (!invalidPath) {
+
+        partialPath = findPathBetweenIntersections(previousIntersection, endDepot, turn_penalty);
+        if (!partialPath.empty()){
+            partialDeliveryPath = {previousIntersection, endDepot, partialPath};
+
+            completePath.push_back(partialDeliveryPath);
+
+            return completePath;
+        } else {
+            return std::vector<CourierSubPath>();
+        }
+    } else {
+        return std::vector<CourierSubPath>();
     }
 }
-
