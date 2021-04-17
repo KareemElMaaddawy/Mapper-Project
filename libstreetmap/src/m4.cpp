@@ -2,68 +2,81 @@
 #include <vector>
 #include "pathFinding.h"
 #include "m4.h"
+#include "globalHeader.h"
 #include "m4Functions.h"
 
 std::vector<CourierSubPath> travelingCourier(
         const std::vector<DeliveryInf> &deliveries,
         const std::vector<int> &depots,
         const float turn_penalty) {
-
-
-    std::vector<int> interestingIntersections;
-
-    for (int i = 0; i < deliveries.size(); i++) {
-        int pickUpID = deliveries[i].pickUp;
-        interestingIntersections.push_back(pickUpID);
+    
+    bool duplicate = false;
+    std::vector<deliveryStop> interestingIntersections;
+    
+    for(int i = 0; i < deliveries.size(); i++){
+        deliveryStop order(deliveries[i].pickUp, "pickUp");
+        
+        for(int j = 0; j < interestingIntersections.size(); j++){
+            if(interestingIntersections[j].intersection == deliveries[i].pickUp){
+                duplicate = true;
+                break;
+            }
+        }
+        
+        if(!duplicate){
+            interestingIntersections.push_back(order);
+        }
     }
-
+    
+    bool wrongPath = false;
+    
     std::vector<CourierSubPath> entirePath;
     std::vector<int> partPath;
-    bool wrongPath = false;
-
-    std::vector<int> pickUpNodes;
-    std::vector<int> prevPickUpNodes;
-    std::vector<int> pickedUp;
-    struct CourierSubpath deliveryPath;
-
-
+    std::vector<int> deliveriesPickedUp;
+    std::vector<deliveryStop> reVisit;
+    
+    int previousIntersection = -1;
     int firstDepot = depots[0];
     int lastDepot = depots[0];
     int nodeFound;
-    int deliveryNode;
-    int previousIntersecID = -1;
-
-    while (!interestingIntersections.empty()) {
-
-        if (previousIntersecID == -1) {
-
-            partPath = find_path_dijkstra(firstDepot, interestingIntersections, turn_penalty);
-
-            if (partPath.empty() && (djisktra == false)) {
+    
+    struct CourierSubPath deliverySubPath;
+    
+    std::string pickUpDropOffPrevious, pickUpDropOffCurrent;
+  
+    while(interestingIntersections.empty() == false){
+        if(previousIntersection == -1){
+            partPath = findPathDK(interestingIntersections, firstDepot, turn_penalty);
+            
+            if((partPath.empty()) && (djikstra(interestingIntersections, getNodeFromId(firstDepot), turn_penalty) == false)){
                 wrongPath = true;
                 break;
             }
-
-            nodeFound = intersectionsReached.back();
-            deliveryPath = {firstDepot, nodeFound, partPath};
-            entirePath.push_back(deliveryPath);
-
-
-            for (int j = 0; j < deliveries.size(); j++) {
-                int dropOffID = deliveries[j].dropOff;
-                interestingIntersections.push_back(dropOffID);
+            nodeFound = interVisited.back().intersection;
+            pickUpDropOffCurrent = interVisited.back().type;
+            
+            deliverySubPath = {firstDepot, nodeFound, partPath};
+            entirePath.push_back(deliverySubPath);
+            
+            for(int i = 0; i < deliveries.size(); i++){
+                if(deliveries[i].pickUp == nodeFound){
+                    deliveryStop order(deliveries[i].dropOff, "dropOff");
+                    duplicate = false;
+                    for(int j = 0 ; j < interestingIntersections.size(); j++){
+                       if(interestingIntersections[j].intersection == deliveries[i].dropOff){
+                           duplicate = true;
+                           break;
+                       } 
+                    }
+                    
+                    if(!duplicate){
+                        interestingIntersections.push_back(order);
+                        duplicate = false;
+                    }
+                }
             }
-        } else {
-            partPath = find_path_dijkstra(previousIntersecID, interestingIntersections, turn_penalty);
-            if (parthPath.empty() && (find_path_djikstra_bool == false)) {
-                wrongPath = true;
-                break;
-            }
-
-            nodeFound = intersectionsReached.back();
+            
         }
-
     }
 }
-
 

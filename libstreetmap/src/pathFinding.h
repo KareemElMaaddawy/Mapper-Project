@@ -15,6 +15,7 @@
 #define NO_TIME 0
 
 
+
 struct deliveryStop{
     IntersectionIdx intersection;
     std::string type;
@@ -96,4 +97,6 @@ std::vector<StreetSegmentIdx> reconstructPath(
         const IntersectionIdx intersect_id_destination,
         const IntersectionIdx intersect_id_start
 );
+
+extern std::vector<deliveryStop> interVisited;
 #endif //MAPPER_PATHFINDING_H
