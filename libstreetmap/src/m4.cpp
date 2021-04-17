@@ -7,8 +7,7 @@
 
 
 std::vector<CourierSubPath>
-travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<int> &depots, const float turn_penalty,
-                 const float truck_capacity) {
+travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<int> &depots, const float turn_penalty) {
     std::vector<CourierSubPath> completePath; //will hold the final path;
     std::vector<StreetSegmentIdx> partialPath; //holds path pieces
     std::vector<deliveryStop> stops; //holds stops that need to be made

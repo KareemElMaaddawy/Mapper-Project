@@ -50,6 +50,17 @@ public:
         std::cout << "x: " + std::to_string(x) + " y: " + std::to_string(y) << std::endl;
     }
 };
+
+struct prioElemPF{
+    IntersectionIdx intersection;
+    double travelTime;
+
+    prioElemPF(int id, double time){
+        intersection = id;
+        travelTime = time;
+    }
+};
+
 struct prioElem{
     Node* node;
     int edgeId;
@@ -59,6 +70,12 @@ struct prioElem{
         node = n;
         edgeId = id;
         travelTime = time;
+    }
+};
+
+struct comparePF{
+    bool operator()(const prioElemPF & a, const prioElemPF & b){
+        return a.travelTime > b.travelTime;
     }
 };
 
