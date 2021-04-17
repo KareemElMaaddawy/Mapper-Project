@@ -87,7 +87,7 @@ extern bool pathFound;
 
 bool checkOneWay(IntersectionIdx, IntersectionIdx);
 
-bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_penalty);
+bool djikstra(const std::vector<deliveryStop>& stops, Node* source, const double turn_penalty);
 
 std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest);
 

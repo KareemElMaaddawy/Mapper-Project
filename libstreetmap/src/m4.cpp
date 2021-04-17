@@ -88,10 +88,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
                 }
             }
         } else {//not the first stop
-            std::cout << "enters call" << std::endl;
             partialPath = findPathDK(stops, previousIntersection, turn_penalty);//find next stop
-
-            std::cout << "exits call" << std::endl;
 
             if (partialPath.empty() && (pathFound == false)) {//ERROR CHECKING
                 invalidPath = true;
@@ -140,8 +137,6 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
                 break;
             }
         }
-        std::cout << previousIntersection << std::endl;
-        std::cout << stops.size() << std::endl << std::endl;
     }
 
     if (!invalidPath) {

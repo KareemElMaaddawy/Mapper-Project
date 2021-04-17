@@ -202,72 +202,60 @@ std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest){
     return path;
 }
 
-bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_penalty){
+bool djikstra(const std::vector<deliveryStop> &stops, Node *source, const double turn_penalty) {
     std::priority_queue<prioElem, std::vector<prioElem>, compare> queue;
     queue.push(prioElem(source, NO_EDGE, NO_TIME));
     shortestTravelTime = 0;
 
-    bool destReached = false;
-    bool leftTurn = false;
+    bool turn = false;
 
-    while(!destReached){
-        while(!queue.empty()){
-            prioElem currentElem = queue.top();
-            queue.pop();
+    while (!queue.empty()) {
+        prioElem currentElem = queue.top();
+        queue.pop();
 
-            Node* current = currentElem.node;
+        Node *current = currentElem.node;
 
+        if (currentElem.travelTime < current->bestTime) {
+            current->bestTime = currentElem.travelTime;
+            current->reachingEdge = currentElem.edgeId;
 
-            if(currentElem.travelTime < current->bestTime){
-                current->bestTime = currentElem.travelTime;
-                current->reachingEdge = currentElem.edgeId;
+            for (auto &stop : stops) {
+                if (current->id == stop.intersection) {
+                    shortestTravelTime = currentElem.travelTime;
+                    interVisited.push_back(stop);
 
-                for(std::vector<deliveryStop>::iterator it = stops.begin(); it != stops.end(); ++it){
-                    std::cout << current->id << std::endl;
-                    std::cout << it->intersection << std::endl << std::endl;
-                    if(current->id == it->intersection){
-                        std::cout << "2" << std::endl;
-
-                        shortestTravelTime = currentElem.travelTime;
-                        interVisited.push_back(*it);
-                        destReached = true;
-
-                        pathFound = true;
-                        return true;
-                    }
-                }
-
-                IntersectionIdx nodeId;
-
-                for(std::vector<StreetSegmentIdx>::iterator segIt = current->outgoingEdges.begin(); segIt != current->outgoingEdges.end(); ++segIt){
-                    StreetSegmentInfo segInfo = getStreetSegmentInfo(*segIt);
-                    if(segInfo.to == current->id){
-                        if(segInfo.oneWay){
-                            continue;
-                        }
-                        nodeId = segInfo.from;
-                    }else{
-                        nodeId = segInfo.to;
-                    }
-
-                    if(current != source){
-                        StreetSegmentInfo tempInfo = getStreetSegmentInfo(current->reachingEdge);
-                        if(segInfo.streetID != tempInfo.streetID){
-                            leftTurn = true;
-                        }else{
-                            leftTurn = false;
-                        }
-                    }
-                    if(leftTurn){
-                        queue.push(prioElem(getNodeFromId(nodeId), *segIt, currentElem.travelTime+ findStreetSegmentTravelTime(*segIt)+ turn_penalty));
-                    }else{
-                        queue.push(prioElem(getNodeFromId(nodeId), *segIt, currentElem.travelTime+ findStreetSegmentTravelTime(*segIt)));
-                    }
+                    pathFound = true;
+                    return true;
                 }
             }
         }
-    }
 
+        for (auto segIt = current->outgoingEdges.begin(); segIt != current->outgoingEdges.end(); ++segIt) {
+            IntersectionIdx nodeId;
+            StreetSegmentInfo segInfo = getStreetSegmentInfo(*segIt);
+            if (segInfo.to == current->id) {
+                if (segInfo.oneWay) {
+                    continue;
+                }
+                nodeId = segInfo.from;
+            } else {
+                nodeId = segInfo.to;
+            }
+
+            if (current != source) {
+                StreetSegmentInfo tempInfo = getStreetSegmentInfo(current->reachingEdge);
+                turn = segInfo.streetID != tempInfo.streetID;
+            }
+
+            if (turn) {
+                queue.push(prioElem(getNodeFromId(nodeId), *segIt,
+                                    currentElem.travelTime + findStreetSegmentTravelTime(*segIt) + turn_penalty));
+            } else {
+                queue.push(prioElem(getNodeFromId(nodeId), *segIt,
+                                    currentElem.travelTime + findStreetSegmentTravelTime(*segIt)));
+            }
+        }
+    }
     return false;
 }
 

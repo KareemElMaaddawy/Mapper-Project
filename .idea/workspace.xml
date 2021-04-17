@@ -13,7 +13,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="bug fix">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" afterDir="false" />
@@ -142,14 +141,7 @@
       <workItem from="1618419847329" duration="2222000" />
       <workItem from="1618509430641" duration="354000" />
       <workItem from="1618511654969" duration="13269000" />
-      <workItem from="1618678007041" duration="5633000" />
-    </task>
-    <task id="LOCAL-00023" summary="progressing on loading new maps">
-      <created>1615513850363</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1615513850363</updated>
+      <workItem from="1618678007041" duration="5936000" />
     </task>
     <task id="LOCAL-00024" summary="updated colors, load new maps">
       <created>1615566253217</created>
@@ -487,7 +479,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618685502709</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="bug fix">
+      <created>1618687926517</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1618687926517</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
