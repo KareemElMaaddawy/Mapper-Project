@@ -57,7 +57,6 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
                 invalidPath = true;
                 break;
             }
-
             pathFound = false;//RESET ERROR CHECKING
 
             intersectionFound = interVisited.back().intersection;//the closest interesting intersection fould
@@ -119,31 +118,31 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
                     }
                 }
             }
+
+            //depending on whether it was a pick up or drop off, pickUpIndices has been updated and path is pushed
+            partialDeliveryPath = {previousIntersection, intersectionFound, partialPath};
+            completePath.push_back(partialDeliveryPath);
         }
 
-        //depending on whether it was a pick up or drop off, pickUpIndices has been updated and path is pushed
-        partialDeliveryPath = {previousIntersection, intersectionFound, partialPath};
-        completePath.push_back(partialDeliveryPath);
-    }
+        //update previous intersect id to the last intersection travelled to
+        previousIntersection = intersectionFound;
 
-    //update previous intersect id to the last intersection travelled to
-    previousIntersection = intersectionFound;
+        //keep track of previous string type (pick up or drop off)
+        prevStop = currentStop;
 
-    //keep track of previous string type (pick up or drop off)
-    prevStop = currentStop;
-
-    //remove the intersection reached from pickUpDropOffLocations
-    for (std::vector<deliveryStop>::iterator stopIt = stops.begin(); stopIt != stops.end(); ++stopIt) {
-        if (stopIt->intersection == intersectionFound) {
-            stops.erase(stopIt);
-            break;
+        //remove the intersection reached from pickUpDropOffLocations
+        for (std::vector<deliveryStop>::iterator stopIt = stops.begin(); stopIt != stops.end(); ++stopIt) {
+            if (stopIt->intersection == intersectionFound) {
+                stops.erase(stopIt);
+                break;
+            }
         }
     }
 
     if (!invalidPath) {
 
         partialPath = findPathBetweenIntersections(previousIntersection, endDepot, turn_penalty);
-        if (!partialPath.empty()){
+        if (!partialPath.empty()) {
             partialDeliveryPath = {previousIntersection, endDepot, partialPath};
 
             completePath.push_back(partialDeliveryPath);

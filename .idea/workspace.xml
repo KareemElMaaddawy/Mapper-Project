@@ -14,7 +14,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="segfault fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m4.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +142,7 @@
       <workItem from="1618419847329" duration="2222000" />
       <workItem from="1618509430641" duration="354000" />
       <workItem from="1618511654969" duration="13269000" />
+      <workItem from="1618678007041" duration="2006000" />
     </task>
     <task id="LOCAL-00021" summary="updated ui to include cities, and select button">
       <created>1615426336443</created>

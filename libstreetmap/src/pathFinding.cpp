@@ -217,6 +217,7 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
 
             Node* current = currentElem.node;
 
+
             if(currentElem.travelTime < current->bestTime){
                 current->bestTime = currentElem.travelTime;
                 current->reachingEdge = currentElem.edgeId;
@@ -248,8 +249,7 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
 
                     if(current != source){
                         StreetSegmentInfo tempInfo = getStreetSegmentInfo(current->reachingEdge);
-                        std::string direction = findDirection(segInfo.streetID, tempInfo.streetID);
-                        if(direction == "left"){
+                        if(segInfo.streetID != tempInfo.streetID){
                             leftTurn = true;
                         }else{
                             leftTurn = false;

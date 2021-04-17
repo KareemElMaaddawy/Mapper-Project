@@ -91,7 +91,7 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
 
 std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest);
 
-std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop> stops, const IntersectionIdx departurePoint, const double turn_penalty);
+std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop>& stops, const IntersectionIdx departurePoint, const double turn_penalty);
 
 Node* getNodeFromId(IntersectionIdx id);
 
