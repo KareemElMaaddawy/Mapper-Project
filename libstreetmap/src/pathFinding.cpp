@@ -223,7 +223,11 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
                 current->reachingEdge = currentElem.edgeId;
 
                 for(std::vector<deliveryStop>::iterator it = stops.begin(); it != stops.end(); ++it){
+                    std::cout << current->id << std::endl;
+                    std::cout << it->intersection << std::endl << std::endl;
                     if(current->id == it->intersection){
+                        std::cout << "2" << std::endl;
+
                         shortestTravelTime = currentElem.travelTime;
                         interVisited.push_back(*it);
                         destReached = true;
@@ -237,14 +241,13 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
 
                 for(std::vector<StreetSegmentIdx>::iterator segIt = current->outgoingEdges.begin(); segIt != current->outgoingEdges.end(); ++segIt){
                     StreetSegmentInfo segInfo = getStreetSegmentInfo(*segIt);
-                    if(segInfo.from == current->id){
+                    if(segInfo.to == current->id){
                         if(segInfo.oneWay){
                             continue;
                         }
-
-                        nodeId = segInfo.to;
-                    }else{
                         nodeId = segInfo.from;
+                    }else{
+                        nodeId = segInfo.to;
                     }
 
                     if(current != source){
