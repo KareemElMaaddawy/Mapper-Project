@@ -12,12 +12,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="finished djikstra for m4">
+    <list default="true" id="b8a0263b-2ec5-4c3a-9ef8-8aefb901fb45" name="Default Changelist" comment="segfault fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/m1.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" beforeDir="false" afterPath="$PROJECT_DIR$/libstreetmap/src/pathFinding.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,13 +140,6 @@
       <workItem from="1618419847329" duration="2222000" />
       <workItem from="1618509430641" duration="354000" />
       <workItem from="1618511654969" duration="13269000" />
-    </task>
-    <task id="LOCAL-00020" summary="features drawn, need to figure out colors">
-      <created>1615074501466</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1615074501466</updated>
     </task>
     <task id="LOCAL-00021" summary="updated ui to include cities, and select button">
       <created>1615426336443</created>
@@ -487,7 +477,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618615720035</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="segfault fix">
+      <created>1618634259737</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1618634259737</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -519,7 +516,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="finished pathfinding logic, need to fix errors" />
     <MESSAGE value="commented feature colours" />
     <MESSAGE value="finished pathFinding, need to test" />
     <MESSAGE value="created poi filter buttons" />
@@ -544,7 +540,8 @@
     <MESSAGE value="fixed computePathCost" />
     <MESSAGE value="working on djikstra for m4" />
     <MESSAGE value="finished djikstra for m4" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished djikstra for m4" />
+    <MESSAGE value="segfault fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="segfault fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -561,12 +558,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main/src/main.cpp</url>
-          <line>46</line>
+          <line>102</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main/src/main.cpp</url>
-          <line>341</line>
+          <line>319</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>

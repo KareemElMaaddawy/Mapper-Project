@@ -6,7 +6,7 @@ std::vector<deliveryStop> interVisited;
 double shortestTravelTime;
 
 double findSlope(Point p0, Point p1){
-    return (p0.y - p1.y) / (p0.x - p1.x);
+    return (p0.y - p1.y) / (p0.x - p1.y);
 }
 
 std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet){
@@ -49,7 +49,6 @@ std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destSt
         Point destinationPoint(dest);
 
         bool result = findSlope(sourcePoint, intersectionPoint) > findSlope(sourcePoint, destinationPoint);
-
         if (!result) {//if angle is greater than 0 left turn
             return "left";
         } else {
@@ -65,8 +64,6 @@ std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destSt
 double calcTurnPenalty(IntersectionIdx source, IntersectionIdx dest) {
     int numOfSegment = 0;
     double speed = 0;
-    bool leftTurn = false;
-
     std::vector<IntersectionIdx> sourceNeighbors = findAdjacentIntersections(source);
     std::vector<IntersectionIdx> destNeighbors = findAdjacentIntersections(dest);
 
@@ -92,7 +89,7 @@ double computePathTravelTime(const std::vector<StreetSegmentIdx> &path, const do
             travelTime += findStreetSegmentTravelTime(path[i]);
         } else {
             direction = findDirection(path[i - 1], path[i]);
-            if (direction == "left") {
+            if (direction != "straight") {
                 travelTime += findStreetSegmentTravelTime(path[i]) + turn_penalty;//if left turn occurs turn penalty is instituted
             } else {
                 travelTime += findStreetSegmentTravelTime(path[i]);
