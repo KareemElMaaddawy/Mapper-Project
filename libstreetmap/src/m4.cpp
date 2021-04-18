@@ -67,7 +67,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
                     deliveryStop tempDropOff((*deliveryIt).dropOff, "dropoff");   //create dropoff struct
 
                     duplicate = false;//reset flag
-                    for (std::vector<deliveryStop>::iterator it = stops.begin(); it !=
+                    for (auto it = stops.begin(); it !=
                                                                                  stops.end(); ++it) {//going through stops and making sure the delivery stop isnt already adeed into the stops
                         if (it->intersection == deliveryIt->dropOff) {
                             duplicate = true;
