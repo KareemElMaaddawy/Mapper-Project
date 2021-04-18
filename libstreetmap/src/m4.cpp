@@ -91,7 +91,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
                 }
             }
         } else {//not the first stop
-            std::cout << "input " << previousIntersection << std::endl;
+            //std::cout << "input " << previousIntersection << std::endl;
             partialPath = findPathDK(stops, previousIntersection, turn_penalty);//find next stop
 
             if (partialPath.empty() && (pathFound == false)) {//ERROR CHECKING
