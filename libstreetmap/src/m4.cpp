@@ -6,18 +6,37 @@
 #include "m4Functions.h"
 
 
+int findClosestDepot(const std::vector<int>& depots, int intersection, float turn_penalty){
+    int closestDepot = -1;
+    int smallestDistance = std::numeric_limits<int>::max();
+
+    for(int i = 0; i < depots.size(); i++){
+        int iterDistance = computePathTravelTime(findPathBetweenIntersections(depots[i], intersection, turn_penalty), turn_penalty);
+
+        if(iterDistance < smallestDistance){
+            smallestDistance = iterDistance;
+            closestDepot = depots[i];
+        }
+    }
+
+    return closestDepot;
+}
+
 std::vector<CourierSubPath>
 travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<int> &depots, const float turn_penalty) {
     std::vector<CourierSubPath> completePath; //will hold the final path;
     std::vector<StreetSegmentIdx> partialPath; //holds path pieces
+
     std::vector<deliveryStop> stops; //holds stops that need to be made
+
     std::vector<int> pickUps;
     std::vector<int> previousPickups;
 
     struct CourierSubPath partialDeliveryPath; //holds partial delivery path before it gets added to the complete path
 
     int previousIntersection = NOT_DELIVERY_NODE;
-    int startDepot = depots[0], endDepot = depots[0];
+    int startDepot = depots[0];
+    int endDepot;
     int intersectionFound;
 
     std::string prevStop;
@@ -27,13 +46,12 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
     bool invalidPath = false;
 
     //add all deliveries into stops vector as pickups
-   
-    for (std::vector<DeliveryInf>::const_iterator deliveryIt = deliveries.begin();
+    for (auto deliveryIt = deliveries.begin();
          deliveryIt != deliveries.end(); deliveryIt++) {
 
         deliveryStop tempStop((*deliveryIt).pickUp, "pickup"); //create deliveryStop struct
         
-        for (std::vector<deliveryStop>::iterator it = stops.begin();
+        for (auto it = stops.begin();
              it != stops.end(); ++it) {//make sure something isnt being added twice
             if (it->intersection == deliveryIt->pickUp) {//if duplicate exit out of loop
                 duplicate = true;
@@ -56,9 +74,14 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
             //if path does not existk
             if (partialPath.empty() && (pathFound == false)) { //ERROR CHECKING IN CASE NO PATH FOUND
                 invalidPath = true;
-                break;
             }
-            pathFound = false;//RESET ERROR CHECKING
+
+            if(invalidPath){
+                break;
+            }else{
+                pathFound = false;
+            }
+
 
             intersectionFound = interVisited.back().intersection;//the closest interesting intersection fould
             currentStop = interVisited.back().type; //pickup or dropoff
@@ -68,7 +91,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
 
             //adding pickups dropoff into stop vector
             
-            for (std::vector<DeliveryInf>::const_iterator deliveryIt = deliveries.begin();
+            for (auto deliveryIt = deliveries.begin();
                  deliveryIt != deliveries.end(); ++deliveryIt) {
                 if (deliveryIt->pickUp ==
                     intersectionFound) {//found the intersection that was found from the desired stops
@@ -90,15 +113,17 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
                 }
             }
         } else {//not the first stop
-            //std::cout << "input " << previousIntersection << std::endl;
             partialPath = findPathDK(stops, previousIntersection, turn_penalty);//find next stop
 
             if (partialPath.empty() && (pathFound == false)) {//ERROR CHECKING
                 invalidPath = true;
-                break;
             }
 
-            pathFound = false;//reset flag
+            if(invalidPath){
+                break;
+            }else{
+                pathFound = false;
+            }
 
             intersectionFound = interVisited.back().intersection;//get intersection that was reached by djikstra
             currentStop = interVisited.back().type;
@@ -134,7 +159,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
         prevStop = currentStop;
         
         //remove the intersection reached from pickUpDropOffLocations
-        for (std::vector<deliveryStop>::iterator stopIt = stops.begin(); stopIt != stops.end(); ++stopIt) {
+        for (auto stopIt = stops.begin(); stopIt != stops.end(); ++stopIt) {
             if (stopIt->intersection == intersectionFound) {
                 stops.erase(stopIt);
                 break;
@@ -143,7 +168,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
     }
 
     if (!invalidPath) {
-
+        endDepot = findClosestDepot(depots, previousIntersection, turn_penalty);
         partialPath = findPathBetweenIntersections(previousIntersection, endDepot, turn_penalty);
         if (!partialPath.empty()) {
             partialDeliveryPath = {previousIntersection, endDepot, partialPath};

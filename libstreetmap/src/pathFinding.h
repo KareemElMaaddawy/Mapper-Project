@@ -87,7 +87,7 @@ extern bool pathFound;
 
 bool checkOneWay(IntersectionIdx, IntersectionIdx);
 
-bool djikstra(const std::vector<deliveryStop> stops, Node* source, const double turn_penalty);
+bool multiDestDjikstra(const std::vector<deliveryStop> stops, Node* source, const double turn_penalty);
 
 std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest);
 
@@ -95,7 +95,7 @@ std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop>& stops,
 
 Node* getNodeFromId(IntersectionIdx id);
 
-void clearVisitedNodes();
+void resetNodes();
 
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to);
 

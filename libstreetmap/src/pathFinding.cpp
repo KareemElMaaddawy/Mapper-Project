@@ -1,7 +1,6 @@
 #include "pathFinding.h"
 
 bool pathFound;
-std::unordered_map<int, Node*> nodesExpanded;
 std::vector<deliveryStop> interVisited;
 double shortestTravelTime;
 std::vector<Node*> visitedNodes;
@@ -169,13 +168,6 @@ bool checkOneWay(IntersectionIdx source, IntersectionIdx dest){
     }
 }
 
-void clearVisitedNodes(){
-    for(std::unordered_map<int, Node*>::iterator it = nodesExpanded.begin(); it != nodesExpanded.end(); ++it){
-        delete (*it).second;
-    }
-    nodesExpanded.clear();
-}
-
 Node* getNodeFromId(IntersectionIdx id){
     return &nodes[id];
 }
@@ -184,13 +176,12 @@ std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop>& stops,
     std::vector<StreetSegmentIdx> path;
     Node* source = getNodeFromId(departurePoint);
 
-    bool found = djikstra(stops, source, turn_penalty);
+    bool found = multiDestDjikstra(stops, source, turn_penalty);
 
     if(found){
         IntersectionIdx id = interVisited.back().intersection;
         path = traceback(id);
     }
-    clearVisitedNodes();
 
     return path;
 }
@@ -221,7 +212,7 @@ std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest){
     return path;
 }
 
-bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_penalty) {
+bool multiDestDjikstra(std::vector<deliveryStop> stops, Node* source, const double turn_penalty) {
     std::priority_queue<prioElem, std::vector<prioElem>, compare> queueOfIntersections;
     queueOfIntersections.push(prioElem(source, NO_EDGE, NO_TIME));
     shortestTravelTime = 0;
