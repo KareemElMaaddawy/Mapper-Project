@@ -4,9 +4,16 @@ bool pathFound;
 std::unordered_map<int, Node*> nodesExpanded;
 std::vector<deliveryStop> interVisited;
 double shortestTravelTime;
+std::vector<Node*> visitedNodes;
 
 double findSlope(Point p0, Point p1){
     return (p0.y - p1.y) / (p0.x - p1.y);
+}
+
+void resetNodes(){
+    for(std::vector<Node*>::iterator it = nodesExpanded.begin(); it != nodesExpanded.end(); it++){
+        it->bestTime = std::numeric_limits<int>::max();
+    }
 }
 
 std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destStreet){
@@ -230,6 +237,7 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
 
         if (elementOfInterest.travelTime < currentNode->bestTime) {
             currentNode->bestTime = elementOfInterest.travelTime;
+            visitedNodes.push_back(currentNode);
             currentNode->reachingEdge = elementOfInterest.edgeId;
 
             for (std::vector<deliveryStop>::iterator stopIt = stops.begin(); stopIt != stops.end(); stopIt++) {
