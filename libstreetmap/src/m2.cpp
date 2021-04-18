@@ -45,15 +45,15 @@ void drawNewMap(ezgl::application *application);
 void findButton(GtkWidget *widget, ezgl::application *application);
 void findPathButton(GtkWidget *widget, ezgl::application *application);
 void clearHighlightButton(GtkEntry *,ezgl::application *application);
-void helpMenuItem(GtkWidget*, ezgl::application *application);
-void poiFilterHelp(GtkWidget*, ezgl::application *application);
+void helpMenuItem(GtkWidget*);
+void poiFilterHelp(GtkWidget*);
 void writeInMiddleOfStreetSection(std::vector<StreetSegmentIdx> streetSectionSegments, ezgl:: renderer *g);
-void FindPathHelp(GtkWidget*, ezgl::application *application);
+void FindPathHelp(GtkWidget*);
 void mapSelectHelp(GtkWidget*, ezgl::application *application);
 void ZoomAndNavigate(GtkWidget*, ezgl::application *application);
 void findInterscetionHelp(GtkWidget*, ezgl::application *application);
 void showPathButton(GtkEntry *,ezgl::application *application);
-void hideUserManualButton(GtkEntry *,ezgl::application *application);
+void hideUserManualButton(GtkEntry *);
 void loadFeatures();
 void drawFeatures(ezgl::renderer *g);
 void loadPoi();
@@ -600,11 +600,11 @@ void initial_setup(ezgl::application *application, bool){
 }
  
 //function that sets the text to the user guide for poi filter
-void poiFilterHelp(GtkWidget*, ezgl::application *application){
+void poiFilterHelp(GtkWidget*){
     gtk_text_view_set_buffer (helpText, poiFilterHelpBuffer);
 }
  
-void FindPathHelp(GtkWidget*, ezgl::application *application){
+void FindPathHelp(GtkWidget*){
     gtk_text_view_set_buffer (helpText, findPathHelpBuffer);
 }
  
@@ -678,13 +678,13 @@ void selectButtonClk(GtkEntry *,ezgl::application *application){//callback funct
     }
 }
  
-void helpMenuItem(GtkWidget*, ezgl::application *application){
+void helpMenuItem(GtkWidget*){
     std::cout<<"help button activated"<<std::endl;
     gtk_widget_show (userGuideWindow);
 }
  
 //subwindows cannot be closed normally if they are created only once and they need to be hidden in the background
-void hideUserManualButton(GtkEntry *,ezgl::application *application){
+void hideUserManualButton(GtkEntry *){
     gtk_widget_hide (userGuideWindow);
 }
 
