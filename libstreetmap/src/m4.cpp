@@ -5,23 +5,6 @@
 #include "globalHeader.h"
 #include "m4Functions.h"
 
-
-int findClosestDepot(const std::vector<int>& depots, int intersection, float turn_penalty){
-    int closestDepot = -1;
-    int smallestDistance = std::numeric_limits<int>::max();
-
-    for(int i = 0; i < depots.size(); i++){
-        int iterDistance = computePathTravelTime(findPathBetweenIntersections(depots[i], intersection, turn_penalty), turn_penalty);
-
-        if(iterDistance < smallestDistance){
-            smallestDistance = iterDistance;
-            closestDepot = depots[i];
-        }
-    }
-
-    return closestDepot;
-}
-
 std::vector<CourierSubPath>
 travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<int> &depots, const float turn_penalty) {
     std::vector<CourierSubPath> completePath; //will hold the final path;
@@ -49,20 +32,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
          deliveryIt != deliveries.end(); deliveryIt++) {
 
         deliveryStop tempStop((*deliveryIt).pickUp, "pickup"); //create deliveryStop struct
-        
-        for (auto it = stops.begin();
-             it != stops.end(); ++it) {//make sure something isnt being added twice
-            if (it->intersection == deliveryIt->pickUp) {//if duplicate exit out of loop
-                duplicate = true;
-                break;
-            }
-        }
-
-        if (duplicate) {
-            duplicate = false;
-        } else {
-            stops.push_back(tempStop);//only add stop if not already present
-        }
+        stops.push_back(tempStop);
 
     }
 
@@ -199,5 +169,21 @@ double findClosestPickUp(const std::vector<DeliveryInf> &deliveries, const std::
             }
         }
     }
+    return closestDepot;
+}
+
+int findClosestDepot(const std::vector<int>& depots, int intersection, float turn_penalty){
+    int closestDepot = -1;
+    int smallestDistance = std::numeric_limits<int>::max();
+
+    for(int i = 0; i < depots.size(); i++){
+        int iterDistance = computePathTravelTime(findPathBetweenIntersections(depots[i], intersection, turn_penalty), turn_penalty);
+
+        if(iterDistance < smallestDistance){
+            smallestDistance = iterDistance;
+            closestDepot = depots[i];
+        }
+    }
+
     return closestDepot;
 }
