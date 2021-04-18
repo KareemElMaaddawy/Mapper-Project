@@ -9,8 +9,6 @@ public:
     std::vector<int> outgoingEdges;
     int reachingEdge;
     double bestTime;
-    bool expand;
-
 
     Node(int intersectionID, int reachingEdgeID, double time);
     Node();

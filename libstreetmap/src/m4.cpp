@@ -52,7 +52,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
 
         if (previousIntersection == NOT_DELIVERY_NODE) { //first pickup, .: previous has to be a depot
             partialPath = findPathDK(stops, startDepot, turn_penalty); //find path from starting depot to closest pickup
-            //if path does not exist
+            //if path does not existk
             if (partialPath.empty() && (pathFound == false)) { //ERROR CHECKING IN CASE NO PATH FOUND
                 invalidPath = true;
                 break;
@@ -88,6 +88,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
                 }
             }
         } else {//not the first stop
+            std::cout << "input " << previousIntersection << std::endl;
             partialPath = findPathDK(stops, previousIntersection, turn_penalty);//find next stop
 
             if (partialPath.empty() && (pathFound == false)) {//ERROR CHECKING

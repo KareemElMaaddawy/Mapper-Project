@@ -175,6 +175,7 @@ std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop>& stops,
         path = traceback(id);
     }
     clearVisitedNodes();
+
     return path;
 }
 
@@ -202,66 +203,65 @@ std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest){
     return path;
 }
 
-bool djikstra(const std::vector<deliveryStop> &stops, Node *source, const double turn_penalty) {
-    std::priority_queue<prioElem, std::vector<prioElem>, compare> queue;
-    queue.push(prioElem(source, NO_EDGE, NO_TIME));
+bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_penalty) {
+    std::priority_queue<prioElem, std::vector<prioElem>, compare> queueOfIntersections;
+    queueOfIntersections.push(prioElem(source, NO_EDGE, NO_TIME));
     shortestTravelTime = 0;
 
     bool turn = false;
 
-    while (!queue.empty()) {
-        prioElem currentElem = queue.top();
-        queue.pop();
+    while (!queueOfIntersections.empty()) {
+        std::cout << queueOfIntersections.size() << std::endl;
+        prioElem elementOfInterest = queueOfIntersections.top();
+        queueOfIntersections.pop();
 
-        Node *current = currentElem.node;
+        Node *currentNode = elementOfInterest.node;
 
-        if (currentElem.travelTime < current->bestTime) {
-            current->bestTime = currentElem.travelTime;
-            current->reachingEdge = currentElem.edgeId;
+        if (elementOfInterest.travelTime < currentNode->bestTime) {
+            currentNode->bestTime = elementOfInterest.travelTime;
+            currentNode->reachingEdge = elementOfInterest.edgeId;
 
-            for (auto &stop : stops) {
-                if (current->id == stop.intersection) {
-                    shortestTravelTime = currentElem.travelTime;
-                    interVisited.push_back(stop);
-
+            for (std::vector<deliveryStop>::iterator stopIt = stops.begin(); stopIt != stops.end(); stopIt++) {
+                if (currentNode->id == stopIt->intersection) {
+                    shortestTravelTime = elementOfInterest.travelTime;
+                    interVisited.push_back(*stopIt);
+                    queueOfIntersections = std::priority_queue<prioElem, std::vector<prioElem>, compare>();
                     pathFound = true;
                     return true;
                 }
             }
-        }
 
-        for (auto segIt = current->outgoingEdges.begin(); segIt != current->outgoingEdges.end(); ++segIt) {
-            IntersectionIdx nodeId;
-            StreetSegmentInfo segInfo = getStreetSegmentInfo(*segIt);
-            if (segInfo.to == current->id) {
-                if (segInfo.oneWay) {
-                    continue;
+            IntersectionIdx nextIntersection;
+
+            for (std::vector<int>::iterator segmentIt = currentNode->outgoingEdges.begin();
+                 segmentIt != currentNode->outgoingEdges.end(); segmentIt++) {
+                StreetSegmentInfo segInfo = getStreetSegmentInfo(*segmentIt);
+                if (segInfo.to == currentNode->id) {
+                    if (segInfo.oneWay) {
+                        continue;
+                    }
+                    nextIntersection = segInfo.from;
+                } else {
+                    nextIntersection = segInfo.to;
                 }
-                nodeId = segInfo.from;
-            } else {
-                nodeId = segInfo.to;
-            }
-
-            if (current != source) {
-                StreetSegmentInfo tempInfo = getStreetSegmentInfo(current->reachingEdge);
-                turn = segInfo.streetID != tempInfo.streetID;
-            }
-
-            if (turn) {
-                queue.push(prioElem(getNodeFromId(nodeId), *segIt,
-                                    currentElem.travelTime + findStreetSegmentTravelTime(*segIt) + turn_penalty));
-            } else {
-                queue.push(prioElem(getNodeFromId(nodeId), *segIt,
-                                    currentElem.travelTime + findStreetSegmentTravelTime(*segIt)));
+                if (currentNode != source) {
+                    StreetSegmentInfo turnInfo = getStreetSegmentInfo(currentNode->reachingEdge);
+                    turn = segInfo.streetID != turnInfo.streetID;
+                }
+                if (turn) {
+                    queueOfIntersections.push(prioElem(getNodeFromId(nextIntersection), (*segmentIt),
+                                                       elementOfInterest.travelTime +
+                                                       findStreetSegmentTravelTime(*segmentIt) + turn_penalty));
+                } else {
+                    queueOfIntersections.push(prioElem(getNodeFromId(nextIntersection), (*segmentIt),
+                                                       elementOfInterest.travelTime +
+                                                       findStreetSegmentTravelTime(*segmentIt)));
+                }
             }
         }
     }
     return false;
 }
-
-
-
-
 
 std::vector<StreetSegmentIdx> findPathBetweenIntersections(
         const IntersectionIdx intersect_id_start,
