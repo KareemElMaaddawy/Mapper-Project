@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include "StreetsDatabaseAPI.h"
 #include "m3.h"
+#include "m4.h"
 #include "globalHeader.h"
 #include <algorithm>
 #include "Node.h"
@@ -98,6 +99,8 @@ Node* getNodeFromId(IntersectionIdx id);
 void clearVisitedNodes();
 
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to);
+
+double findClosestPickUp(const std::vector<DeliveryInf> &deliveries, const std::vector<int> &depots);
 
 double findSlope(Point p0, Point p1);
 

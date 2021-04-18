@@ -42,12 +42,12 @@ void tester(){
     std::vector<CourierSubPath> result_path;
     float turn_penalty;
 
-    deliveries = {DeliveryInf(25800, 30752)};
-    depots = {6};
-    turn_penalty = 15.000000000;
-    result_path = travelingCourier(deliveries, depots, turn_penalty);
-    std::cout << result_path.size() << std::endl << std::endl;
-
+//    deliveries = {DeliveryInf(25800, 30752)};
+//    depots = {6};
+//    turn_penalty = 15.000000000;
+//    result_path = travelingCourier(deliveries, depots, turn_penalty);
+//    std::cout << result_path.size() << std::endl << std::endl;
+//
 //    deliveries = {DeliveryInf(23975, 52829), DeliveryInf(28343, 20239), DeliveryInf(100949, 118269)};
 //    depots = {11317, 1263, 141824};
 //    turn_penalty = 15.000000000;
@@ -102,11 +102,11 @@ void tester(){
 //    result_path = travelingCourier(deliveries, depots, turn_penalty);
 //    std::cout << result_path.size() << std::endl << std::endl;
 //
-//    deliveries = {DeliveryInf(40220, 37954), DeliveryInf(90705, 82446), DeliveryInf(29107, 44932), DeliveryInf(28232, 60062), DeliveryInf(28232, 82070), DeliveryInf(45899, 26959), DeliveryInf(28232, 120267), DeliveryInf(90705, 120353)};
-//    depots = {26612, 45787, 77377};
-//    turn_penalty = 15.000000000;
-//    result_path = travelingCourier(deliveries, depots, turn_penalty);
-//    std::cout << result_path.size() << std::endl << std::endl;
+    deliveries = {DeliveryInf(40220, 37954), DeliveryInf(90705, 82446), DeliveryInf(29107, 44932), DeliveryInf(28232, 60062), DeliveryInf(28232, 82070), DeliveryInf(45899, 26959), DeliveryInf(28232, 120267), DeliveryInf(90705, 120353)};
+    depots = {26612, 45787, 77377};
+    turn_penalty = 15.000000000;
+    result_path = travelingCourier(deliveries, depots, turn_penalty);
+    std::cout << result_path.size() << std::endl << std::endl;
 //
 //    deliveries = {DeliveryInf(46812, 71491), DeliveryInf(133567, 126914), DeliveryInf(29206, 127536), DeliveryInf(122540, 35334), DeliveryInf(100594, 108615)};
 //    depots = {48279, 73609, 123137};
