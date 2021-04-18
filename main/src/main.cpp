@@ -25,7 +25,7 @@
 #include "m1.h"
 #include "m2.h"
 #include "m3.h"
-
+#include "m4.h"
 //Program exit codes
 constexpr int SUCCESS_EXIT_CODE = 0;        //Everyting went OK
 constexpr int ERROR_EXIT_CODE = 1;          //An error occured
@@ -33,18 +33,41 @@ constexpr int BAD_ARGUMENTS_EXIT_CODE = 2;  //Invalid command-line usage
 
 //The default map to load if none is specified
 std::string default_map_path = "/cad2/ece297s/public/maps/toronto_canada.streets.bin";
-std::string defaultOSMFilePath = "/cad2/ece297s/public/maps/interlaken_switzerland.osm.bin";
+//std::string defaultOSMFilePath = "/cad2/ece297s/public/maps/interlaken_switzerland.osm.bin";
 
 void tester() {
     std::vector<StreetSegmentIdx> path;
-    double turn_penalty;
+    float turn_penalty;
     double expected;
     double actual;
 
+    
+//    std::vector<DeliveryInf> deliveries;
+//    std::vector<IntersectionIdx> depots;
+//    std::vector<CourierSubPath> result_path;
+//    
+//        std::cout << "result path: ";
+//        deliveries = {DeliveryInf(25800, 30752)};
+//        depots = {6};
+//        turn_penalty = 15.000000000;
+//        result_path = travelingCourier(deliveries, depots, turn_penalty);
+//        for(int i = 0; i < result_path.size(); i++){
+//            path = result_path[i].subpath;
+//            for(int j = 0; j < path.size(); j++){
+//                std::cout << path[i] <<" ";
+//                std:: cout << std::endl;
+//            }
+//        }
+//         
+//        
+//        //CHECK(courier_path_is_legal(deliveries, depots, result_path));
+        
+        
     path = {113738, 183123, 148635, 183599, 165771, 165772, 144545, 180349, 180348, 26490, 26491, 26492, 26493, 21815, 21816, 183119, 183116, 183118, 113076, 113077, 113078, 113079, 113080, 82995, 181338, 82993, 181340, 181339, 166309, 181336, 163933, 181337, 176295, 176296, 176297, 176298, 163923, 163924, 163925, 163926, 163927, 85789, 85815, 105581, 22794, 22795, 22796, 22797, 22798, 22799, 22800, 22801, 22802, 22803, 22804, 22805, 22806, 22807, 22819, 22820, 22821, 22822, 22823};
     turn_penalty = 44.58619277333233555;
     expected = 332.98105652274381328;
     actual = computePathTravelTime(path, turn_penalty);
+    
     std::cout << actual << std::endl;
     std::cout << expected << std::endl;
     std::cout << (expected - actual) / turn_penalty << std::endl << std::endl;

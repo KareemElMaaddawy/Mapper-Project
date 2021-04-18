@@ -62,6 +62,7 @@ std::string findDirection(StreetSegmentIdx sourceStreet, StreetSegmentIdx destSt
 
 //calculates turn penalty as the average of the speed limits around the source intersection and destination intersection
 double calcTurnPenalty(IntersectionIdx source, IntersectionIdx dest) {
+
     int numOfSegment = 0;
     double speed = 0;
     std::vector<IntersectionIdx> sourceNeighbors = findAdjacentIntersections(source);
@@ -78,11 +79,18 @@ double calcTurnPenalty(IntersectionIdx source, IntersectionIdx dest) {
         speed += temp.speedLimit;
         numOfSegment++;
     }
-    return speed/numOfSegment;//returning average
+    
+
+    return  speed/numOfSegment;//returning average
+
 }
 //finds the travel time, given a path and a turn penalty
 double computePathTravelTime(const std::vector<StreetSegmentIdx> &path, const double turn_penalty) {
-    double travelTime = 0;
+    
+    double abort = 0;
+      #pragma omp parallel num_threads(4) 
+{
+        double travelTime = 0;
     std::string direction;
     for (int i = 0; i < path.size(); ++i) {
         if (i == 0) {//no need to check for left turn for the initial street segment
@@ -96,8 +104,9 @@ double computePathTravelTime(const std::vector<StreetSegmentIdx> &path, const do
             }
         }
     }
-
-    return travelTime;
+    abort = travelTime;
+}
+    return abort;
 }
 //finds the street segment between a pair of intersections
 StreetSegmentIdx findSegmentBetweenIntersections(const IntersectionIdx from, const IntersectionIdx to) {
@@ -180,7 +189,9 @@ std::vector<StreetSegmentIdx> findPathDK(const std::vector<deliveryStop>& stops,
 
 
 std::vector<StreetSegmentIdx> traceback(IntersectionIdx dest){
+  
     std::vector<StreetSegmentIdx> path;
+
     Node* currentNode = getNodeFromId(dest);
 
     IntersectionIdx interId = dest;
