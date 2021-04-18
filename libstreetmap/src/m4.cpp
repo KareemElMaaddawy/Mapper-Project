@@ -183,3 +183,22 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
         return std::vector<CourierSubPath>();
     }
 }
+
+double findClosestPickUp(const std::vector<DeliveryInf> &deliveries, const std::vector<int> &depots){
+    int closestDepot = depots[0];
+    int smallestDistance = std::numeric_limits<int>::max();
+    for(int i = 0; i < depots.size(); i++){
+        LatLon depotPos = getIntersectionPosition(depots[i]);
+        for(int j = 0; j < deliveries.size(); j++){
+            LatLon pickUpPos = getIntersectionPosition(deliveries[j].pickUp);
+            std::pair<LatLon, LatLon> distancePair (depotPos,pickUpPos);
+
+            double distance = findDistanceBetweenTwoPoints(distancePair);
+            if(distance < smallestDistance){
+                smallestDistance = distance;
+                closestDepot = depots[i];
+            }
+        }
+    }
+    return closestDepot;
+}
