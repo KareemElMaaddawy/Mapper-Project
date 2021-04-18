@@ -14,11 +14,11 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
     std::vector<deliveryStop> stops; //holds stops that need to be made
     std::vector<int> pickUps;
     std::vector<int> previousPickups;
-
+    
     struct CourierSubPath partialDeliveryPath; //holds partial delivery path before it gets added to the complete path
 
     int previousIntersection = NOT_DELIVERY_NODE;
-    int startDepot = depots[0], endDepot = depots[0];
+    int startDepot = findClosestPickUp(deliveries, depots), endDepot = depots[0];
     int intersectionFound;
 
     std::string prevStop;

@@ -12,11 +12,8 @@ double findSlope(Point p0, Point p1){
 
 void resetNodes(){
     for(std::vector<Node*>::iterator it = visitedNodes.begin(); it != visitedNodes.end(); it++){
-<<<<<<< HEAD
         (*it) -> bestTime = std::numeric_limits<int>::max();
-=======
-        (*it)->bestTime = std::numeric_limits<int>::max();
->>>>>>> 1081ad9905a343ee6bb2917a9026d94b5b15ebe9
+        //(*it)->bestTime = std::numeric_limits<int>::max();
     }
 }
 
