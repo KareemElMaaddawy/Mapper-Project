@@ -27,11 +27,12 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
     bool invalidPath = false;
 
     //add all deliveries into stops vector as pickups
+   
     for (std::vector<DeliveryInf>::const_iterator deliveryIt = deliveries.begin();
          deliveryIt != deliveries.end(); deliveryIt++) {
 
         deliveryStop tempStop((*deliveryIt).pickUp, "pickup"); //create deliveryStop struct
-
+        
         for (std::vector<deliveryStop>::iterator it = stops.begin();
              it != stops.end(); ++it) {//make sure something isnt being added twice
             if (it->intersection == deliveryIt->pickUp) {//if duplicate exit out of loop
@@ -66,6 +67,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
             completePath.push_back(partialDeliveryPath);
 
             //adding pickups dropoff into stop vector
+            
             for (std::vector<DeliveryInf>::const_iterator deliveryIt = deliveries.begin();
                  deliveryIt != deliveries.end(); ++deliveryIt) {
                 if (deliveryIt->pickUp ==
@@ -130,7 +132,7 @@ travelingCourier(const std::vector<DeliveryInf> &deliveries, const std::vector<i
 
         //keep track of previous string type (pick up or drop off)
         prevStop = currentStop;
-
+        
         //remove the intersection reached from pickUpDropOffLocations
         for (std::vector<deliveryStop>::iterator stopIt = stops.begin(); stopIt != stops.end(); ++stopIt) {
             if (stopIt->intersection == intersectionFound) {
