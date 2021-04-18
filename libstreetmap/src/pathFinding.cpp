@@ -11,8 +11,8 @@ double findSlope(Point p0, Point p1){
 }
 
 void resetNodes(){
-    for(std::vector<Node*>::iterator it = nodesExpanded.begin(); it != nodesExpanded.end(); it++){
-        it->bestTime = std::numeric_limits<int>::max();
+    for(std::vector<Node*>::iterator it = visitedNodes.begin(); it != visitedNodes.end(); it++){
+        (*it)->bestTime = std::numeric_limits<int>::max();
     }
 }
 
@@ -229,7 +229,7 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
     bool turn = false;
 
     while (!queueOfIntersections.empty()) {
-        std::cout << queueOfIntersections.size() << std::endl;
+        //std::cout << queueOfIntersections.size() << std::endl;
         prioElem elementOfInterest = queueOfIntersections.top();
         queueOfIntersections.pop();
 
@@ -246,6 +246,7 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
                     interVisited.push_back(*stopIt);
                     queueOfIntersections = std::priority_queue<prioElem, std::vector<prioElem>, compare>();
                     pathFound = true;
+                    resetNodes();
                     return true;
                 }
             }
@@ -279,6 +280,7 @@ bool djikstra(std::vector<deliveryStop> stops, Node* source, const double turn_p
             }
         }
     }
+    resetNodes();
     return false;
 }
 
