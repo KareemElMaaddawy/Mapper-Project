@@ -56,7 +56,7 @@ int numOfStreetSegments;
 double *segLength;
 double *segTime;
 double *stLength;
-
+void fillNodes();
 void loadAdjacentIntersections();
 // Vector Declerations
 
