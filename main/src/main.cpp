@@ -19,6 +19,7 @@
  * SOFTWARE.
  */
 #include <iostream>
+#include <thread>
 #include <string>
 #include "globalHeader.h"
 #include "pathFinding.h"
@@ -26,6 +27,13 @@
 #include "m2.h"
 #include "m3.h"
 #include "m4.h"
+#include "date.h"
+
+using timer = std::chrono::system_clock;
+timer::time_poit clock_start;
+timer::time_point clock_end;
+timer::duration elapsed_time;
+
 
 //Program exit codes
 constexpr int SUCCESS_EXIT_CODE = 0;        //Everyting went OK
@@ -59,7 +67,8 @@ int main(int argc, char** argv) {
         std::cerr << "  If no map_file_path is provided a default map is loaded.\n";
         return BAD_ARGUMENTS_EXIT_CODE;
     }
-
+    using namespace std::chrono_literals;
+    clock_start = timer::now();
     //Load the map and related data structures
     bool load_success = loadMap(map_path);
     if(!load_success) {
@@ -68,6 +77,11 @@ int main(int argc, char** argv) {
     }
 
     std::cout << "Successfully loaded map '" << map_path << "'\n";
+
+    clock_end = timer ::now();
+    elapsed_time = clock_end - clock_start;
+    using date::operator<<;
+    std::cout << elapsed_time << std::endl;
 
     //You can now do something with the map data
     //drawMap();
