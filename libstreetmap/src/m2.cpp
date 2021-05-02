@@ -216,7 +216,7 @@ std::pair<double, double> findPointOfReference(double m, double distance, double
 void drawMainCanvas(ezgl::renderer *g) {
  
     drawFeatures(g);
-    drawPoi(g);
+    //drawPoi(g);
     int draw = 0;
     draw++;
  
@@ -302,8 +302,8 @@ void drawMainCanvas(ezgl::renderer *g) {
  
  
     }
-    drawStreetLabels(g);
-    drawPoiLabel(g);
+    //drawStreetLabels(g);
+    //drawPoiLabel(g);
     drawPath(g);
         //Sheppard Avenue West & Bangor Road
    //Harlandale Avenue & Bangor Road
@@ -442,7 +442,7 @@ void drawPoi(ezgl::renderer *g){
             if (colorBlind) {
                 g->set_color(96,92,75,255);
             }else{
-                g->set_color(ezgl::BLUE);
+                g->set_color(ezgl::RED);
             }
  
             double width = 15;
@@ -450,7 +450,8 @@ void drawPoi(ezgl::renderer *g){
  
             g->fill_arc({x - width / 2, y - height / 2}, 3.5, 0, 360);
         }
-    }
+     }
+    
 }
  
 void drawPoiLabel(ezgl::renderer *g){
@@ -1142,10 +1143,10 @@ void directions(std::vector<int> path){
         if(findDirection(firstSegID, secondSegID) == "straight"){
             std::cout << "Straight on " << firstSegName << " for " << findStreetSegmentLength(firstSegID) <<"m" << std::endl;
             std::cout<< "             "<< std::endl;
-        }else if(findDirection(firstSegID, secondSegID) == "left"){
+        }else if(findDirection(firstSegID, secondSegID) == "right"){
             std::cout << "Head left onto " << secondSegName << std::endl; 
                       std::cout<< "             "<< std::endl;  
-        }else if(findDirection(firstSegID, secondSegID) == "right"){
+        }else if(findDirection(firstSegID, secondSegID) == "left"){
             std:: cout << "Head right onto " << secondSegName << std::endl;
             std::cout<< "             "<< std::endl;
         }
